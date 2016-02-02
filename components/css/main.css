@@ -1,0 +1,38 @@
+#myNavbar{
+	background-color: #eaeaea;
+}
+
+#myNavbar2{
+	background-color: #D8D8D8;
+
+}
+
+#myNavbar > li > a{
+	color:#222222;
+}
+
+#loginUtilisateur{
+	background-color: #A4A4A4;
+	border-radius: 8%;
+	width: 32%;
+	margin-right: 4px;
+}
+
+#loginEntreprise{
+	background-color: #D8D8D8;
+	border-radius: 8%;
+	width: 32%;
+	margin-right: 4px;
+}
+
+#loginRestaurateur{
+	background-color: #E6E6E6;
+	border-radius: 8%;
+	width: 32%;
+	margin-right: 4px;
+}
+.footer{
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+}

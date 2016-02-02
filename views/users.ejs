@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script src="//cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" href="//cdn.datatables.net/1.10.10/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.0/bootstrap-table.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.0/bootstrap-table.min.js"></script>
+<script type="text/javascript">
+
+ 
+// var getJSON = function(url) {
+//   return new Promise(function(resolve, reject) {
+//     var xhr = new XMLHttpRequest();
+//     xhr.open('get', '/userslist', true);
+//     xhr.responseType = 'json';
+//     xhr.onload = function() {
+//       var status = xhr.status;
+//       if (status == 200) {
+//         resolve(xhr.response);
+//       } else {
+//         reject(status);
+//       }
+//     };
+//     xhr.send();
+//   });
+// };
+
+
+
+
+// $('#table').bootstrapTable({
+//     method : 'get',
+//     url :'/userslist',
+//     height : 450,
+//     cache : false,
+//     striped : true,
+//     pagination : true, 
+//     pagesize : 10,
+//     pageList : [10,25,50,100,200],
+//     minimumCountColumns : 2,
+//     clickToSelect : true,
+//     columns : [{
+//     	field : 'id',
+//     	title : 'id',
+//     	align : 'center'
+//     },{
+//     	field : 'nom',
+//     	title : 'nom',
+//     	align : 'center'
+//     	sortable : true
+//     },{
+//     	field : 'prenom',
+//     	title : 'prenom',
+//     	align : 'center'
+//     	sortable : true
+//     },{
+//     	field : 'solde',
+//     	title : 'solde',
+//     	align : 'center',
+//     	sortable : true
+//     }]
+// });
+
+
+
+  $(document).ready(function(){
+      $("button").click(function(){
+        $.getJSON('/userslist', function (data){
+        var output="<ul>";
+        for (var i in data.Utilisateurs) {
+            output+="<li>" + data.Utilisateurs[i].id + " " + data.Utilisateurs[i].nom + "  " + data.Utilisateurs[i].prenom + "<br>" + "  Solde : " + data.Utilisateurs[i].solde + "</li>";
+        }
+
+        output+="</ul>";
+        document.getElementById("placeholder").innerHTML=output;
+  		})
+ })});
+
+
+// $.getJSON("/userslist", function(toto){
+// 	var obj = JSON.parse("toto");
+// document.getElementById("demo").innerHTML =
+// obj.utilisateurs[1].nom + " " + obj.utilisateurs[1].prenom;
+// });
+
+
+// $(document).ready(function(){
+
+// $.getJSON('/userslist', function(data){
+
+//     // Set the variables from the results array
+//     var id = data.Utilisateurs[0].id;
+//     console.log('id : ', id);
+    
+//     var nom = data.Utilisateurs[0].nom;
+//     console.log('Nom : ', nom);
+    
+//     var prenom = data.Utilisateurs[0].prenom ;
+//     console.log('Prenom : ', prenom);
+//     var solde = data.Utilisateurs[0].solde;
+//     console.log('Sonde : ', solde);
+
+//     // Set the table td text
+//     $('#id').text(id);
+//     $('#nom').text(nom);
+//     $('#prenom').text(prenom);
+//     $('#solde').text(solde);
+// })});
+
+</script>
+</head>
+<body>
+
+<button>Get JSON data</button>
+<div id="placeholder" class="container"></div>
+
+</body>
+</html>
