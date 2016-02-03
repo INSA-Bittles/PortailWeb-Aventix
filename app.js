@@ -201,13 +201,13 @@ app_https.use(express.static(path.join(__dirname,'config/passport.js'))); // pas
 //   res.render('index', {pageTitle: 'Bienvenue sur Aventix'});
 // });
 
-require('./routes.js')(app_https, passport); 
+// require('./routes.js')(app_https, passport); 
 
 var mysql      = require('mysql');
 var mysqldb = mysql.createConnection({
   host     : 'localhost',
   user     : 'root',
-  password : 'password',
+  password : '1107',
   database : 'aventix',
   port : 3306
 });
@@ -223,7 +223,7 @@ app_https.get('/userslist', function(req, res) {
   
   db.getConnection(function(err, mysqlconnected){
         if(!err){
-          mysqlconnected.query('SELECT id ,nom, prenom, solde from users' , function(err, results) {
+          mysqlconnected.query('SELECT NomResponsable, NomRestaurant from Affilie' , function(err, results) {
                     if(results.length != 0){
                       data["Utilisateurs"] = results;
                       res.json(data);
@@ -255,7 +255,7 @@ app_https.get('/users', function (req, res) {
 db.getConnection(function(err, mysqlconnected){
         if(!err){
         console.log ('La base de données est connectée')
-        var query2 = mysqlconnected.query('SELECT nom FROM users');
+        var query2 = mysqlconnected.query('SELECT NomResponsable FROM affilie');
 
 // mysqlconnected.query('INSERT INTO users (nom, prenom, solde) VALUES (?,?,?)', ['Dumaine','Rémy','150'], function(err, result) {
 //      if (err) throw err

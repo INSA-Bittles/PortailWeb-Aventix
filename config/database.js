@@ -3,8 +3,8 @@ module.exports = {
     'connection': {
         'host': 'localhost',
         'user': 'root',
-        'password': 'password'
+        'password': '1107'
     },
 	'database': 'aventix',
-    'users_table': 'users2'
+    'users_table': 'Affilie'
 };

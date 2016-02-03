@@ -2,7 +2,7 @@ var mysql = require('mysql');
 var pool  = mysql.createPool({
   host     : 'localhost',
   user     : 'root',
-  password : 'password',
+  password : '1107',
   database : 'aventix',
   port: 3306
 });
