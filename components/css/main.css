@@ -1,10 +1,14 @@
 #myNavbar{
-	background-color: #000220;
+	background-color: #eaeaea;
 }
 
 #myNavbar2{
 	background-color: #D8D8D8;
 
+}
+
+#myNavbar > li > a{
+	color:#222222;
 }
 
 #loginUtilisateur{
@@ -28,119 +32,26 @@
 	margin-right: 4px;
 }
 
-#menuCote{
-	
-	background-color: #C0C0C0;
+#BarMenu{
+
+
+background-color: #A9A9A9;
 	border-radius: 8%;
-	width: 20%;
-	height:400px;
-	float:left;
-	margin-right: 4px;
-	font-size: 20px;
-	color:green;
-	color: #FAFAD2;
-}
-
-.titreMenuCote{
-	color:black;
-	font-size: 25px;
-	text-align: center;
-font-style: oblique;
-}
-
-.secondTitreMenuCote{
-	color:black;
-	font-size: 25px;
-	text-align: left;
-	margin-left: 20px;
-
-}
-
-.affichageInfos{
-	background-color: white;
-	border-radius: 8%;
-	width: 90%;
-	margin-left: 10px;
-
-}
-
-
-#displayDivDroite{
-	
-	background-color: #DCDCDC;
-	border-radius: 8%;
-	width: 79%;
-	height:400px;
-	float:right;
+	width: 30%;
+	height: 400px;
 	margin-right: 4px;
 }
 
+#DisplayNextToMenu{
 
-.jolieBoutton{
-    border: none; 
-     display: inline-block; 
-     outline: 0; 
-     padding: 6px 16px; 
-    vertical-align: middle;
-    overflow: hidden;
-    text-decoration: none !important;
-    color: black;
-    background-color: white;
-    text-align: center;
-    transition: .2s ease-out;
-    cursor: pointer;
-    font-size: 20px;
-    white-space: nowrap;
-    margin-top: 50px;
-    margin-left: 125px;
-    border-radius: 12%;
-    border-style: inset;
-    border-color: #C0C0C0;
-}
 
-.jolieBoutton:hover{
-	background-color: #87CEFA;
-	border-style: solid;
-	color: white;
-	border-color: white;
-}
-
-.displayGauche{
-	float:left;
-	width:43%;
-	background-color:#D3D3D3;
-	margin-left: 50px;
-	height:80%;
+background-color: #E6E6E6;
 	border-radius: 8%;
-	border-style: inset;
+	width: 69%;
+	height: 400px;
+	margin-right: 4px;
 }
 
-.displayDroite{
-	float:right;
-	width:43%;
-	background-color:#D3D3D3;
-	margin-right: 50px;
-	height:80%;
-	border-radius: 8%;
-	border-style: outset;
-	
-}
-
-.displayCarte{
-	float:right;
-	width:43%;
-	margin-right: 50px;
-	height:100%;
-}
-
-
-.lienNav{
-color:black;
-}
-
-.lienNav:hover{
-color:white;
-}
 
 .footer{
 	

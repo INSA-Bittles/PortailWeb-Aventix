@@ -155,6 +155,7 @@ var options = {
 var app_https = express();
 
 
+
 tls.createServer(options, app_https, function (cleartextStream) {
     var cleartextRequest = net.connect({
         port: 80,
@@ -200,8 +201,7 @@ app_https.use(express.static(path.join(__dirname,'config/passport.js'))); // pas
 // app_https.get('/', function (req, res) {
 //   res.render('index', {pageTitle: 'Bienvenue sur Aventix'});
 // });
-
-// require('./routes.js')(app_https, passport); 
+ require('./routes.js')(app_https, passport); 
 
 var mysql      = require('mysql');
 var mysqldb = mysql.createConnection({

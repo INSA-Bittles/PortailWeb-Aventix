@@ -1,12 +1,16 @@
 <!DOCTYPE html>
+
+
 <html>
     <head>
-      <title>Aventix - Mon espace Personnel</title>
+      <title><%= pageTitle %></title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+        
         <link rel="stylesheet" href="css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="css/main.css">
+        <link rel="icon" type="image/png" sizes="16x16" href="img/favicon.png">
         
 
           <style>
@@ -36,38 +40,36 @@
               }
           </style>
     </head>
-<!doctype html>
-<html>
 
     <body>
 
       
-<nav class="navbar navbar-inverse">
-  <div class="container-fluid">
+<nav class="navbar navbar">
+  <div class="container-fluid" style="height:120px;">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>                        
       </button>
-      <a class="navbar-brand" href="#">Logo - Aventix</a>
+      <a class="navbar-brand" href="/"><img src="img/logo_aventix.png" alt="Logo - Aventix" /></a>
 
     </div>
       <ul class="nav navbar-nav navbar-right">
-          <li><form style="margin-top:10px;"action="" class="search-form">
+          <li><form style="margin-top:40px;" action="" class="search-form">
                   <div class="form-group has-feedback">
                   <label for="search" class="sr-only">Rechercher</label>
                   <input type="text" class="form-control" name="search" id="search" placeholder="Rechercher">
                     <span class="glyphicon glyphicon-search form-control-feedback"></span>
                 </div>
-              </form></li><li><a href="/login">Votre espace personnel :<span class="glyphicon glyphicon-log-in"></span>Login</a></li>
+              </form></li><li><a href="/login" style="margin-top:35px;">Votre espace personnel : &nbsp;<span class="glyphicon glyphicon-log-in"></span>&nbsp;&nbsp;Login</a></li>
         </ul>
     </div>
   </div>
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="/"><span class="glyphicon glyphicon-home"></span></a></li>
+        <li id="navbarMenu" class="active"><a href="/"><span class="glyphicon glyphicon-home"></span></a></li>
         <li><a href="#">Société</a></li>
         <li><a href="#">Carte Aventix</a></li>
         <li><a href="#">Utilisateurs</a></li>
@@ -81,50 +83,44 @@
                 <li><a href="#"><i class="fa fa-lg fa-linkedin"></i></a></li>
       </ul>
     </div>
+      <div class="collapse navbar-collapse" id="myNavbar2">
+      <ul class="breadcrumb">
+        <li><a href="/">Accueil ></a><a href="/"> Beneficiaire></a><a href="/"> Etat du compte</a></li>
+      </ul>
 </nav>
+<div class="container text-center" style="width:90%">      
 
-<br>
-<div class="menucote" id="menuCote">
+  <div class="row" >
 
-  <h1 class="titreMenuCote"> Compte Beneficiaire</h1>
-  <ul class="elementDeListe">
-          <br>
-          <li ><a class="lienNav"  href="">Avantages</a></li>
-          <br>
-          <li><a class="lienNav" href="">Etat du compte</a></li>
-          <br>
-          <li><a class="lienNav" href="">Restaurants partenaires</a></li>
-    </ul>
+      <div class="col-xs-12 col-sm-6 col-md-8" id="BarMenu">
+
+          <h1>Menu Compte</h1>
+          <hr>
+            <ul class="list-unstyled" style="font-size:20px">
+                <br>
+                <li ><a class="lienNav"  href="">Avantages</a></li>
+                <br>
+                <li><a class="lienNav" style="color:black" href="">Etat du compte</a></li>
+                <br>
+                <li><a class="lienNav" href="">Restaurants partenaires</a></li>
+          </ul>
+      
+      </div>
+
+      <div class="col-xs-6 col-md-4" id="DisplayNextToMenu">
+         <h1>Etat du compte</h1>  
+         <hr style="border-color: #A9A9A9;">
+      
+ 
+      </div>
+    </div>
+
 </div>
-
-
-  <div class="menucote" id="displayDivDroite">
-    <h1  class="titreMenuCote"> Etat du compte</h1>
-    <div class="displayGauche">
-    <h3 class="secondTitreMenuCote"> Solde: </h3>
-
-        <div class="affichageInfos">
-          <br>
-       </div>
-
-        <h3 class="secondTitreMenuCote"> Historique des paiements: </h3>
-        <div class="affichageInfos">
-              <br><br><br><br><br><br>
-        </div>
-</div>
-
-   <div class="displayDroite">
-      <h3 class="secondTitreMenuCote"> Carte perdue, volée ou bloquée? </h3>
-      <a href="" class="jolieBoutton"> Contactez-nous!</a>
-     </div>
-
-  </div>
-
 <footer class="footer">
     <div class="container">
         <ul class="nav navbar-nav">
             <a class="navbar-brand" href="#">Logo - Aventix</a>
-                <li><a href="login"><span class="glyphicon glyphicon-user"></span>>Mon Compte</a></li>
+                <li><a href="login"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;Mon Compte</a></li>
                 <li><a href="contact">Contact</a></li>
                 <li><a href="#">Mentions légales</a></li>
                 <li><a href="#">Plan du site</a></li>
