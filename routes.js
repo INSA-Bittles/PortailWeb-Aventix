@@ -34,7 +34,7 @@ module.exports = function(app_https, passport) {
     {
 
         // render the page and pass in any flash data if it exists
-        res.render('signup.ejs',{pageTitle: 'Aventix - Signup'});
+        res.render('signup.ejs',{pageTitle: 'Aventix - Signup', message: req.flash('loginMessage')});
     });
 
     

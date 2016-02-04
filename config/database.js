@@ -5,6 +5,6 @@ module.exports = {
         'user': 'root',
         'password': 'password'
     },
-	'database': 'aventix',
-    'users_table': 'users2'
+	'database': 'aventix2',
+    'users_table': 'users'
 };
