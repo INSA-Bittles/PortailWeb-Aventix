@@ -216,7 +216,7 @@ var mysqldb = mysql.createConnection({
 //   if (err) throw err;
 //   console.log('Vous êtes connecté')
 // });
-var db = require('./db');
+var db = require('./db.js');
 
 app_https.get('/userslist', function(req, res) {
   var data = {"Utilisateurs":""};
@@ -226,7 +226,9 @@ app_https.get('/userslist', function(req, res) {
           mysqlconnected.query('SELECT NomResponsable, NomRestaurant from Affilie' , function(err, results) {
                     if(results.length != 0){
                       data["Utilisateurs"] = results;
-                      res.json(data);
+                     res.json(data.Utilisateurs[1].NomRestaurant)
+                     console.log((data.Utilisateurs[0].NomRestaurant));
+
                       
                     }else{
                       data["Utilisateurs"] = 'No data Found..';
@@ -256,6 +258,7 @@ db.getConnection(function(err, mysqlconnected){
         if(!err){
         console.log ('La base de données est connectée')
         var query2 = mysqlconnected.query('SELECT NomResponsable FROM affilie');
+
 
 // mysqlconnected.query('INSERT INTO users (nom, prenom, solde) VALUES (?,?,?)', ['Dumaine','Rémy','150'], function(err, result) {
 //      if (err) throw err
