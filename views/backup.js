@@ -83,8 +83,8 @@ function TrouverAdresse() {
   // Récupération de l'adresse tapée dans le formulaire
 
 
-  var adresse = document.getElementById('adresse').value;
- 
+  // var adresse = document.getElementById('adresse').value;
+  var adresse="paris";
 
   geocoder.geocode( { 'address': adresse}, function(results, status) {
     if (status == google.maps.GeocoderStatus.OK) {
@@ -97,10 +97,7 @@ function TrouverAdresse() {
       console.log ('La base de données est connectée');
       document.getElementById('text_latlng').innerHTML='Coordonnées : '+strposition;
       // Création du marqueur du lieu (épingle)
-        Marker = new google.maps.Marker({
-              map: map,
-              position:  new google.maps.LatLng(latitude,longitude)
-        });
+       
       var marker = new google.maps.Marker({
           map: map,
           position: results[0].geometry.location
@@ -130,3 +127,42 @@ function geolocalisation(){
   }
 
 }
+
+function TrouverAdresseAvecArgument(text) {
+  // Récupération de l'adresse tapée dans le formulaire
+  var adresse = document.getElementById('adresse').value;
+   var adresse=text;
+  geocoder.geocode( { 'address': adresse}, function(results, status) {
+    if (status == google.maps.GeocoderStatus.OK) {x
+      map.setCenter(results[0].geometry.location);
+      // Récupération des coordonnées GPS du lieu tapé dans le formulaire
+      var strposition = results[0].geometry.location+"";
+      strposition=strposition.replace('(', '');
+      strposition=strposition.replace(')', '');
+      // Affichage des coordonnées dans le <span>
+      console.log ('La base de données est connectée');
+      document.getElementById('text_latlng').innerHTML='Coordonnées : '+strposition;
+      // Création du marqueur du lieu (épingle)
+      var marker = new google.maps.Marker({
+          map: map,
+          position: results[0].geometry.location
+      });
+    } else {
+      // alert('Adresse introuvable: ' + status);
+
+          if (status == google.maps.GeocoderStatus.OVER_QUERY_LIMIT) {
+            nextAddress--;
+            delay++;
+          } else {
+            var reason="Code "+status;
+            var msg = 'address="' + search + '" error=' +reason+ '(delay='+delay+'ms)<br>';
+            document.getElementById("messages").innerHTML += msg;
+          }   
+
+
+
+
+    }
+  });
+}
+

@@ -41,7 +41,7 @@
           </style>
     </head>
 
-    <body onload="initialiserCarte()">
+    <body onload="initialiserCarte();AffichageAdresseRestaurant();">
 
       
 <nav class="navbar navbar">
@@ -110,13 +110,28 @@
       <div class="col-xs-6 col-md-4" id="DisplayNextToMenu">
          <h1>Restaurant à proximité</h1>  
          <hr style="border-color: #A9A9A9;">
-         <form id="testcache">
-              <input type="text" id="adresse"/>
-              <input type="button"  value="Localiser sur Google Map" onclick="TrouverAdresse();"/>
-         </form>
-          <span id="text_latlng"></span>
-          <div id="AffichageAdresse" onclick="testConnection()">test</div>
-          <div id="map-canvas" style="float:right;height:220px;width:45%"></div>
+
+            <div class="row">
+              <div  style="height:260px; border-radius: 12%; border-style: inset;border-color: #C0C0C0;"class="col-md-6">
+                    <br>
+                    <form "form-inline" id="testcache">
+                      <input type="text" id="adresse"/>
+                      <input type="button"  class="btn btn-info" value="Localiser sur Google Map" onclick="TrouverAdresse()"/>
+                    </form>
+                    <br>
+                    <hr>
+                    <button type="button"  onclick="geolocalisation()" id="JolieBoutton" class="btn btn-info">Geolocalisez-moi!</button>
+                    <hr>
+              </div>
+              <div class="col-md-6">
+                    
+                    <div id="map-canvas" style="float:center;height:260px;width:100%"></div>
+                    <div id="AffichageAdresse" onclick="AffichageAdresseRestaurant()"></div>
+                    <span id="text_latlng"></span>
+              </div>
+            </div>
+         
+         
       
  
       </div>

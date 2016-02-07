@@ -52,6 +52,13 @@ background-color: #E6E6E6;
 	margin-right: 4px;
 }
 
+.JolieBoutton:hover{
+	background-color: #87CEFA;
+	border-style: solid;
+	color: white;
+	border-color: white;
+}
+
 
 .footer{
 	

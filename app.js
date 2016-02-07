@@ -218,16 +218,20 @@ var mysqldb = mysql.createConnection({
 // });
 var db = require('./db.js');
 
-app_https.get('/userslist', function(req, res) {
+
+
+app_https.get('/getadresse', function(req, res) {
   var data = {"Utilisateurs":""};
-  
+  // var data2={"NombreLigneTable":""};;
   db.getConnection(function(err, mysqlconnected){
+
+
         if(!err){
-          mysqlconnected.query('SELECT NomResponsable, NomRestaurant from Affilie' , function(err, results) {
+          mysqlconnected.query('SELECT NomResponsable, AdresseResponsable from Affilie' , function(err, results) {
                     if(results.length != 0){
                       data["Utilisateurs"] = results;
-                     res.json(data.Utilisateurs[1].NomRestaurant)
-                     console.log((data.Utilisateurs[0].NomRestaurant));
+                     res.json(data);
+                     console.log((data.Utilisateurs[0].AdresseResponsable));
 
                       
                     }else{
@@ -240,7 +244,59 @@ app_https.get('/userslist', function(req, res) {
                     //var toto = res.json({utilisateurs : rows});
                     //res.status(200).send('/users', {toto})
                     //res.render('/users', {utilisateurs : rows})      
-    }})}})});
+    }})}
+
+    //       if(!err){
+    //       mysqlconnected.query('SELECT COUNT(*) FROM Affilie' , function(err, results) {
+    //                 if(results.length != 0){
+    //                   data2["NombreLigneTable"] = results;
+    //                  res.json(data2);
+    //                  console.log(data.NombreLigneTable[0]);
+  
+    //                 }else{
+    //                   data2 = '0';
+    //                   res.json(data);
+                      
+    //                 //console.log(JSON.stringify(rows));
+    //                 // toto = JSON.stringify(rows);
+    //                 //console.log(toto);
+    //                 //var toto = res.json({utilisateurs : rows});
+    //                 //res.status(200).send('/users', {toto})
+    //                 //res.render('/users', {utilisateurs : rows})      
+    // }})}
+
+
+
+        })});
+
+
+app_https.get('/getnombreligne', function(req, res) {
+  var data = {"count":""};
+  
+  db.getConnection(function(err, mysqlconnected){
+
+
+        if(!err){
+          mysqlconnected.query('SELECT COUNT(*) FROM Affilie' , function(err, results) {
+                    if(results.length != 0){
+                      data["count"] = results;
+                     res.json(data);
+                     console.log(parseInt(JSON.stringify(data.count[0]["COUNT(*)"])));
+
+                      
+                    }else{
+                      data["Utilisateurs"] = 'No data Found..';
+                      res.json(data);
+                      
+                         }
+
+                       })}
+
+  
+        })});
+
+
+
 
 
 
@@ -254,22 +310,17 @@ app_https.get('/users', function (req, res) {
 // ], function(err, results) {
 //   res.render('/users', { rows : results[0], rows2 : results[1] });
 // })}})});
-db.getConnection(function(err, mysqlconnected){
-        if(!err){
-        console.log ('La base de données est connectée')
-        var query2 = mysqlconnected.query('SELECT NomResponsable FROM affilie');
+// db.getConnection(function(err, mysqlconnected){
+//         if(!err){
+//         console.log ('La base de données est connectée')
+//         var query2 = mysqlconnected.query('SELECT NomResponsable FROM affilie');
 
 
-// mysqlconnected.query('INSERT INTO users (nom, prenom, solde) VALUES (?,?,?)', ['Dumaine','Rémy','150'], function(err, result) {
-//      if (err) throw err
-//        console.log('Rémy est inséré dans la Table users');
-//  });
-      }});
-
-
-
-
-
+// // mysqlconnected.query('INSERT INTO users (nom, prenom, solde) VALUES (?,?,?)', ['Dumaine','Rémy','150'], function(err, result) {
+// //      if (err) throw err
+// //        console.log('Rémy est inséré dans la Table users');
+// //  });
+//       }});
 
 
 
