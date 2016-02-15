@@ -4,42 +4,16 @@
       <title>Aventix - Mon espace Personnel</title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        
-        <link rel="stylesheet" href="css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://bootswatch.com/lumen/bootstrap.min.css">
+        
         <link rel="stylesheet" href="css/main.css">
 
-          <style>
-              /* Remove the navbar's default margin-bottom and rounded borders */ 
-              .navbar {
-              margin-bottom: 0;
-              border-radius: 0;
-              }
-
-              /* Add a gray background color and some padding to the footer */
-              footer {
-              background-color: #f2f2f2;
-              padding: 25px;
-              }
-
-              .carousel-inner img {
-              width: 100%; /* Set width to 100% */
-              margin: auto;
-              min-height:200px;
-              }
-
-              /* Hide the carousel text when the screen is less than 600 pixels wide */
-              @media (max-width: 600px) {
-              .carousel-caption {
-              display: none; 
-              }
-              }
-          </style>
+        <link rel="icon" type="image/png" sizes="16x16" href="img/favicon.png">
+        
     </head>
-<!doctype html>
-<html>
 
-    <body>
+<body>
 
       
 <nav class="navbar navbar">
@@ -50,7 +24,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>                        
       </button>
-      <a class="navbar-brand" href="/"><img src="img/logo_aventix.png" alt="Logo - Aventix" /></a>
+      <a class="navbar-brand" href="/index"><img src="img/logo_aventix.png" alt="Logo - Aventix" /></a>
 
     </div>
       <ul class="nav navbar-nav navbar-right">
@@ -60,7 +34,7 @@
                   <input type="text" class="form-control" name="search" id="search" placeholder="Rechercher">
                     <span class="glyphicon glyphicon-search form-control-feedback"></span>
                 </div>
-              </form></li><li><a href="/login" style="margin-top:35px;">Votre espace personnel : &nbsp;<span class="glyphicon glyphicon-log-in"></span>&nbsp;&nbsp;Login</a></li>
+              </form></li><li><a class="btn btn-link" href="/login" style="margin-top:35px;">Votre espace personnel : &nbsp;<span class="glyphicon glyphicon-log-in"></span>&nbsp;&nbsp;Login</a></li>
         </ul>
     </div>
   </div>
@@ -81,60 +55,12 @@
                 <li><a href="#"><i class="fa fa-lg fa-linkedin"></i></a></li>
       </ul>
     </div>
-      <div class="collapse navbar-collapse" id="myNavbar2">
       <ul class="breadcrumb">
-        <li><a href="/">Accueil</a></li>
-        <li><a href="/Login">Se connecter</a></li>
+        <li><a  href="/">Accueil</a></li>
+        <li><a  href="/Login">Se connecter</a></li>
       </ul>
 </nav>
 <div class="container text-center">    
-  <h3>CONNECTEZ-VOUS A VOTRE ESPACE PERSONNEL</h3><br>
-
-<div class="col-xs-6 col-md-4"  id="loginUtilisateur">
-
-    <h1>UTILISATEUR</h1>
-    <img src="https://placeholdit.imgix.net/~text?txtsize=10&txt=IMAGE&w=200&h=100&txttrack=0" /><br><br>
-    <p>Consultez votre solde en temps réel.</p>
-    <p>Retrouvez le détail de vos derniers paiements</p>
-
-    <h3><span class="fa fa-sign-in" ></span> Compte Utilisateur</h3>
-    <!-- show any messages that come back with authentication -->
-    <% if (message.length > 0) { %>
-        <div class="alert alert-danger"><%= message %></div>
-    <% } %>
-
-    <!-- LOGIN FORM -->
-    <form action="/login" method="post">
-        <div class="form-group">
-            <label>Login</label>
-            <input type="text" class="form-control" name="username">
-        </div>
-        <div class="form-group">
-            <label>Mot de passe</label>
-            <input type="password" class="form-control" name="password">
-        </div>
-        <div class="form-group">
-                    <label>Se souvenir de moi</label>
-                    <input type="checkbox" class="form-control" name="remember" value="yes">
-                </div>
-        <button type="submit" class="btn btn-info btn-lg">Se connecter</button>
-    </form>
-
-    <hr>
-
-    <p>Besoin d'un compte? <a href="/signup">Créer un compte</a></p>
-    <p>Retourner sur la page d'<a href="/">acceuil</a>.</p>
-
-</div>
-<div class="col-xs-6 col-md-4"  id="loginEntreprise">
-
-
-    <h1>ENTREPRISE</h1> 
-    <img src="https://placeholdit.imgix.net/~text?txtsize=10&txt=IMAGE&w=200&h=100&txttrack=0" /><br><br>
-    <p>Chargez les comptes de vos collaborateurs en ligne.</p>
-    <p>Commandez de nouvelles cartes en quelques clics.</p>
-
-    <h3><span class="fa fa-sign-in"></span> Compte Entreprise</h3>
 
     <!-- show any messages that come back with authentication -->
     <% if (message.length > 0) { %>
@@ -142,70 +68,60 @@
     <% } %>
 
     <!-- LOGIN FORM -->
-    <form action="/login" method="post">
+    <!-- <form action="/login" method="post">
         <div class="form-group">
             <label>Login</label>
+
             <input type="text" class="form-control" name="username">
         </div>
         <div class="form-group">
             <label>Mot de passe</label>
             <input type="password" class="form-control" name="password">
         </div>
-        <div class="form-group">
-                    <label>Se souvenir de moi</label>
-                    <input type="checkbox" class="form-control" name="remember" value="yes">
-                </div>
         <button type="submit" class="btn btn-info btn-lg">Se connecter</button>
     </form>
 
     <hr>
+    <p>Retourner sur la page d'<a href="/">acceuil</a>.</p> -->
 
-    <p>Besoin d'un compte? <a href="/signup">Créer un compte</a></p>
-    <p>Retourner sur la page d'<a href="/">acceuil</a>.</p>
 
-</div>
-<div class="col-xs-6 col-md-4" id="loginRestaurateur">
+<div class="panel panel-default" >
+            <div class="panel-heading">
+                <div class="panel-title text-center">Aventix / Espace personnel</div>
+            </div>  
 
-    <h2>RESTAURATEUR</h2>
-    <img src="https://placeholdit.imgix.net/~text?txtsize=10&txt=IMAGE&w=200&h=100&txttrack=0" /><br><br>
-    <p>Consultez vos transactiosn aventix en ligne.</p>
-    <p>Retrouvez le détail de vos factures en ligne.</p>
 
-    <h3><span class="fa fa-sign-in"></span> Compte Restaurateur</h3>
+<div class="panel-body" >
 
-    <!-- show any messages that come back with authentication -->
-    <% if (message.length > 0) { %>
-        <div class="alert alert-danger"><%= message %></div>
-    <% } %>
+                <form name="form" id="form" class="form-horizontal" action="/login" method="POST">
+                   
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                        <input id="user" type="text" class="form-control" name="username" value="" placeholder="Utilisateur" required>                                        
+                    </div><br>
 
-    <!-- LOGIN FORM -->
-    <form action="/login" method="post">
-        <div class="form-group">
-            <label>Login</label>
-            <input type="text" class="form-control" name="username">
-        </div>
-        <div class="form-group">
-            <label>Mot de passe</label>
-            <input type="password" class="form-control" name="password">
-        </div>
-        <div class="form-group">
-                    <label>Se souvenir de moi</label>
-                    <input type="checkbox" class="form-control" name="remember" value="yes">
-                </div>
-        <button type="submit" class="btn btn-info btn-lg">Se connecter</button>
-    </form>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                        <input id="password" type="password" class="form-control" name="password" placeholder="Mot de passe" required>
+                    </div><br>                                                              
 
-    <hr>
+                    <div class="form-group">
+                        <!-- Button -->
+                        <div class="col-sm-12 controls">
+                            <button type="submit"class="btn btn-default"><i class="glyphicon glyphicon-log-in"></i>&nbsp;&nbsp; Se connecter</button>
+                            <br><br>
+                            <p>Retournez sur la page d'acceuil.&nbsp;&nbsp;<a class="btn btn-default" href="/"><span class="glyphicon glyphicon-home"></span></a></p>                         
+                        </div>
+                    </div>
 
-    <p>Besoin d'un compte? <a href="/signup">Créer un compte</a></p>
-    <p>Retourner sur la page d'<a href="/">acceuil</a>.</p>
+                </form>     
 
-</div>
-
+            </div> 
+  </div>
 </div>
 <footer style="margin-top:20px;" class="footer">
     <div class="container">
-        <ul class="nav navbar-nav">
+        <ul class="nav navbar-nav" id="footer-nav">
              <a class="navbar-brand" href="/"><img src="img/logo_aventix.png" width="100px" height="35px" alt="Logo - Aventix" /></a>
                 <li><a href="/profile"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;Mon Compte</a></li>
                 <li><a href="contact">Contact</a></li>
@@ -217,5 +133,7 @@
 </body>
 
     <script src="js/bootstrap.min.js"></script>
-    <script src="js/jquery-1.11.3.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+    <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+
 </html>

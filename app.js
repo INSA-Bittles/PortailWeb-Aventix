@@ -131,7 +131,7 @@ var express = require('express')
     https = require('https');
 var io = require('socket.io')
 var path = require('path');
-
+var debug = require('debug')('projectNode:server');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
@@ -151,34 +151,42 @@ var options = {
    cert : fs.readFileSync('certificat/server.crt'),
    RequestCert: true
 };
-
+var MongoStore = require('connect-mongo')(session);
 var app_https = express();
 
+var nodemailer = require("nodemailer");
+var smtpTransport = require("nodemailer-smtp-transport");
+var wellknown = require('nodemailer-wellknown');
+// var transporter = nodemailer.createTransport('smtps://aurelien.landelle@gmail.com:s9TcCrHJTgv3N2@smtp.gmail.com');
+// var smtpTransport = nodemailer.createTransport("SMTP",{
+var smtpTransport = nodemailer.createTransport(smtpTransport({
+    host : "localhost",
+    secureConnection: true,
+    port: 465,
+    auth : {
+        user : "aurelien.landelle@gmail.com",
+        pass : "password"
+    }
+}));
 
-tls.createServer(options, app_https, function (cleartextStream) {
-    var cleartextRequest = net.connect({
-        port: 80,
-        host: '127.0.0.1'
-    }, function () {
-        cleartextStream.pipe(cleartextRequest);
-        cleartextRequest.pipe(cleartextStream);
-    });
-}).listen(443);
+var models = require("./modeles");
 
+
+var port = normalizePort(process.env.PORT || '3000');
+app_https.set('port', port);
 // http.createServer(app_https).listen(3000, function (res,req) {
 //    console.log('Started on port 3000!');
 
-https.createServer(options, app_https).listen(3000, function (res,req) {
-   console.log('Started on port 3000!'); 
-});
+var server = https.createServer(options, app_https);
+
+
+
 
 app_https.use(morgan('dev')); // log every request to the console
 app_https.use(bodyParser.json());
 app_https.use(bodyParser.urlencoded({ extended: true }));
 app_https.use(cookieParser());
-app_https.use(session({secret: 'secret strategic xxzzz code'}));
-app_https.use(passport.initialize());
-app_https.use(passport.session());
+
 
 
 
@@ -190,7 +198,9 @@ app_https.use(express.static(path.join(__dirname,'components')));
 app_https.use(session({
   secret: 'Bittlesarethebest',
   resave: true,
-  saveUninitialized: true
+  saveUninitialized: true,
+  store: new MongoStore( {url: 'mongodb://localhost/session'})
+  
  } )); // session secret
 app_https.use(passport.initialize());
 app_https.use(passport.session()); // persistent login sessions
@@ -223,7 +233,16 @@ app_https.get('/userslist', function(req, res) {
   
   db.getConnection(function(err, mysqlconnected){
         if(!err){
-          mysqlconnected.query('SELECT id ,nom, prenom, solde from users' , function(err, results) {
+          mysqlconnected.query('SELECT id ,username, password from users' , function(err, results) {
+          // if(err)
+          // {
+          // console.log("Problem with MySQL"+err);
+          // }
+          // else
+          // {
+          // res.end(JSON.stringify(rows));
+          // }})}})});
+
                     if(results.length != 0){
                       data["Utilisateurs"] = results;
                       res.json(data);
@@ -232,19 +251,47 @@ app_https.get('/userslist', function(req, res) {
                       data["Utilisateurs"] = 'No data Found..';
                       res.json(data);
                       
-                    //console.log(JSON.stringify(rows));
+                    // console.log(JSON.stringify(rows));
                     // toto = JSON.stringify(rows);
-                    //console.log(toto);
-                    //var toto = res.json({utilisateurs : rows});
-                    //res.status(200).send('/users', {toto})
-                    //res.render('/users', {utilisateurs : rows})      
+                    // console.log(toto);
+                    // var toto = res.json({utilisateurs : rows});
+                    // res.status(200).send('/users', {toto})
+                    // res.render('/users', {utilisateurs : rows})      
     }})}})});
-
-
+db.getConnection(function(err, mysqlconnected){
+        if(!err){
+app_https.get('/listBeneficiaire', function(req,res){
+  var data = {"Beneficiaires":""};
+   mysqlconnected.query('SELECT * from Beneficiaire' , function(err, results){
+      if(results.length != 0){
+        data["Beneficiaires"] = results;
+        res.json(data);
+                      
+      }else{
+        data["Beneficiaires"] = 'No data Found..';
+        res.json(data);
+      }
+})})}});
+ 
 
 app_https.get('/users', function (req, res) {
   res.render('users');
 });
+
+db.getConnection(function(err, mysqlconnected){
+        if(!err){
+app_https.get('/listTransactions', function(req,res){
+  var data = {"Transactions":""};
+   mysqlconnected.query('SELECT * from gestiondetransaction' , function(err, results){
+      if(results.length != 0){
+        data["Transactions"] = results;
+        res.json(data);
+                      
+      }else{
+        data["Transactions"] = 'No data Found..';
+        res.json(data);
+      }
+})})}});
 
 //   async.parallel([
 //   function(callback) { mysqlconnected.query('SELECT nom FROM users', callback) },
@@ -255,7 +302,7 @@ app_https.get('/users', function (req, res) {
 db.getConnection(function(err, mysqlconnected){
         if(!err){
         console.log ('La base de données est connectée')
-        var query2 = mysqlconnected.query('SELECT nom FROM users');
+        var query2 = mysqlconnected.query('SELECT username FROM users');
 
 // mysqlconnected.query('INSERT INTO users (nom, prenom, solde) VALUES (?,?,?)', ['Dumaine','Rémy','150'], function(err, result) {
 //      if (err) throw err
@@ -336,7 +383,12 @@ db.getConnection(function(err, mysqlconnected){
 //         tagline: tagline
     // });
 // });   
-
+app_https.get('/pushData', function(req, res) {
+  var data = {"Utilisateurs":""};
+  
+  db.getConnection(function(err, mysqlconnected){
+        if(!err){
+          mysqlconnected.query('INSERT INTO users ( id, username, password ) values (?,?,?)')}})});
 
 
 // app_https.post('/users', function(req, res){
@@ -345,7 +397,25 @@ db.getConnection(function(err, mysqlconnected){
 
 mysqldb.end();
 
+app_https.get('/send',function(req,res){
+        var mailOptions={
+            to : req.query.to,
+            to2 : req.query.to2,
+            subject : req.query.subject,
+            text : req.query.text
+        }
+        console.log(mailOptions);
+        smtpTransport.sendMail(mailOptions, function(error, response){
+         if(error){
+                console.log(error);
+            res.end("error");
+         }else{
+                console.log("Message envoyé : " + response.message);
+            res.end("sent");
+             }
+    })});
 
+    
 
  // connection.query('CREATE TABLE people(id int primary key, name varchar(255), age int, address text)', function(err, result) {
  //    if (err) throw err
@@ -360,3 +430,74 @@ mysqldb.end();
  //      })
  //    })
  //  }) 
+models.sequelize.authenticate().then(function () {
+
+
+    /**
+    * Listen on provided port, on all network interfaces.
+    */
+    server.listen(port);
+    server.on('error', onError);
+    server.on('listening', onListening);
+
+});
+
+/**
+ * Normalize a port into a number, string, or false.
+ */
+
+function normalizePort(val) {
+  var port = parseInt(val, 10);
+
+  if (isNaN(port)) {
+    // named pipe
+    return val;
+  }
+
+  if (port >= 0) {
+    // port number
+    return port;
+  }
+
+  return false;
+}
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+
+function onError(error) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+
+  var bind = typeof port === 'string'
+    ? 'Pipe ' + port
+    : 'Port ' + port;
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+
+function onListening() {
+  var addr = server.address();
+  var bind = typeof addr === 'string'
+    ? 'pipe ' + addr
+    : 'port ' + addr.port;
+  debug('Listening on ' + bind);
+}

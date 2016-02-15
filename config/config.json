@@ -1,0 +1,29 @@
+{
+  "development": {
+    "username": "Aurelien",
+    "password": "password",
+    "database": "aventix",
+    "host": "127.0.0.1",
+    "dialect": "mysql",
+    "logging": false,
+    "define": { "timestamps": false } 
+  },
+  "test": {
+    "username": "Aurelien",
+    "password": "password",
+    "database":"aventix",
+    "host": "127.0.0.1",
+    "dialect": "mysql",
+    "logging": false,
+    "define": { "timestamps": false } 
+  },
+  "production": {
+    "username": "Aurelien",
+    "password": "password",
+    "database": "aventix",
+    "host": "127.0.0.1",
+    "dialect": "mysql",
+    "logging": false,
+    "define": { "timestamps": false } 
+  }
+}

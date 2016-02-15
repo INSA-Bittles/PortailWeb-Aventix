@@ -1,19 +1,23 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="userApp">
 <head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 <script src="//cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js"></script>
 <link rel="stylesheet" href="//cdn.datatables.net/1.10.10/css/jquery.dataTables.min.css">
-<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://bootswatch.com/lumen/bootstrap.min.css">
 <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.0/bootstrap-table.min.css">
 
 <!-- Latest compiled and minified JavaScript -->
 <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.0/bootstrap-table.min.js"></script>
-<script type="text/javascript">
 
- 
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://rawgit.com/esvit/ng-table/master/dist/ng-table.min.css">
+   <script src="js/controller.js"></script>
+   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular-route.min.js"></script>
+ <script type="text/javascript">
 // var getJSON = function(url) {
 //   return new Promise(function(resolve, reject) {
 //     var xhr = new XMLHttpRequest();
@@ -67,20 +71,28 @@
 //     }]
 // });
 
+// var userApp = angular.module('userApp', ['ngTable']).filter('Utilisateur', function (){});
+//       userApp.controller('userCtrl', function ($scope, $http){
+//         $http.get('http://localhost:3000/userslist').success(function(data) {
+//           $scope.users = data.Utilisateurs;
+//         });
+
+//       });
 
 
-  $(document).ready(function(){
-      $("button").click(function(){
-        $.getJSON('/userslist', function (data){
-        var output="<ul>";
-        for (var i in data.Utilisateurs) {
-            output+="<li>" + data.Utilisateurs[i].id + " " + data.Utilisateurs[i].nom + "  " + data.Utilisateurs[i].prenom + "<br>" + "  Solde : " + data.Utilisateurs[i].solde + "</li>";
-        }
 
-        output+="</ul>";
-        document.getElementById("placeholder").innerHTML=output;
-  		})
- })});
+ //  $(document).ready(function(){
+ //      $("button").click(function(){
+ //        $.getJSON('/userslist', function (data){
+ //        var output="<ul>";
+ //        for (var i in data.Utilisateurs) {
+ //            output+="<li>" + data.Utilisateurs[i].id + " " + data.Utilisateurs[i].nom + "  " + data.Utilisateurs[i].prenom + "<br>" + "  Solde : " + data.Utilisateurs[i].solde + "</li>";
+ //        }
+
+ //        output+="</ul>";
+ //        document.getElementById("placeholder").innerHTML=output;
+ //  		})
+ // })});
 
 
 // $.getJSON("/userslist", function(toto){
@@ -115,10 +127,112 @@
 
 </script>
 </head>
-<body>
+<body ng-controller="userCtrl">
+<!-- <h2>Angular.js JSON Fetching Example</h2> -->
 
-<button>Get JSON data</button>
-<div id="placeholder" class="container"></div>
+    <!-- <table ng-table="vm.tableParams" class="table" show-filter="true">
+      <tr ng-repeat="user in users">
 
+        <td title="'id'" sortable="'id'">{{user.id}}</td>
+
+        <td title="'Nom d'utilisateur" filter="{ name: 'Utilisateur'}" sortable="'Utilisateur'">{{user.username}}</td>
+
+        <td title="'Password">{{user.password}}</td>
+
+      </tr>
+    
+    </table> -->
+    <div style="padding-bottom:50px">
+      <table style="width:100%">
+        <tr>
+          <td colspan="2" style="width:100%;padding:10px;">         
+          <div class="alert alert-info" role="alert">{{message}}</div>
+          </td>
+        </tr>
+        <tr>          
+          <td style="width:45%;padding-left:40px;vertical-align: top">
+            <div style="padding-bottom:20px">
+              <h3>Ajouter un utilisateur</h3>
+            </div>
+            <form class="form-horizontal" role="form" ng-submit="addRowAsyncAsJSON()">
+              <div class="form-group">
+                <label class="col-md-2 control-label">id</label>
+                <div class="col-md-4">
+                  <input type="text" class="form-control" name="name"
+                    ng-model="id" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-md-2 control-label">Username</label>
+                <div class="col-md-4">
+                  <input type="text" class="form-control" name="username"
+                    ng-model="username" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-md-2 control-label">Password</label>
+                <div class="col-md-4">
+                  <input type="text" class="form-control" name="password"
+                    ng-model="password" />
+                </div>
+              </div>
+              <div class="form-group">                
+                <div style="padding-left:110px">
+                  <input type="submit" value="Submit" class="btn btn-primary"/>
+                </div>
+              </div>
+            </form>
+          </td>
+          <td style="width:45%;padding-left:10px;padding-right:20px;vertical-align: top">
+            <div style="padding-bottom:20px" >
+    <form name="registrationForm" novalidate 
+          ng-submit="registration.submit(registrationForm.$valid)">
+       <div class="form-group">
+            <label>User Name</label>
+            <input type="text" name="username" class="form-control" ng-model="registration.user.username" required />
+            <div ng-messages="registrationForm.username.$error" ng-messages-include="messages.html"></div>
+        </div>
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" name="password" class="form-control" ng-model="registration.user.password" required />
+            <div ng-messages="registrationForm.password.$error" ng-messages-include="messages.html"></div>
+        </div>
+        <div class="form-group">
+            <label>Confirm Password</label>
+            <input type="password" name="confirmPassword" class="form-control" 
+                   ng-model="registration.user.confirmPassword" 
+                   required compare-to="registration.user.password" />
+            <div ng-messages="registrationForm.confirmPassword.$error" ng-messages-include="messages.html"></div>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Register!</button>
+        </div>
+    </form> 
+  </td>
+</div> 
+          <td style="vertical-align: top">
+            <table class="table">
+              <tr>
+                <th>Id
+                </th>
+                <th>Username
+                </th>
+                <th>Password
+                </th>
+              </tr>
+              <tr ng-repeat="user in users">
+                <td>{{user.id}}
+                </td>
+                <td>{{user.username}}
+                </td>
+                <td>{{user.password}}
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div>
+      
 </body>
 </html>

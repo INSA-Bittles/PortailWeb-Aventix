@@ -6,7 +6,7 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        <link rel="stylesheet" href="css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://bootswatch.com/lumen/bootstrap.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="css/main.css">
         <link rel="icon" type="image/png" sizes="16x16" href="img/favicon.png">
@@ -16,12 +16,6 @@
               .navbar {
               margin-bottom: 0;
               border-radius: 0;
-              }
-
-              /* Add a gray background color and some padding to the footer */
-              footer {
-              background-color: #f2f2f2;
-              padding: 25px;
               }
 
               .carousel-inner img {
@@ -60,7 +54,7 @@
                   <input type="text" class="form-control" name="search" id="search" placeholder="Rechercher">
                     <span class="glyphicon glyphicon-search form-control-feedback"></span>
                 </div>
-              </form></li><li><a href="/login" style="margin-top:35px;">Votre espace personnel : &nbsp;<span class="glyphicon glyphicon-log-in"></span>&nbsp;&nbsp;Login</a></li>
+              </form></li><li><a class="btn btn-link" href="/login" style="margin-top:35px;">Votre espace personnel : &nbsp;<span class="glyphicon glyphicon-log-in"></span>&nbsp;&nbsp;Login</a></li>
         </ul>
     </div>
   </div>
@@ -81,13 +75,12 @@
                 <li><a href="#"><i class="fa fa-lg fa-linkedin"></i></a></li>
       </ul>
     </div>
-      <div class="collapse navbar-collapse" id="myNavbar2">
       <ul class="breadcrumb">
         <li><a href="/">Accueil</a></li>
         <li><a href="/signup">S'incrire</a></li>
       </ul>
 </nav>
- <div class="container text-center">    
+<div class="container text-center">    
   <h3>INSCRIVEZ-VOUS SUR AVENTIX</h3><br>
 
 <div class="col-xs-6 col-md-4" style="margin-bottom:20px;" id="loginUtilisateur">
@@ -102,7 +95,7 @@
    <!-- LOGIN FORM -->
    <form action="/signup" method="post">
       <div class="form-group">
-         <label>Username</label>
+         <label>Login</label>
          <input type="text" class="form-control" name="username">
       </div>
       <div class="form-group">
@@ -110,7 +103,7 @@
          <input type="password" class="form-control" name="password">
       </div>
 
-      <button type="submit" class="btn btn-info btn-lg">Signup</button>
+      <button type="submit" class="btn btn-info btn-lg">S'inscrire</button>
    </form>
 
    <hr>
@@ -118,16 +111,17 @@
    <p>Retourner sur la page d'<a href="/">acceuil</a>.</p>
 </div>
 </div>
- <footer>
-  <div class="container">
-    <ul class="nav navbar-nav">
-      <a class="navbar-brand" href="/"><img src="img/logo_aventix.png" width="100px" height="35px" alt="Logo - Aventix" /></a>
-          <li><a href="profile"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;Mon Compte</a></li>
-          <li><a href="contact">Contact</a></li>
-          <li><a href="#">Mentions légales</a></li>
-          <li><a href="#">Plan du site</a></li>
-    </ul>
-  </div>
+<footer class="footer">
+    <div class="container">
+        <ul class="nav navbar-nav">
+             <a class="navbar-brand" href="/"><img src="img/logo_aventix.png" width="100px" height="35px" alt="Logo - Aventix" /></a>
+                <li><a href="/profile"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;Mon Compte</a></li>
+                <li><a href="contact">Contact</a></li>
+                <li><a href="#">Mentions légales</a></li>
+                <li><a href="#">Plan du site</a></li>
+      </ul>
+    </div>
+
 </footer>
 </body>
 

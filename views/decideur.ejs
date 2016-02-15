@@ -5,17 +5,17 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        <link rel="stylesheet" href="https://bootswatch.com/lumen/bootstrap.min.css">">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://bootswatch.com/lumen/bootstrap.min.css">
+        
         <link rel="stylesheet" href="css/main.css">
         <link rel="icon" type="image/png" sizes="16x16" href="img/favicon.png">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
         <script src="js/controller.js"></script>
-        <script src="js/ui-grid.js"></script>
-        <script src="css/ui-grid.css"></script>
-
-          // <script type="text/javascript">
+        
+          <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular-route.min.js"></script>
+          <script type="text/javascript">
           // var userApp = angular.module('userApp', ['ui.bootstrap']);
           // userApp.controller('userCtrl', function ($scope, $http){
           // $http.get('http://localhost:3000/userslist').success(function(data) {
@@ -61,7 +61,8 @@
           </script>
 
 </head>
-<body>
+
+<body ng-controller="beneficiaireCtrl">
 
       
 <nav class="navbar navbar">
@@ -103,74 +104,82 @@
                 <li><a href="#"><i class="fa fa-lg fa-linkedin"></i></a></li>
       </ul>
     </div>
-      <div class="collapse navbar-collapse" id="myNavbar2">
+      
       <ul class="breadcrumb">
         <li><a href="/">Accueil</a></li>
-        <li><a href="/profile">Profile :&nbsp;<%= user.username %></a></li>
+        <li><a href="/profile">Profil : <%= user.username %></a></li>
       </ul>
+
 </nav>
-
-<div class="container">
-
-    <div class="page-header text-center">
+<div class="page-header text-center">
         <h1><span class="fa fa-anchor"></span> Profile Page</h1>
         <a href="/logout" class="btn btn-default btn-sm">Logout</a>
     </div>
+<div class="container">
+  <div class="page-header text-center">
+    <p>
+      <strong>Nom d'utilisateur</strong> : <%= user.username %><br>
+      <strong>Identifiant</strong> : <%= user.idDecideur %><br>
+      <strong>Nom de la société :</strong> : <%= user.Decideur.NomSociete %><br>
+      <strong>Nom</strong> : <%= user.Decideur.nom %><br>
+      <strong>Prénom</strong> : <%= user.Decideur.prenom %><br>
+      <strong>Adresse</strong> : <%= user.Decideur.adresse %>&nbsp;<%= user.Decideur.cp %>&nbsp;<%= user.Decideur.ville %><br>
+      <strong>Email</strong> : <%= user.Decideur.email %><br>
+    </p>
+  </div>
+    
 
-    <div class="row">
 
-        <!-- LOCAL INFORMATION -->
-<!-- <div ng-controller="userCtrl">
-    <table>
-
-      <tr>
-
-        <th>ID</th>
-
-        <th>Usernames</th>
-
-        <th>Password</th>
-
-      </tr>
-
-      <tr ng-repeat="user in users">
-
-        <td>{{user.id}}</td>
-
-        <td>{{user.username}}</td>
-
-        <td>{{user.password}}</td>
-
-      </tr>
-
-    </table>
-</div> -->
-
-<div ng-controller="userCtrl">
-      <p><strong>Grid with native pagination controls</strong></p>
-      <div ui-grid="gridOptions1" ui-grid-pagination class="grid"></div>
-      <br /><br />
-      <p><strong>Grid pagination controlled via the API</strong></p>
-      <div ui-grid="gridOptions2" ui-grid-pagination class="grid"></div>
-      <p>Current page: {{ gridApi2.pagination.getPage() }} of {{ gridApi2.pagination.getTotalPages() }}</p>
-      <button type="button" class="btn btn-success" ng-click="gridApi2.pagination.previousPage()">
-        previous page
-      </button>
-      <button type="button" class="btn btn-success" ng-click="gridApi2.pagination.nextPage()">
-        next page
-      </button>
-      <button type="button" class="btn btn-success" ng-click="gridApi2.pagination.seek(3)">
-        go to page 3
-      </button>
+<div class=".col-xs-12 .col-md-8"><h1>Liste des Bénéficiaires :</h1>
+  <table style="width:100%">
+    <tr>   
+      <td style="vertical-align: top">
+            <table class="table">
+              <tr>
+                <th>Id
+                </th>
+                <th>Nom du beneficiaire
+                </th>
+                <th>Prenom du beneficiaire
+                </th>
+                <th>Adresse du beneficiaire
+                </th>
+                <th>Code Postal du beneficiaire
+                </th>
+                <th>Ville du beneficiaire
+                </th>
+                <th>Adresse Mail du beneficiaire
+                </th>
+              </tr>
+              <tr ng-repeat="beneficiaire in beneficiaires">
+                <td>{{beneficiaire.IdAvtxBeneficiaire}}
+                </td>
+                <td>{{beneficiaire.NomBeneficiaire}}
+                </td>
+                <td>{{beneficiaire.PrenomBeneficiaire}}
+                </td>
+                <td>{{beneficiaire.AdresseBeneficiaire}}
+                </td>
+                <td>{{beneficiaire.CodePostalBeneficiaire}}
+                </td>
+                <td>{{beneficiaire.VilleBeneficiaire}}
+                </td>
+                <td>{{beneficiaire.AdresseMailBeneficiaire}}
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
     </div>
-        <div class="col-sm-6 col-sm-offset-3">
+    <div class=".col-xs-6 .col-md-4">
 
-    <h1><span class="fa fa-sign-in"></span> Créer les comptes beneficiaires</h1>
+    <h1><span class="fa fa-sign-in"></span> Créer un compte beneficiaire</h1>
 
     
 
     <!-- LOGIN FORM -->
-    <form action="/signup" method="post">
+    <form style="margin-bottom:80px;" action="/signup" method="post">
         <div class="form-group">
             <label>Login</label>
             <input type="text" class="form-control" name="username">
@@ -180,18 +189,13 @@
             <input type="password" class="form-control" name="password">
         </div>
 
+
         <button type="submit" class="btn btn-info btn-lg">Créer</button>
     </form>
-
-    <hr>
-
-    
-
     </div>
-
-    </div>
-
 </div>
+
+
 
 <footer class="footer">
     <div class="container">
@@ -202,7 +206,7 @@
                 <li><a href="#">Mentions légales</a></li>
                 <li><a href="#">Plan du site</a></li>
       </ul>
-    <div>
+    </div>
 </footer>
 </body>
 

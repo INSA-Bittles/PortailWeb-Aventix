@@ -5,7 +5,7 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        <link rel="stylesheet" href="css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://bootswatch.com/lumen/bootstrap.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="css/main.css">
 
@@ -16,12 +16,7 @@
               border-radius: 0;
               }
 
-              /* Add a gray background color and some padding to the footer */
-              footer {
-              background-color: #f2f2f2;
-              padding: 25px;
-              }
-
+          
               .carousel-inner img {
               width: 100%; /* Set width to 100% */
               margin: auto;
@@ -35,21 +30,59 @@
               }
               }
           </style>
-    </head>
-<!doctype html>
-<html>
+          <script>// <![CDATA[
+$(document).ready(function(){
+    var from,to,to2,subject,text;
+    $("#send_email").click(function(){      
+        to=$("#name").val();
+        to2=$("#email").val();
+        subject=$("#subject").val();
+        text=$("#message").val();
+        $("#message2").text("Envoi d'email... Veuillez patientert");
+        $.get("https://localhost:3000/send",{to:to,to2,subject:subject,text:text},function(data){
+        if(data=="sent")
+        {
+            console.log("sent received");
+            $("#message2").empty().html("Email a été envoyé "+to,+to2+" . Veuillez vérifier votre boite de réception!");
+        }else {
+            console.log(data);
+          }
 
-    <body>
+});
+    });
+});
+// Submit form with id function.
+function submit_by_id() {
+var name = document.getElementById("name").value;
+var email = document.getElementById("email").value;
+if (validation()) // Calling validation function
+{
+document.getElementById("send_email").submit(); //form submission
+alert(" Name : " + name + " \n Email : " + email + " \n send_email : " + document.getElementById("send_email").getAttribute("id") + "\n\n Email envoyé avec succès !");
+}
+}
+  function validation(){
+var name = document.getElementById("name").value;
+var email = document.getElementById("email").value;
+var emailReg = /^([w-.]+@([w-]+.)+[w-]{2,4})?$/;
+if( name ==='' || email ===''){
+alert("Please fill all fields...!!!!!!");
+return false;
+}else if(!(email).match(emailReg)){
+alert("Invalid Email...!!!!!!");
+return false;
+}else{
+return true;
+}
+</script>
+
+    </head>
+<body>
 
       
 <nav class="navbar navbar">
   <div class="container-fluid" style="height:120px;">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>                        
-      </button>
       <a class="navbar-brand" href="/"><img src="img/logo_aventix.png" alt="Logo - Aventix" /></a>
 
     </div>
@@ -60,7 +93,7 @@
                   <input type="text" class="form-control" name="search" id="search" placeholder="Rechercher">
                     <span class="glyphicon glyphicon-search form-control-feedback"></span>
                 </div>
-              </form></li><li><a href="/login" style="margin-top:35px;">Votre espace personnel : &nbsp;<span class="glyphicon glyphicon-log-in"></span>&nbsp;&nbsp;Login</a></li>
+              </form></li><li><a class="btn btn-link" href="/login" style="margin-top:35px;">Votre espace personnel : &nbsp;<span class="glyphicon glyphicon-log-in"></span>&nbsp;&nbsp;Login</a></li>
         </ul>
     </div>
   </div>
@@ -81,9 +114,8 @@
                 <li><a href="#"><i class="fa fa-lg fa-linkedin"></i></a></li>
       </ul>
     </div>
-      <div class="collapse navbar-collapse" id="myNavbar2">
       <ul class="breadcrumb">
-        <li><a href="/">Accueil ></a></li>
+        <li><a href="/">Accueil</a></li>
         <li><a href="/contact">Contact</a></li>
       </ul>
 </nav>
@@ -91,23 +123,29 @@
 <div class="container text-center">    
   <h3>CONTACTER NOUS :</h3><br>
 
-<form class="form-horizontal" role="form" method="post" action="">
+<form class="form-horizontal" role="form">
     <div class="form-group">
         <label for="name" class="col-sm-2 control-label">Name</label>
         <div class="col-sm-10">
-            <input type="text" class="form-control" id="name" name="name" placeholder="Nom" value="">
+            <input type="text" class="form-control" id="name" name="name" placeholder="Nom" value="" required="name">
         </div>
     </div>
     <div class="form-group">
         <label for="email" class="col-sm-2 control-label">Email</label>
         <div class="col-sm-10">
-            <input type="email" class="form-control" id="email" name="email" placeholder="example@domain.com" value="">
+            <input type="email" class="form-control" id="email" name="email" placeholder="aventix@aventix.fr" value="" required="email">
         </div>
     </div>
     <div class="form-group">
-        <label for="message" class="col-sm-2 control-label">Message</label>
+        <label for="subject" class="col-sm-2 control-label">Sujet</label>
         <div class="col-sm-10">
-            <textarea class="form-control" rows="4" name="message"></textarea>
+            <input type="text" class="form-control" id="subject" name="subject" placeholder="Sujet" value="" required="subject">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="content" class="col-sm-2 control-label">Message</label>
+        <div class="col-sm-10">
+            <textarea class="form-control" rows="4" name="content" placeholder="Votre message..." required="message"></textarea>
         </div>
     </div>
     <div class="form-group">
@@ -118,12 +156,13 @@
     </div>
     <div class="form-group">
         <div class="col-sm-10 col-sm-offset-2">
-            <input id="submit" name="submit" type="submit" value="Envoyez" class="btn btn-primary">
+            <input id="send_email" name="send_email" type="submit" value="Envoyez" class="btn btn-primary">
+            <span id="message2"></span>
         </div>
     </div>
     <div class="form-group">
         <div class="col-sm-10 col-sm-offset-2">
-            <! Will be used to display an alert to the user>
+            <span id="message2"></span>
         </div>
     </div>
 </form>
@@ -133,12 +172,12 @@
     <div class="container">
         <ul class="nav navbar-nav">
              <a class="navbar-brand" href="/"><img src="img/logo_aventix.png" width="100px" height="35px" alt="Logo - Aventix" /></a>
-                <li><a href="profile"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;Mon Compte</a></li>
+                <li><a href="/profile"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;Mon Compte</a></li>
                 <li><a href="contact">Contact</a></li>
                 <li><a href="#">Mentions légales</a></li>
                 <li><a href="#">Plan du site</a></li>
       </ul>
-    <div>
+    </div>
 </footer>
 </body>
 

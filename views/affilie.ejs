@@ -5,17 +5,17 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        <link rel="stylesheet" href="https://bootswatch.com/lumen/bootstrap.min.css">">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://bootswatch.com/lumen/bootstrap.min.css">
+        
         <link rel="stylesheet" href="css/main.css">
         <link rel="icon" type="image/png" sizes="16x16" href="img/favicon.png">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
         <script src="js/controller.js"></script>
-        <script src="js/ui-grid.js"></script>
-        <script src="css/ui-grid.css"></script>
-
-          // <script type="text/javascript">
+        
+          <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular-route.min.js"></script>
+          <script type="text/javascript">
           // var userApp = angular.module('userApp', ['ui.bootstrap']);
           // userApp.controller('userCtrl', function ($scope, $http){
           // $http.get('http://localhost:3000/userslist').success(function(data) {
@@ -61,17 +61,11 @@
           </script>
 
 </head>
-<body>
 
-      
+<body ng-controller="transactionCtrl">
 <nav class="navbar navbar">
   <div class="container-fluid" style="height:120px;">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>                        
-      </button>
       <a class="navbar-brand" href="/"><img src="img/logo_aventix.png" alt="Logo - Aventix" /></a>
 
     </div>
@@ -103,95 +97,64 @@
                 <li><a href="#"><i class="fa fa-lg fa-linkedin"></i></a></li>
       </ul>
     </div>
-      <div class="collapse navbar-collapse" id="myNavbar2">
       <ul class="breadcrumb">
         <li><a href="/">Accueil</a></li>
-        <li><a href="/profile">Profile :&nbsp;<%= user.username %></a></li>
+        <li><a href="/profile">Profil : <%= user.username %></a></li>
       </ul>
 </nav>
-
 <div class="container">
-
-    <div class="page-header text-center">
+  <div class="page-header text-center">
         <h1><span class="fa fa-anchor"></span> Profile Page</h1>
         <a href="/logout" class="btn btn-default btn-sm">Logout</a>
+  </div>
+  <div class="page-header text-center">
+    <p>
+      <strong>Nom d'utilisateur</strong> : <%= user.username %><br>
+      <strong>Identifiant</strong> : <%= user.idAffilie %><br>
+      <strong>Nom du Restaurant :</strong> : <%= user.Affilie.NomRestaurant %><br>
+      <strong>Nom du responsable</strong> : <%= user.Affilie.nom %><br>
+      <strong>Prénom du responsable</strong> : <%= user.Affilie.prenom %><br>
+      <strong>Adresse</strong> : <%= user.Affilie.adresse %>&nbsp;<%= user.Affilie.ville %><br>
+      <strong>RIB</strong> : <%= user.Affilie.RIB %><br>
+
+    </p>
+  </div>
+
+<div class=".col-xs-12 .col-md-8"><h1>Liste des Transactions :</h1>
+  <table style="width:100%">
+    <tr>   
+      <td style="vertical-align: top">
+            <table class="table">
+              <tr>
+                <th>Numéro de transaction
+                </th>
+                <th>Montant
+                </th>
+                <th>Date de l'opération
+                </th>
+                <th>Nuémro de carte
+                </th>
+                <th>Identifiant affilié
+                </th>
+              </tr>
+              <tr ng-repeat="transaction in transactions">
+                <td>{{transaction.NumeroDeTransaction}}
+                </td>
+                <td>{{transaction.Montant}}
+                </td>
+                <td>{{transaction.DateOperation}}
+                </td>
+                <td>{{transaction.NumeroCarte}}
+                </td>
+                <td>{{transaction.IdAvtxAffilie}}
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
     </div>
-
-    <div class="row">
-
-        <!-- LOCAL INFORMATION -->
-<!-- <div ng-controller="userCtrl">
-    <table>
-
-      <tr>
-
-        <th>ID</th>
-
-        <th>Usernames</th>
-
-        <th>Password</th>
-
-      </tr>
-
-      <tr ng-repeat="user in users">
-
-        <td>{{user.id}}</td>
-
-        <td>{{user.username}}</td>
-
-        <td>{{user.password}}</td>
-
-      </tr>
-
-    </table>
-</div> -->
-
-<div ng-controller="userCtrl">
-      <p><strong>Grid with native pagination controls</strong></p>
-      <div ui-grid="gridOptions1" ui-grid-pagination class="grid"></div>
-      <br /><br />
-      <p><strong>Grid pagination controlled via the API</strong></p>
-      <div ui-grid="gridOptions2" ui-grid-pagination class="grid"></div>
-      <p>Current page: {{ gridApi2.pagination.getPage() }} of {{ gridApi2.pagination.getTotalPages() }}</p>
-      <button type="button" class="btn btn-success" ng-click="gridApi2.pagination.previousPage()">
-        previous page
-      </button>
-      <button type="button" class="btn btn-success" ng-click="gridApi2.pagination.nextPage()">
-        next page
-      </button>
-      <button type="button" class="btn btn-success" ng-click="gridApi2.pagination.seek(3)">
-        go to page 3
-      </button>
-    </div>
-        <div class="col-sm-6 col-sm-offset-3">
-
-    <h1><span class="fa fa-sign-in"></span> Créer les comptes beneficiaires</h1>
-
-    
-
-    <!-- LOGIN FORM -->
-    <form action="/signup" method="post">
-        <div class="form-group">
-            <label>Login</label>
-            <input type="text" class="form-control" name="username">
-        </div>
-        <div class="form-group">
-            <label>Mot de passe</label>
-            <input type="password" class="form-control" name="password">
-        </div>
-
-        <button type="submit" class="btn btn-info btn-lg">Créer</button>
-    </form>
-
-    <hr>
-
-    
-
-    </div>
-
-    </div>
-
-</div>
+  </div>
 
 <footer class="footer">
     <div class="container">
@@ -202,7 +165,7 @@
                 <li><a href="#">Mentions légales</a></li>
                 <li><a href="#">Plan du site</a></li>
       </ul>
-    <div>
+    </div>
 </footer>
 </body>
 

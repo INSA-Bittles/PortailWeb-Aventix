@@ -2,9 +2,9 @@
 module.exports = {
     'connection': {
         'host': 'localhost',
-        'user': 'root',
+        'user': 'Aurelien',
         'password': 'password'
     },
-	'database': 'aventix2',
+	'database': 'aventix',
     'users_table': 'users'
 };
