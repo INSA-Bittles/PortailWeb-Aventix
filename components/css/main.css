@@ -55,8 +55,9 @@ background-color: #E6E6E6;
 .JolieBoutton:hover{
 	background-color: #87CEFA;
 	border-style: solid;
-	color: white;
+	
 	border-color: white;
+	color: white;
 }
 
 

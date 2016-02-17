@@ -5,7 +5,7 @@ module.exports = function(app_https, passport) {
     // HOME PAGE (with login links) ========
     // =====================================
     app_https.get('/', function (req, res) {
-    res.render('index', {pageTitle: 'Bienvenue sur Aventix'});
+    res.render('index.ejs', {pageTitle: 'Bienvenue sur Aventix'});
     });
 
 
@@ -23,16 +23,25 @@ app_https.get('/DecideurSouscrireBenef', function (req, res) {
 });
 
 
-app_https.get('/beneficiaireEtatDuCompte', function (req, res) {
-  res.render('benefEtatDuCompte.ejs', {pageTitle: 'Bienvenue sur le compte beneficiaire'});
+app_https.get('/DragAndDropTry', function (req, res) {
+     res.render('DragAndDropTryTest.ejs', {pageTitle: 'Bienvenue sur le compte beneficiaire'});
+    var greetings = require("./components/js/ImportMasseUtilisateurs.js");
+greetings.sayHelloInSpanish('beneficiaire.xlsx');
+  
 });
 
-app_https.get('/beneficiaireRechargeEmployes', function (req, res) {
-  res.render('DecideurRechargeEmployes.ejs', {pageTitle: 'Bienvenue sur le compte Decideur'});
+
+
+app_https.get('/Decideur', function (req, res) {
+  res.render('Decideur.ejs', {pageTitle: 'Bienvenue sur le compte Decideur'});
 });
 
-app_https.get('/AffiliesHistorique', function (req, res) {
-  res.render('AffiliesHistoriquePaiement.ejs', {pageTitle: 'Bienvenue sur le compte Decideur'});
+app_https.get('/Beneficiaire', function (req, res) {
+  res.render('Beneficiaire.ejs', {pageTitle: 'Bienvenue sur le compte Beneficiaire'});
+});
+
+app_https.get('/Affilie', function (req, res) {
+  res.render('Affilie.ejs', {pageTitle: 'Bienvenue sur le compte Decideur'});
 });
 
 

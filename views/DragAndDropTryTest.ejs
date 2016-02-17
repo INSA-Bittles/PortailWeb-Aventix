@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<!-- xlsx.js (C) 2013-2015 SheetJS http://sheetjs.com -->
+<!-- vim: set ts=2: -->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>JS-XLSX Live Demo</title>
+<style>
+#drop{
+  border:2px dashed #bbb;
+  -moz-border-radius:5px;
+  -webkit-border-radius:5px;
+  border-radius:5px;
+  padding:25px;
+  text-align:center;
+  font:20pt bold,"Vollkorn";color:#bbb
+}
+#b64data{
+  width:100%;
+}
+</style>
+</head>
+<body>
+<br />
+Output Format:
+<select name="format">
+<option value="json" selected > JSON</option>
+</select><br />
+<div id="drop">Drop an XLSX / XLSM / XLSB / ODS / XLS / XML file here to see sheet data</div>
+<p><input type="file" name="xlfile" id="xlf" /> ... or click here to select a file</p>
+
+
+Advanced Demo Options: <br />
+Use Web Workers: (when available) <input type="checkbox" name="useworker" checked><br />
+Use Transferrables: (when available) <input type="checkbox" name="xferable" checked><br />
+Use readAsBinaryString: (when available) <input type="checkbox" name="userabs" checked><br />
+<pre id="out"></pre>
+<br />
+<!-- uncomment the next line here and in xlsxworker.js for encoding support -->
+<!--<script src="dist/cpexcel.js"></script>-->
+<script src="js-xlsx-master/shim.js"></script>
+<script src="js-xlsx-master/jszip.js"></script>
+<script src="js-xlsx-master/xlsx.js"></script>
+<!-- uncomment the next line here and in xlsxworker.js for ODS support -->
+<script src="js-xlsx-master/ods.js"></script>
+<script lang="javascript" src="js-xlsx-master/dist/xlsx.core.min.js"></script>
+<script src="js/DragAndDrop.js"></script>
+
+    <script src="js/jquery-1.11.3.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+   
+</body>
+</html>

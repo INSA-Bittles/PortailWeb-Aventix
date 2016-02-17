@@ -212,17 +212,115 @@ var mysqldb = mysql.createConnection({
   port : 3306
 });
 
-// mysqldb.connect(function(err) {
-//   if (err) throw err;
-//   console.log('Vous êtes connecté')
-// });
+
 var db = require('./db.js');
 
+app_https.post('/post_donnees_excel', function(req, res) {
 
+  // voir DragAndDrop.js l 133 pour l'appel ajax
+  var test = {"beneficiaire":""};
+ test["beneficiaire"] = req.body;
+      JsonDecideur=test;
+      console.log(req.body);
+      
+      console.log(JsonDecideur.beneficiaire.PrenomBeneficiaire);
+
+      // console.log(JsonDecideur.beneficiaire.NomBeneficiaire);
+      
+db.getConnection(function(err, mysqlconnected){
+
+      // insertion dans la table carteAPuce avant d'entrer dans la table beneficiaire car clé étrangere 
+
+        if(!err){
+        
+         
+              mysqlconnected.query('SELECT MAX(NumeroCarte) from CarteAPuce ' , function(err, results) {
+                      if (!err)
+                      {
+
+
+                              var data = {"count":""};
+                              data["count"] = results;
+                              var MaxNumCarte=parseInt(JSON.stringify(data.count[0]["MAX(NumeroCarte)"]));
+                              MaxNumCarte=MaxNumCarte+1;
+                              console.log(MaxNumCarte);
+
+                    // ne semble pas reexecuter la requete SQL si on ne lui dit pas que le req.body a subit des modifs
+                     var test = {"beneficiaire":""};
+                     test["beneficiaire"] = req.body;
+                      JsonDecideur=test;
+                         
+
+              mysqlconnected.query('INSERT INTO CarteAPuce (NumeroCarte, Solde, EtatCarte,CodeCarte) VALUES  ('+MaxNumCarte+','+0+',\'Valide\','+Math.round(Math.random()*10000)+')' , function(err, results) {
+                      if (!err)
+                              console.log('no error while performing query insert into carte a puce');
+                      else
+                        console.log('Error while performing Query insert into carte a puce.');
+                      });
+            
+
+
+                    }
+                      else
+                      {
+                        console.log('Error while performing Query max cartea puce.');
+
+                      }
+              
+               
+                                    // insertion dans la table beneficiaire 
+                                    
+                                        mysqlconnected.query('SELECT MAX(IdAvtxBeneficiaire) from beneficiaire' , function(err, results) {
+                                              if (!err)
+                                              {
+                                                      var data2 = {"count2":""};
+                                                      data2["count2"] = results;
+                                                      var MaxId=parseInt(JSON.stringify(data2.count2[0]["MAX(IdAvtxBeneficiaire)"]));
+                                                      MaxId=MaxId+1;
+                                                      console.log('no error while performing query max id benef');
+
+                                              }
+                                              else
+                                              {
+                                                console.log('Error while performing Query max Id Benef.');
+                                              }
+
+                                              // Garde les infos de l'itération precedente si on ne redeclare pas les req.body?
+                                              // pas trouvé d'explication
+                                              var test = {"beneficiaire":""};
+                                              test["beneficiaire"] = req.body;
+                                              JsonDecideur=test;
+                                              console.log(MaxId+','+'\''+JsonDecideur.beneficiaire.NomBeneficiaire+'\''+','+'\''+JsonDecideur.beneficiaire.PrenomBeneficiaire+'\''+','+'\''+JsonDecideur.beneficiaire.AdresseBeneficiaire+'\''+','+'\''+JsonDecideur.beneficiaire.CodePostalBeneficiaire+'\''+','+'\''+JsonDecideur.beneficiaire.VilleBeneficiaire+'\''+','+'\''+JsonDecideur.beneficiaire.AdresseMailBeneficiaire+'\''+','+parseInt(JsonDecideur.beneficiaire.IdAvtxDecideur)+','+MaxNumCarte+','+'\''+JsonDecideur.beneficiaire.StatutBeneficiaire+'\'');
+                                                mysqlconnected.query('INSERT INTO Beneficiaire (IdAvtxBeneficiaire, NomBeneficiaire, PrenomBeneficiaire, AdresseBeneficiaire, CodePostalBeneficiaire, VilleBeneficiaire, AdresseMailBeneficiaire, IdAvtxDecideur, NumeroCarte, StatutBeneficiaire )VALUES  ('+MaxId+','+'\''+JsonDecideur.beneficiaire.NomBeneficiaire+'\''+','+'\''+JsonDecideur.beneficiaire.PrenomBeneficiaire+'\''+','+'\''+JsonDecideur.beneficiaire.AdresseBeneficiaire+'\''+','+'\''+JsonDecideur.beneficiaire.CodePostalBeneficiaire+'\''+','+'\''+JsonDecideur.beneficiaire.VilleBeneficiaire+'\''+','+'\''+JsonDecideur.beneficiaire.AdresseMailBeneficiaire+'\''+','+parseInt(JsonDecideur.beneficiaire.IdAvtxDecideur)+','+MaxNumCarte+','+'\''+JsonDecideur.beneficiaire.StatutBeneficiaire+'\''+')' , function(err, results) {
+                                                  if (!err)
+                                                          console.log('no error while performing query insert into benef');
+                                                  else
+                                                    console.log('Error while performing Query insert into benef .');
+                                                  });
+ 
+                                        });
+                                              
+                });
+              
+           }
+
+        
+
+
+        else{
+
+          console.log("erreur");
+        }
+
+
+
+      });
+
+});
 
 app_https.get('/getadresse', function(req, res) {
   var data = {"Utilisateurs":""};
-  // var data2={"NombreLigneTable":""};;
+ 
   db.getConnection(function(err, mysqlconnected){
 
 
@@ -238,36 +336,12 @@ app_https.get('/getadresse', function(req, res) {
                       data["Utilisateurs"] = 'No data Found..';
                       res.json(data);
                       
-                    //console.log(JSON.stringify(rows));
-                    // toto = JSON.stringify(rows);
-                    //console.log(toto);
-                    //var toto = res.json({utilisateurs : rows});
-                    //res.status(200).send('/users', {toto})
-                    //res.render('/users', {utilisateurs : rows})      
-    }})}
-
-    //       if(!err){
-    //       mysqlconnected.query('SELECT COUNT(*) FROM Affilie' , function(err, results) {
-    //                 if(results.length != 0){
-    //                   data2["NombreLigneTable"] = results;
-    //                  res.json(data2);
-    //                  console.log(data.NombreLigneTable[0]);
-  
-    //                 }else{
-    //                   data2 = '0';
-    //                   res.json(data);
-                      
-    //                 //console.log(JSON.stringify(rows));
-    //                 // toto = JSON.stringify(rows);
-    //                 //console.log(toto);
-    //                 //var toto = res.json({utilisateurs : rows});
-    //                 //res.status(200).send('/users', {toto})
-    //                 //res.render('/users', {utilisateurs : rows})      
-    // }})}
+                        
+          }})}
 
 
 
-        })});
+ })});
 
 
 app_https.get('/getnombreligne', function(req, res) {
@@ -296,13 +370,79 @@ app_https.get('/getnombreligne', function(req, res) {
         })});
 
 
+mysqldb.end();
+
+// TestConversion();
+
+//console.log(JSON.stringify(rows));
+                    // toto = JSON.stringify(rows);
+                    //console.log(toto);
+                    //var toto = res.json({utilisateurs : rows});
+                    //res.status(200).send('/users', {toto})
+                    //res.render('/users', {utilisateurs : rows})  
+
+// function convertToJSON(array) {
+//   var first = array[0].join()
+//   var headers = first.split(',');
+
+//   var jsonData = [];
+//   for ( var i = 1, length = array.length; i < length; i++ )
+//   {
+
+//     var myRow = array[i].join();
+//     var row = myRow.split(',');
+
+//     var data = {};
+//     for ( var x = 0; x < row.length; x++ )
+//     {
+//       data[headers[x]] = row[x];
+//     }
+//     jsonData.push(data);
+
+//   }
+//   return jsonData;
+// };
+
+// var xlsx = require('excel');
+
+// xls('currencies.xlsx', function(err, data) {
+//   if(err) throw err;
+//     // data is an array of arrays
+// });
+
+// xlsx('currencies.xlsx', function(err,data) {
+//     if(err) throw err;
+//     //console.log(jsonDataArray(data));
+//     console.log(JSON.stringify(convertToJSON(data)));
+//     //console.log(data);
+// });
+// var converter = require("xls-to-json");  
+// var res = {};  
+// converter({  
+//   input: "currencies.xls", 
+//   output: null
+// }, function(err, result) {
+//   if(err) {
+//     console.error(err);
+//   } else {
+//     for (var key = 1; key >= result.length; key++) {
+// res[result[key]["Symbol"]] = result[key]["Currency"];  
+//     };
+
+//     for(var i in res) {
+//       if(res.hasOwnProperty(i)) {
+//         console.log("<option value=\"" + i + "\">" + res[i] + "</option>");
+//       }
+//     }
+//   }
+// });
 
 
+// app_https.get('/users', function (req, res) {
+//   res.render('users');
+// });
 
 
-app_https.get('/users', function (req, res) {
-  res.render('users');
-});
 
 //   async.parallel([
 //   function(callback) { mysqlconnected.query('SELECT nom FROM users', callback) },
@@ -333,7 +473,7 @@ app_https.get('/users', function (req, res) {
 
 // mysqlconnected.query('INSERT INTO users (nom, prenom, solde) VALUES (?,?,?)', ['Landelle','Aurélien','200'], function(err, result) {
 //       if (err) throw err
-//       	console.log('Aurélien est inséré dans la Table users');
+//        console.log('Aurélien est inséré dans la Table users');
 // });
 
 
@@ -345,7 +485,7 @@ app_https.get('/users', function (req, res) {
 //         console.log(results[65].prenom);
 //         console.log(results[65].solde);
 //         console.log( JSON.stringify(results ) );
-      	
+        
 //     });}}); 
 
 // var users = [];
@@ -362,14 +502,14 @@ app_https.get('/users', function (req, res) {
 
 
 // mysqlconnected.query('SELECT * FROM users', function(err, result){
-// 	var data =JSON.stringify(result);
-// 	console.log(data);});
+//  var data =JSON.stringify(result);
+//  console.log(data);});
 // // res.render('users.ejs');
 // // })});
 // app_https.get('/users', function(req, res){
 
 
-// 	mysqldb.query('SELECT * FROM users', function(err, rows, fields){
+//  mysqldb.query('SELECT * FROM users', function(err, rows, fields){
 //     // if (err) throw err;  
 // //   res.json(rows);
 //     console.log(JSON.stringify(rows));
@@ -397,7 +537,7 @@ app_https.get('/users', function (req, res) {
 // mysqldb.query('SELECT * FROM users', function(err, rows){
 // res.render('users.ejs', {results : rows});})});
 
-mysqldb.end();
+
 
 
 
