@@ -13,7 +13,7 @@
 
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
         <script src="js/controller.js"></script>
-        
+         <script src="js/dirPagination.js"></script>
           <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular-route.min.js"></script>
           <script type="text/javascript">
           // var userApp = angular.module('userApp', ['ui.bootstrap']);
@@ -106,11 +106,12 @@
 </nav>
 <div class="container">
   <div class="page-header text-center">
-        <h1><span class="fa fa-anchor"></span> Profile Page</h1>
+        <h1><span class="fa fa-anchor"></span> Bénéficiaire - Bienvenue <%= user.Beneficiaire.prenom %>&nbsp;<%= user.Beneficiaire.nom %></h1>
         <a href="/logout" class="btn btn-default btn-sm">Logout</a>
     </div>
   <div class="page-header text-center">
     <p>
+
       <strong>Votre nom d'utilisateur</strong> : <%= user.username %><br>
       <strong>Votre identifiant</strong> : <%= user.idBeneficiaire %><br>
       <strong>Votre numéro de carte :</strong> : <%= user.Beneficiaire.NumeroCarte %><br>
@@ -122,8 +123,40 @@
 
     </p>
   </div>
-  <div class="col-md-6">
-    <strong>Mon solde</strong> : </div><br>
+  <div class=".col-xs-12 .col-md-8"><h1>Solde bénéficiaire :</h1>
+  <table style="width:100%">
+    <tr>   
+      <td style="vertical-align: top">
+            <table class="table">
+              <tr>
+                <th>Solde
+                </th>
+                <th>Montant
+                </th>
+                <th>Date de l'opération
+                </th>
+                <th>Nuémro de carte
+                </th>
+                <th>Identifiant affilié
+                </th>
+              </tr>
+              <tr ng-repeat="transaction in transactions">
+                <td>{{transaction.NumeroDeTransaction}}
+                </td>
+                <td>{{transaction.Montant}}
+                </td>
+                <td>{{transaction.date}}
+                </td>
+                <td>{{transaction.NumeroCarte}}
+                </td>
+                <td>{{transaction.idAffilie}}
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div><br>
     <div class="col-md-6">
     <strong>Carte volée ou perdue</strong> : <br>
     <a href="/contact" class="btn btn-default btn-sm"><span class="glyphicon glyphicons-direction"></span>Contactez-nous</a>

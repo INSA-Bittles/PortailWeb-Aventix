@@ -4,7 +4,7 @@ module.exports = function(sequelize, DataTypes) {
   var bcrypt   = require('bcrypt-nodejs');
   var Affilie = sequelize.define('Affilie', 
   {
-    idDecideur: 
+    idAffilie: 
     {
       type: DataTypes.INTEGER(10),
       primaryKey: true,

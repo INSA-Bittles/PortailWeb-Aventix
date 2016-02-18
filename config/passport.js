@@ -45,7 +45,7 @@ module.exports = function(passport) {
         
         //User.findById( id ).then( function(user) {
         User.findById(id, { include: [{all: true}] } ).then( function(user) {
-            console.log("here1",user);
+            // console.log("here1",user);
             done(null, user);
 
         }).catch( function(err) { done(err, null)});

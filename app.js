@@ -155,19 +155,32 @@ var MongoStore = require('connect-mongo')(session);
 var app_https = express();
 
 var nodemailer = require("nodemailer");
-var smtpTransport = require("nodemailer-smtp-transport");
-var wellknown = require('nodemailer-wellknown');
+// var smtpTransport = require("nodemailer-smtp-transport");
+// var wellknown = require('nodemailer-wellknown');
 // var transporter = nodemailer.createTransport('smtps://aurelien.landelle@gmail.com:s9TcCrHJTgv3N2@smtp.gmail.com');
 // var smtpTransport = nodemailer.createTransport("SMTP",{
-var smtpTransport = nodemailer.createTransport(smtpTransport({
-    host : "localhost",
-    secureConnection: true,
-    port: 465,
-    auth : {
-        user : "aurelien.landelle@gmail.com",
-        pass : "password"
-    }
-}));
+
+var transporter = nodemailer.createTransport({
+    port: 1025,
+    ignoreTLS: true,
+    // other settings...
+  });
+//     service: 'gmail',
+//   auth: {
+//     user: "aurelien.landelle@gmail.com",    // your email here
+//     pass: "password"        // your password here
+//   }
+// });
+
+// var smtpTransport = nodemailer.createTransport(smtpTransport({
+//     host : "localhost",
+    
+//     port: 1025
+//     // auth : {
+//     //     user : "aurelien.landelle@gmail.com",
+//     //     pass : "password"
+//     // }
+// }));
 
 var models = require("./modeles");
 
@@ -231,6 +244,8 @@ var db = require('./db');
 app_https.get('/userslist', function(req, res) {
   var data = {"Utilisateurs":""};
   
+
+
   db.getConnection(function(err, mysqlconnected){
         if(!err){
           mysqlconnected.query('SELECT id ,username, password from users' , function(err, results) {
@@ -258,40 +273,41 @@ app_https.get('/userslist', function(req, res) {
                     // res.status(200).send('/users', {toto})
                     // res.render('/users', {utilisateurs : rows})      
     }})}})});
-db.getConnection(function(err, mysqlconnected){
-        if(!err){
-app_https.get('/listBeneficiaire', function(req,res){
-  var data = {"Beneficiaires":""};
-   mysqlconnected.query('SELECT * from Beneficiaire' , function(err, results){
-      if(results.length != 0){
-        data["Beneficiaires"] = results;
-        res.json(data);
+
+// db.getConnection(function(err, mysqlconnected){
+//         if(!err){
+// app_https.get('/listBeneficiaire', function(req,res){
+//   var data = {"Beneficiaires":""};
+//    mysqlconnected.query('SELECT * from Beneficiaire' , function(err, results){
+//       if(results.length != 0){
+//         data["Beneficiaires"] = results;
+//         res.json(data);
                       
-      }else{
-        data["Beneficiaires"] = 'No data Found..';
-        res.json(data);
-      }
-})})}});
+//       }else{
+//         data["Beneficiaires"] = 'No data Found..';
+//         res.json(data);
+//       }
+// })})}});
  
 
 app_https.get('/users', function (req, res) {
   res.render('users');
 });
 
-db.getConnection(function(err, mysqlconnected){
-        if(!err){
-app_https.get('/listTransactions', function(req,res){
-  var data = {"Transactions":""};
-   mysqlconnected.query('SELECT * from gestiondetransaction' , function(err, results){
-      if(results.length != 0){
-        data["Transactions"] = results;
-        res.json(data);
+// db.getConnection(function(err, mysqlconnected){
+//         if(!err){
+// app_https.get('/listTransactions', function(req,res){
+//   var data = {"Transactions":""};
+//    mysqlconnected.query('SELECT * from gestiondetransaction' , function(err, results){
+//       if(results.length != 0){
+//         data["Transactions"] = results;
+//         res.json(data);
                       
-      }else{
-        data["Transactions"] = 'No data Found..';
-        res.json(data);
-      }
-})})}});
+//       }else{
+//         data["Transactions"] = 'No data Found..';
+//         res.json(data);
+//       }
+// })})}});
 
 //   async.parallel([
 //   function(callback) { mysqlconnected.query('SELECT nom FROM users', callback) },
@@ -397,24 +413,19 @@ app_https.get('/pushData', function(req, res) {
 
 mysqldb.end();
 
-app_https.get('/send',function(req,res){
-        var mailOptions={
-            to : req.query.to,
-            to2 : req.query.to2,
-            subject : req.query.subject,
-            text : req.query.text
-        }
-        console.log(mailOptions);
-        smtpTransport.sendMail(mailOptions, function(error, response){
-         if(error){
-                console.log(error);
-            res.end("error");
-         }else{
-                console.log("Message envoyé : " + response.message);
-            res.end("sent");
-             }
-    })});
 
+app_https.post('/contact-form',function(req,res){
+  var data = req.body;
+
+  transporter.sendMail({
+    'from' : data.contactEmail,
+    'to' : 'aurelien.landelle@gmail.com',
+    'subject' : data.contactSubject + 'from' + data.contactName,
+    'text' : data.contactMessage
+  });
+  res.json(data);
+  console.log("here7",data);
+});
     
 
  // connection.query('CREATE TABLE people(id int primary key, name varchar(255), age int, address text)', function(err, result) {

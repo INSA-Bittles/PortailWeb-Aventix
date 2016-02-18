@@ -36,7 +36,8 @@ module.exports = function(sequelize, DataTypes) {
       classMethods: 
       {
         associate: function(models) {
-          
+            this.belongsTo( models.carteAPuce, { foreignKey: { name: 'NumeroCarte', allowNull: true} } );
+            this.belongsTo( models.Affilie, { foreignKey: { name: 'idAffilie', allowNull: true} } );
         }
       }
   });

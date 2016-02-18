@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="userApp">
     <head>
       <title>Aventix - Mon espace Personnel</title>
         <meta charset="utf-8" />
@@ -8,7 +8,12 @@
         <link rel="stylesheet" href="https://bootswatch.com/lumen/bootstrap.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="css/main.css">
+        <<link rel="icon" type="image/png" sizes="16x16" href="img/favicon.png">
 
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+        <script src="js/controller.js"></script>
+        <script src="js/dirPagination.js"></script>
+          <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular-route.min.js"></script>
           <style>
               /* Remove the navbar's default margin-bottom and rounded borders */ 
               .navbar {
@@ -31,53 +36,53 @@
               }
           </style>
           <script>// <![CDATA[
-$(document).ready(function(){
-    var from,to,to2,subject,text;
-    $("#send_email").click(function(){      
-        to=$("#name").val();
-        to2=$("#email").val();
-        subject=$("#subject").val();
-        text=$("#message").val();
-        $("#message2").text("Envoi d'email... Veuillez patientert");
-        $.get("https://localhost:3000/send",{to:to,to2,subject:subject,text:text},function(data){
-        if(data=="sent")
-        {
-            console.log("sent received");
-            $("#message2").empty().html("Email a été envoyé "+to,+to2+" . Veuillez vérifier votre boite de réception!");
-        }else {
-            console.log(data);
-          }
+// $(document).ready(function(){
+//     var from,to,to2,subject,text;
+//     $("#send_email").click(function(){      
+//         to=$("#name").val();
+//         to2=$("#email").val();
+//         subject=$("#subject").val();
+//         text=$("#message").val();
+//         $("#message2").text("Envoi d'email... Veuillez patientert");
+//         $.get("https://localhost:3000/send",{to:to,to2,subject:subject,text:text},function(data){
+//         if(data=="sent")
+//         {
+//             console.log("sent received");
+//             $("#message2").empty().html("Email a été envoyé "+to,+to2+" . Veuillez vérifier votre boite de réception!");
+//         }else {
+//             console.log(data);
+//           }
 
-});
-    });
-});
-// Submit form with id function.
-function submit_by_id() {
-var name = document.getElementById("name").value;
-var email = document.getElementById("email").value;
-if (validation()) // Calling validation function
-{
-document.getElementById("send_email").submit(); //form submission
-alert(" Name : " + name + " \n Email : " + email + " \n send_email : " + document.getElementById("send_email").getAttribute("id") + "\n\n Email envoyé avec succès !");
-}
-}
-  function validation(){
-var name = document.getElementById("name").value;
-var email = document.getElementById("email").value;
-var emailReg = /^([w-.]+@([w-]+.)+[w-]{2,4})?$/;
-if( name ==='' || email ===''){
-alert("Please fill all fields...!!!!!!");
-return false;
-}else if(!(email).match(emailReg)){
-alert("Invalid Email...!!!!!!");
-return false;
-}else{
-return true;
-}
+// });
+//     });
+// });
+// // Submit form with id function.
+// function submit_by_id() {
+// var name = document.getElementById("name").value;
+// var email = document.getElementById("email").value;
+// if (validation()) // Calling validation function
+// {
+// document.getElementById("send_email").submit(); //form submission
+// alert(" Name : " + name + " \n Email : " + email + " \n send_email : " + document.getElementById("send_email").getAttribute("id") + "\n\n Email envoyé avec succès !");
+// }
+// }
+//   function validation(){
+// var name = document.getElementById("name").value;
+// var email = document.getElementById("email").value;
+// var emailReg = /^([w-.]+@([w-]+.)+[w-]{2,4})?$/;
+// if( name ==='' || email ===''){
+// alert("Please fill all fields...!!!!!!");
+// return false;
+// }else if(!(email).match(emailReg)){
+// alert("Invalid Email...!!!!!!");
+// return false;
+// }else{
+// return true;
+// }
 </script>
 
     </head>
-<body>
+<body ng-controller ="ContactFormCtrl">
 
       
 <nav class="navbar navbar">
@@ -123,29 +128,29 @@ return true;
 <div class="container text-center">    
   <h3>CONTACTER NOUS :</h3><br>
 
-<form class="form-horizontal" role="form">
+<form class="form-horizontal" role="form" name="contactForm" ng-submit="sendMail()" novalidate>
     <div class="form-group">
         <label for="name" class="col-sm-2 control-label">Name</label>
         <div class="col-sm-10">
-            <input type="text" class="form-control" id="name" name="name" placeholder="Nom" value="" required="name">
+            <input type="text" ng-model="contactName" class="form-control" id="name" name="name"  placeholder="Nom" value="" required="name">
         </div>
     </div>
     <div class="form-group">
         <label for="email" class="col-sm-2 control-label">Email</label>
         <div class="col-sm-10">
-            <input type="email" class="form-control" id="email" name="email" placeholder="aventix@aventix.fr" value="" required="email">
+            <input type="email" ng-model="contactEmail" class="form-control" id="email" name="email" placeholder="aventix@aventix.fr" value="" required="email">
         </div>
     </div>
     <div class="form-group">
         <label for="subject" class="col-sm-2 control-label">Sujet</label>
         <div class="col-sm-10">
-            <input type="text" class="form-control" id="subject" name="subject" placeholder="Sujet" value="" required="subject">
+            <input type="text" ng-model="contactSubject" class="form-control" id="subject" name="subject" placeholder="Sujet" value="" required="subject">
         </div>
     </div>
     <div class="form-group">
         <label for="content" class="col-sm-2 control-label">Message</label>
         <div class="col-sm-10">
-            <textarea class="form-control" rows="4" name="content" placeholder="Votre message..." required="message"></textarea>
+            <textarea class="form-control"  ng-model="contactMessage" rows="4" name="content" placeholder="Votre message..." required="message"></textarea>
         </div>
     </div>
     <div class="form-group">
@@ -156,7 +161,7 @@ return true;
     </div>
     <div class="form-group">
         <div class="col-sm-10 col-sm-offset-2">
-            <input id="send_email" name="send_email" type="submit" value="Envoyez" class="btn btn-primary">
+            <input id="send_email"  name="send_email" type="submit" value="Envoyez" class="btn btn-primary">
             <span id="message2"></span>
         </div>
     </div>

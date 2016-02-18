@@ -1,5 +1,5 @@
 
-var userApp = angular.module('userApp', ['ngRoute']);
+var userApp = angular.module('userApp', ['ngRoute', 'angularUtils.directives.dirPagination']);
       
 
     userApp.controller('userCtrl', ['$scope', '$http', '$log', function ($scope, $http, $log){
@@ -12,18 +12,27 @@ var userApp = angular.module('userApp', ['ngRoute']);
         		$log.error(err);
         })
 
+
+
         $scope.addRowAsyncAsJSON = function(){		
 		$scope.users.push({ 'id':$scope.id, 'username': $scope.username, 'password':$scope.password });}
         	}]);
 
-        userApp.controller('beneficiaireCtrl', ['$scope', '$http', '$log', function ($scope, $http, $log){
+        userApp.controller('decideurCtrl', ['$scope', '$http', '$log', function ($scope, $http, $log){
 	        $http.get('https://localhost:3000/listBeneficiaire')
 		        .success(function(data) {
 		          	$scope.beneficiaires = data.Beneficiaires;
+		          	console.log("here",data);
+
 		        })
 	        	.error(function(err){
 	        		$log.error(err);
 	        })
+
+	        $scope.sort = function(keyname){
+        	$scope.sortKey = keyname;   //set the sortKey to the param passed
+        	$scope.reverse = !$scope.reverse; //if true make it false and vice versa
+    }
         }])
 
         userApp.controller('transactionCtrl', ['$scope', '$http', '$log', function ($scope, $http, $log){
@@ -31,11 +40,102 @@ var userApp = angular.module('userApp', ['ngRoute']);
 	        $http.get('https://localhost:3000/listTransactions')
 		        .success(function(data) {
 		          	$scope.transactions = data.Transactions;
+		          	console.log("here",data);
 		        })
 	        	.error(function(err){
 	        		$log.error(err);
 	        })
-    	}]);
+    	}])
+
+    	userApp.controller('beneficiaireCtrl', ['$scope', '$http', '$log', function ($scope, $http, $log){
+	        
+	        $http.get('https://localhost:3000/Solde:user.idBeneficiaire')
+		        .success(function(data) {
+		          	$scope.solde = data.solde;
+		          	console.log("here",data);
+		        })
+	        	.error(function(err){
+	        		$log.error(err);
+	        })
+    	}])
+
+
+        userApp.controller('ContactFormCtrl',['$scope', '$http', '$log', 
+        	function ($scope, $http, $log) {
+        		
+	    		
+	        $scope.sendMail = function(){
+	        	var data = ({
+	    				'contactName' : $scope.contactName,
+	    				'contactEmail' : $scope.contactEmail,
+	    				'contactSubject' : $scope.contactSubject,
+	    				'contactMessage' : $scope.contactMessage,
+	       		 });	
+
+
+	      	$http.post('/contact-form', data)
+	        .success(function(data) {
+	        	console.log("here8",data)
+	        }).error(function(err) {
+	          $log.error(err);
+	        
+	    	});
+       		}
+       }]);
+
+        userApp.controller('pushCtrl',['$scope', '$http', '$log', 
+        	function ($scope, $http, $log) {
+        		
+	    		
+	        $scope.pushData = function(){
+	        	var data = ({
+	    				'nom' : $scope.nom,
+	    				'prenom' : $scope.prenom,
+	    				'adresse' : $scope.adresse,
+	    				'cp' : $scope.cp,
+	    				'email' : $scope.email,
+	    				'numero' : $scrope.numero,
+	    				'idDecideur' : $scope.idDecideur
+	       		 });	
+
+
+	      	$http.post('/pushData', data)
+	        .success(function(data) {
+	        	console.log("here8",data)
+	        }).error(function(err) {
+	          $log.error(err);
+	        
+	    	});
+       		}
+       }])
+
+        userApp.controller('carteCtrl',['$scope', '$http', '$log', 
+        	function ($scope, $http, $log) {
+        		
+	    		
+	        $scope.pushCarte = function(){
+	        	var data = ({ 'nombreCarte' : $scope.nombreCarte});
+	    		console.log("here9",$scope.nombreCarte)
+	    		for(var i=0;i<$scope.nombreCarte;i++){
+	    			$http.post('/pushData2', data)
+	    			.success(function(data) {
+	    			console.log("here8",data)
+	    			}).error(function(err) {
+	    			$log.error(err)
+	       		 });
+	       		 }	
+
+       }}]);
+
+	      	// $http.post('/pushData2', data)
+	       //  .success(function(data) {
+	       //  	console.log("here8",data)
+	       //  }).error(function(err) {
+	       //    $log.error(err);
+	        
+	    	// });
+      //  		}
+      //  }]);
 
       // 		$scope.insertdata = function(){
       // 		$scope.users.push({ 'id':$scope.id, 'username': $scope.username, 'password':$scope.password });

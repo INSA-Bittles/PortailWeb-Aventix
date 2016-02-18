@@ -13,7 +13,7 @@
 
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
         <script src="js/controller.js"></script>
-        
+         <script src="js/dirPagination.js"></script>
           <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular-route.min.js"></script>
           <script type="text/javascript">
           // var userApp = angular.module('userApp', ['ui.bootstrap']);
@@ -104,7 +104,7 @@
 </nav>
 <div class="container">
   <div class="page-header text-center">
-        <h1><span class="fa fa-anchor"></span> Profile Page</h1>
+        <h1><span class="fa fa-anchor"></span> Affilié - Bienvenue <%= user.username %></h1>
         <a href="/logout" class="btn btn-default btn-sm">Logout</a>
   </div>
   <div class="page-header text-center">
@@ -142,11 +142,11 @@
                 </td>
                 <td>{{transaction.Montant}}
                 </td>
-                <td>{{transaction.DateOperation}}
+                <td>{{transaction.date}}
                 </td>
                 <td>{{transaction.NumeroCarte}}
                 </td>
-                <td>{{transaction.IdAvtxAffilie}}
+                <td>{{transaction.idAffilie}}
                 </td>
               </tr>
             </table>
@@ -155,7 +155,7 @@
       </table>
     </div>
   </div>
-
+<br><br><br>
 <footer class="footer">
     <div class="container">
         <ul class="nav navbar-nav">

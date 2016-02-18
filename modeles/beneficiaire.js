@@ -47,7 +47,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     NumeroCarte: 
     {
-      type: DataTypes.INTEGER(11),
+      type: DataTypes.INTEGER(10),
       field: 'NumeroCarte'
     },
     Status: 
@@ -64,6 +64,7 @@ module.exports = function(sequelize, DataTypes) {
         associate: function(models) {
           this.belongsTo( models.carteAPuce, { foreignKey: { name: 'NumeroCarte', allowNull: true} } );
           this.belongsTo( models.User, { foreignKey: { name: 'idBeneficiaire', allowNull: true} } );
+          this.belongsTo( models.Decideur, { foreignKey: { name: 'IdDecideur', allowNull: true} } );
         }
       }
   });
