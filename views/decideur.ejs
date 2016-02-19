@@ -120,6 +120,7 @@
         <li><a href="#">Utilisateurs</a></li>
         <li><a href="#">Entreprise</a></li>
         <li><a href="#">Restaurateurs</a></li>
+        <li><a href="/geolocalisation">Geolocalisation Restaurants</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right social">
                 <li><a href="#"><i class="fa fa-lg fa-facebook"></i></a></li>
@@ -136,7 +137,7 @@
 
 </nav>
 <div class="page-header text-center">
-        <h1><span class="fa fa-anchor"></span> Décideur - Bienvenue <%= user.Decideur.prenom %>&nbsp;<%= user.Decideur.nom %>
+        <h1><span class="glyphicons glyphicons-group"></span>he Décideur - Bienvenue <%= user.Decideur.prenom %>&nbsp;<%= user.Decideur.nom %>
 </h1>
         <a href="/logout" class="btn btn-default btn-sm">Logout</a>
     </div>
@@ -203,8 +204,7 @@
                 </td>
                 <td>{{beneficiaire.Status}}
                 </td>
-                <td>{{beneficiaire.NumeroCarte}}
-                </td>
+                
               </tr>
             </table>
           </td>
@@ -238,7 +238,16 @@
 
     <h1><span class="fa fa-sign-in"></span> Créer un compte beneficiaire</h1>
 
-    
+  <div class=".col-xs-6 .col-md-4" ng-controller="carteCtrl">
+      <h3 id="souscription_benef">Souscrire de nouveaux beneficiaires</h3>
+      <form style="margin-bottom:80px;" ng-submit="pushCarte()" novalidate>
+        <div class="form-group">
+            <label>Créer cartes</label>
+            <input type="text" class="form-control" ng-model="nombreCarte" name="nom"><br>  
+            <button type="submit" class="btn btn-info btn-lg">Créer cartes</button>
+        </div>
+      </form>
+  </div>   
 
     <!-- LOGIN FORM -->
     <form style="margin-bottom:80px;" ng-submit="pushData()" novalidate>
@@ -275,17 +284,7 @@
     </form>
     </div>
 
-    <div class=".col-xs-6 .col-md-4" ng-controller="carteCtrl">
-      <h3 id="souscription_benef">Souscrire de nouveaux beneficiaire</h3>
-      <form style="margin-bottom:80px;" ng-submit="pushCarte()" novalidate>
-        <div class="form-group">
-            <label>Créer cartes</label>
-            <input type="text" class="form-control" ng-model="nombreCarte" name="nom">
-            <button type="submit" class="btn btn-info btn-lg">Créer cartes</button>
-        </div>
-        </div>
-      </form>
-       <br />
+      <h1><span class="fa fa-sign-in"></span> Import en masse de bénéficiaires</h1>
           </select><br />
           <p>Souscrire vos employés à l'offre Aventix n'a jamais été aussi simple! Glissez votre fichier excel ci-dessous et vos employés sont dans nos bases de données  </p>
           <div class="dropper" id="drop">Deposer un fichier Excel ici!( XLSX / XLS / XML )</div>

@@ -49,7 +49,7 @@ var userApp = angular.module('userApp', ['ngRoute', 'angularUtils.directives.dir
 
     	userApp.controller('beneficiaireCtrl', ['$scope', '$http', '$log', function ($scope, $http, $log){
 	        
-	        $http.get('https://localhost:3000/Solde:user.idBeneficiaire')
+	        $http.get('https://localhost:3000/Solde')
 		        .success(function(data) {
 		          	$scope.solde = data.solde;
 		          	console.log("here",data);

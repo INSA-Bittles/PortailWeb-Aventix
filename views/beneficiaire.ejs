@@ -91,6 +91,7 @@
         <li><a href="#">Utilisateurs</a></li>
         <li><a href="#">Entreprise</a></li>
         <li><a href="#">Restaurateurs</a></li>
+        <li><a href="/geolocalisation">Geolocalisation Restaurants</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right social">
                 <li><a href="#"><i class="fa fa-lg fa-facebook"></i></a></li>
@@ -106,7 +107,7 @@
 </nav>
 <div class="container">
   <div class="page-header text-center">
-        <h1><span class="fa fa-anchor"></span> Bénéficiaire - Bienvenue <%= user.Beneficiaire.prenom %>&nbsp;<%= user.Beneficiaire.nom %></h1>
+        <h1><span class="glyphicons glyphicons-group"></span> Bénéficiaire - Bienvenue <%= user.Beneficiaire.prenom %>&nbsp;<%= user.Beneficiaire.nom %></h1>
         <a href="/logout" class="btn btn-default btn-sm">Logout</a>
     </div>
   <div class="page-header text-center">
@@ -114,7 +115,6 @@
 
       <strong>Votre nom d'utilisateur</strong> : <%= user.username %><br>
       <strong>Votre identifiant</strong> : <%= user.idBeneficiaire %><br>
-      <strong>Votre numéro de carte :</strong> : <%= user.Beneficiaire.NumeroCarte %><br>
       <strong>Votre status :</strong> : <%= user.Beneficiaire.Status %><br>
       <strong>Votre nom</strong> : <%= user.Beneficiaire.nom %><br>
       <strong>Votre prénom</strong> : <%= user.Beneficiaire.prenom %><br>

@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html ng-app="userApp">
     <head>
-      <title>Aventix - Mon espace Personnel</title>
+      <title><%= pageTitle %></title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        <link rel="stylesheet" href="https://bootswatch.com/lumen/bootstrap.min.css">">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://bootswatch.com/lumen/bootstrap.min.css">
+        
         <link rel="stylesheet" href="css/main.css">
         <link rel="icon" type="image/png" sizes="16x16" href="img/favicon.png">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
         <script src="js/controller.js"></script>
-        <script src="js/ui-grid.js"></script>
-        <script src="css/ui-grid.css"></script>
-
-          // <script type="text/javascript">
+         <script src="js/dirPagination.js"></script>
+          <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular-route.min.js"></script>
+          <script type="text/javascript">
           // var userApp = angular.module('userApp', ['ui.bootstrap']);
           // userApp.controller('userCtrl', function ($scope, $http){
           // $http.get('http://localhost:3000/userslist').success(function(data) {
@@ -61,17 +61,13 @@
           </script>
 
 </head>
-<body>
+
+<body onload="initialiserCarte();AffichageAdresseRestaurant();">
 
       
 <nav class="navbar navbar">
   <div class="container-fluid" style="height:120px;">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>                        
-      </button>
       <a class="navbar-brand" href="/"><img src="img/logo_aventix.png" alt="Logo - Aventix" /></a>
 
     </div>
@@ -82,7 +78,7 @@
                   <input type="text" class="form-control" name="search" id="search" placeholder="Rechercher">
                     <span class="glyphicon glyphicon-search form-control-feedback"></span>
                 </div>
-              </form></li><li><a class="btn btn-link" href="/Profile" style="margin-top:35px;"><span class="fa fa-user"></span>&nbsp;&nbsp;<%= user.username %></a></li>
+              </form></li><li><a class="btn btn-link" href="/login" style="margin-top:35px;">Votre espace personnel : &nbsp;<span class="glyphicon glyphicon-log-in"></span>&nbsp;&nbsp;Login</a></li>
         </ul>
     </div>
 </div>
@@ -95,7 +91,7 @@
         <li><a href="#">Utilisateurs</a></li>
         <li><a href="#">Entreprise</a></li>
         <li><a href="#">Restaurateurs</a></li>
-        <li><a href="/geolocalisation">Geolocalisation Restaurants</a></li>
+        <li><a href="/geolocalisation">Geolocalisation Restaurant</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right social">
                 <li><a href="#"><i class="fa fa-lg fa-facebook"></i></a></li>
@@ -104,95 +100,44 @@
                 <li><a href="#"><i class="fa fa-lg fa-linkedin"></i></a></li>
       </ul>
     </div>
-      <div class="collapse navbar-collapse" id="myNavbar2">
       <ul class="breadcrumb">
         <li><a href="/">Accueil</a></li>
-        <li><a href="/profile">Profile :&nbsp;<%= user.username %></a></li>
+        <li><a href="/geolocalisation">Géolocalisation Restaurants</a></li>
       </ul>
 </nav>
-
 <div class="container">
+    <div class="col-md-6">
+      <h1>Restaurant à proximité</h1>  
+         <hr style="border-color: #A9A9A9;">
 
-    <div class="page-header text-center">
-        <h1><span class="fa fa-anchor"></span> Profile Page</h1>
-        <a href="/logout" class="btn btn-default btn-sm">Logout</a>
-    </div>
+            <div class="row">
+              <div  style="height:260px; border-radius: 12%; border-style: inset;border-color: #C0C0C0;"class="col-md-6">
+                    <br>
+                    <form "form-inline" id="testcache">
+                      <input type="text" id="adresse"/>
+                      <input type="button"  class="btn btn-info" value="Localiser sur Google Map" onclick="TrouverAdresse()"/>
+                    </form>
+                    <br>
+                    <hr>
+                    <button type="button"  onclick="geolocalisation()" id="JolieBoutton" class="btn btn-info">Geolocalisez-moi!</button>
+                    <hr>
+              </div>
+              <div class="col-md-6">
+                    
+                    <div id="map-canvas" style="float:center;height:560px;width:560px"></div>
+                    <div id="AffichageAdresse" onclick="AffichageAdresseRestaurant()"></div>
+                    <span id="text_latlng"></span>
+              </div>
+            </div>
 
-    <div class="row">
-
-        <!-- LOCAL INFORMATION -->
-<!-- <div ng-controller="userCtrl">
-    <table>
-
-      <tr>
-
-        <th>ID</th>
-
-        <th>Usernames</th>
-
-        <th>Password</th>
-
-      </tr>
-
-      <tr ng-repeat="user in users">
-
-        <td>{{user.id}}</td>
-
-        <td>{{user.username}}</td>
-
-        <td>{{user.password}}</td>
-
-      </tr>
-
-    </table>
-</div> -->
-
-<div ng-controller="userCtrl">
-      <p><strong>Grid with native pagination controls</strong></p>
-      <div ui-grid="gridOptions1" ui-grid-pagination class="grid"></div>
-      <br /><br />
-      <p><strong>Grid pagination controlled via the API</strong></p>
-      <div ui-grid="gridOptions2" ui-grid-pagination class="grid"></div>
-      <p>Current page: {{ gridApi2.pagination.getPage() }} of {{ gridApi2.pagination.getTotalPages() }}</p>
-      <button type="button" class="btn btn-success" ng-click="gridApi2.pagination.previousPage()">
-        previous page
-      </button>
-      <button type="button" class="btn btn-success" ng-click="gridApi2.pagination.nextPage()">
-        next page
-      </button>
-      <button type="button" class="btn btn-success" ng-click="gridApi2.pagination.seek(3)">
-        go to page 3
-      </button>
-    </div>
-        <div class="col-sm-6 col-sm-offset-3">
-
-    <h1><span class="fa fa-sign-in"></span> Créer les comptes beneficiaires</h1>
 
     
-
-    <!-- LOGIN FORM -->
-    <form action="/signup" method="post">
-        <div class="form-group">
-            <label>Login</label>
-            <input type="text" class="form-control" name="username">
-        </div>
-        <div class="form-group">
-            <label>Mot de passe</label>
-            <input type="password" class="form-control" name="password">
-        </div>
-
-        <button type="submit" class="btn btn-info btn-lg">Créer</button>
-    </form>
-
-    <hr>
-
-    
-
     </div>
-
-    </div>
-
 </div>
+<br>
+<br>
+<br>
+<br>
 
 <footer class="footer">
     <div class="container">
@@ -203,10 +148,12 @@
                 <li><a href="#">Mentions légales</a></li>
                 <li><a href="#">Plan du site</a></li>
       </ul>
-    <div>
+    </div>
 </footer>
 </body>
-
-    <script src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false&language=fr"></script>
+    <script src="js/Geolocalisation.js"></script>
     <script src="js/jquery-1.11.3.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    
 </html>

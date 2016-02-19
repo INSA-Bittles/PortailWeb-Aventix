@@ -89,6 +89,7 @@
         <li><a href="#">Utilisateurs</a></li>
         <li><a href="#">Entreprise</a></li>
         <li><a href="#">Restaurateurs</a></li>
+        <li><a href="/geolocalisation">Geolocalisation Restaurants</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right social">
                 <li><a href="#"><i class="fa fa-lg fa-facebook"></i></a></li>
@@ -104,7 +105,7 @@
 </nav>
 <div class="container">
   <div class="page-header text-center">
-        <h1><span class="fa fa-anchor"></span> Affilié - Bienvenue <%= user.username %></h1>
+        <h1><span class="glyphicons glyphicons-group"></span> Bénéficiaire - Bienvenue <%= user.Affilie.prenom %>&nbsp;<%= user.Affilie.nom %></h1>
         <a href="/logout" class="btn btn-default btn-sm">Logout</a>
   </div>
   <div class="page-header text-center">

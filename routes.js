@@ -23,6 +23,10 @@ module.exports = function(app_https, passport) {
     //             res.send(err);
     //          res.json(beneficiaires);
     // })});
+    
+    app_https.get('/geolocalisation', function (req, res) {
+    res.render('geolocalisation', {pageTitle: 'Géolocalisation des restaurants'});
+    });
 
 
 
@@ -151,31 +155,12 @@ module.exports = function(app_https, passport) {
     });
     
     var data3 = {"Solde":""};
-    app_https.get('/Solde:user.idBeneficiaire', function(req,res){
+    app_https.get('/Solde', function(req,res){
     Beneficiaire.findAll({ 
         include: [{  
             model: 
-            carteAPuce, attributes : ['solde'],
-
-            // where : { olde : req.user.dataValues.solde} 
-        }]
-    })
-    .then(function(solde) {
-        data3["Solde"] = solde;
-        res.json(data3),
-        console.log(JSON.stringify(solde))}).catch( function(err) {
-            console.log(err);
-            return done(err);
-        });
-    });
-
-    app_https.get('/Solde:user.idBeneficiaire', function(req,res){
-    Beneficiaire.findAll({ 
-        include: [{  
-            model: 
-            carteAPuce, attributes : ['solde'],
+            carteAPuce, where : { solde : req.user.dataValues.idBeneficiaire} ,
             
-            // where : { olde : req.user.dataValues.solde} 
         }]
     })
     .then(function(solde) {
@@ -186,33 +171,43 @@ module.exports = function(app_https, passport) {
             return done(err);
         });
     });
+
 
     
-    app_https.post('/pushData2', function(req,res){
-        var test = {"beneficiaire":""};
-        test["beneficiaire"] = req.body;
+    // app_https.post('/pushData2', function(req,res){
+    //     var test = {"beneficiaire":""};
+    //     test["beneficiaire"] = req.body;
 
-        carteAPuce.max('NumeroCarte')
+    //     carteAPuce.max('NumeroCarte')
            
         
-        .then(function(max)
-        {
-            console.log(max);
-            var newCarteAPuce = carteAPuce.build( 
-                    { 
-                        'solde' : 0,
-                        'etat' : 'valide',
-                        'CodeCarte' : 0,
-                    });
-                newCarteAPuce.save()
-                .then( function() 
-                    {
-                        res.end;
-                    })
-                .catch( function(err) 
-                    {
-                        throw err;
-                    });
+    //     .then(function(max)
+    //     {
+    //         console.log(max);
+    //         var newCarteAPuce = carteAPuce.build( 
+    //                 { 
+    //                     'solde' : 0,
+    //                     'etat' : 'valide',
+    //                     'CodeCarte' : 0,
+    //                 });
+    //             newCarteAPuce.save()
+    //             .then( function() 
+    //                 {
+    //                     res.end;
+    //                 })
+    //             .catch( function(err) 
+    //                 {
+    //                     throw err;
+    //                 });
+
+    //     })
+    //     .catch( function(err) 
+    //     {
+    //             console.log(err);
+    //             return done(err);
+    //     });
+
+    // });
 
 
 
@@ -227,14 +222,9 @@ module.exports = function(app_https, passport) {
 
 
 
-        })
-        .catch( function(err) 
-        {
-                console.log(err);
-                return done(err);
-        });
 
-    });
+
+
 
 
 

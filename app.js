@@ -407,6 +407,59 @@ app_https.get('/pushData', function(req, res) {
           mysqlconnected.query('INSERT INTO users ( id, username, password ) values (?,?,?)')}})});
 
 
+app_https.get('/getadresse', function(req, res) {
+  var data = {"Utilisateurs":""};
+ 
+  db.getConnection(function(err, mysqlconnected){
+
+
+        if(!err){
+          mysqlconnected.query('SELECT NomResponsable, AdresseResponsable from Affilie' , function(err, results) {
+                    if(results.length != 0){
+                      data["Utilisateurs"] = results;
+                     res.json(data);
+                     console.log((data.Utilisateurs[0].AdresseResponsable));
+
+                      
+                    }else{
+                      data["Utilisateurs"] = 'No data Found..';
+                      res.json(data);
+                      
+                        
+          }})}
+
+
+
+ })});
+
+
+app_https.get('/getnombreligne', function(req, res) {
+  var data = {"count":""};
+  
+  db.getConnection(function(err, mysqlconnected){
+
+
+        if(!err){
+          mysqlconnected.query('SELECT COUNT(*) FROM Affilie' , function(err, results) {
+                    if(results.length != 0){
+                      data["count"] = results;
+                     res.json(data);
+                     console.log(parseInt(JSON.stringify(data.count[0]["COUNT(*)"])));
+
+                      
+                    }else{
+                      data["Utilisateurs"] = 'No data Found..';
+                      res.json(data);
+                      
+                         }
+
+                       })}
+
+  
+        })});
+
+
+
 // app_https.post('/users', function(req, res){
 // mysqldb.query('SELECT * FROM users', function(err, rows){
 // res.render('users.ejs', {results : rows});})});
