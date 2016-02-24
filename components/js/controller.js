@@ -1,5 +1,5 @@
 
-var userApp = angular.module('userApp', ['ngRoute', 'angularUtils.directives.dirPagination']);
+var userApp = angular.module('userApp', ['ngRoute','angularUtils.directives.dirPagination','ngFlash']);
       
 
     userApp.controller('userCtrl', ['$scope', '$http', '$log', function ($scope, $http, $log){
@@ -15,8 +15,9 @@ var userApp = angular.module('userApp', ['ngRoute', 'angularUtils.directives.dir
 
 
         $scope.addRowAsyncAsJSON = function(){		
-		$scope.users.push({ 'id':$scope.id, 'username': $scope.username, 'password':$scope.password });}
-        	}]);
+		$scope.users.push({ 'id':$scope.id, 'username': $scope.username, 'password':$scope.password });};
+        
+        }]);
 
         userApp.controller('decideurCtrl', ['$scope', '$http', '$log', function ($scope, $http, $log){
 	        $http.get('https://localhost:3000/listBeneficiaire')
@@ -32,8 +33,8 @@ var userApp = angular.module('userApp', ['ngRoute', 'angularUtils.directives.dir
 	        $scope.sort = function(keyname){
         	$scope.sortKey = keyname;   //set the sortKey to the param passed
         	$scope.reverse = !$scope.reverse; //if true make it false and vice versa
-    }
-        }])
+    		}
+        }]);
 
         userApp.controller('transactionCtrl', ['$scope', '$http', '$log', function ($scope, $http, $log){
 	        
@@ -45,22 +46,34 @@ var userApp = angular.module('userApp', ['ngRoute', 'angularUtils.directives.dir
 	        	.error(function(err){
 	        		$log.error(err);
 	        })
-    	}])
+    	}]);
 
     	userApp.controller('beneficiaireCtrl', ['$scope', '$http', '$log', function ($scope, $http, $log){
 	        
 	        $http.get('https://localhost:3000/Solde')
 		        .success(function(data) {
-		          	$scope.solde = data.solde;
+		          	$scope.soldes = data.Soldes;
 		          	console.log("here",data);
 		        })
 	        	.error(function(err){
 	        		$log.error(err);
 	        })
-    	}])
+    	}]);
+
+    	userApp.controller('lastTransactionCtrl', ['$scope', '$http', '$log', function ($scope, $http, $log){
+	        
+	        $http.get('https://localhost:3000/listLastTransactions')
+		        .success(function(data) {
+		          	$scope.transactions = data.DernieresTransactions;
+		          	console.log("here",data);
+		        })
+	        	.error(function(err){
+	        		$log.error(err);
+	        })
+    	}]);
 
 
-        userApp.controller('ContactFormCtrl',['$scope', '$http', '$log', 
+        userApp.controller('ContactFormCtrl',['$scope', '$http', '$log',
         	function ($scope, $http, $log) {
         		
 	    		
@@ -72,10 +85,11 @@ var userApp = angular.module('userApp', ['ngRoute', 'angularUtils.directives.dir
 	    				'contactMessage' : $scope.contactMessage,
 	       		 });	
 
+	        
 
 	      	$http.post('/contact-form', data)
 	        .success(function(data) {
-	        	console.log("here8",data)
+	        	console.log("here10",data)
 	        }).error(function(err) {
 	          $log.error(err);
 	        
@@ -83,8 +97,17 @@ var userApp = angular.module('userApp', ['ngRoute', 'angularUtils.directives.dir
        		}
        }]);
 
-        userApp.controller('pushCtrl',['$scope', '$http', '$log', 
-        	function ($scope, $http, $log) {
+        userApp.controller('FlashCtrl',['$rootScope','$scope', 'Flash',
+        	function ($rootScope, $scope, Flash) {
+
+         $scope.successAlert = function () {
+    	var message = '<strong>Votre message a bien été envoyé !</strong>';
+    	var id = Flash.create('success', message, 0, {class: 'successMsg', id: 'successMsg'}, true);};
+    	}]);
+
+
+        userApp.controller('pushCtrl',['$rootScope','$scope', '$http', '$log', 'Flash',
+        	function ($rootScope,$scope, $http, $log,Flash) {
         		
 	    		
 	        $scope.pushData = function(){
@@ -92,29 +115,35 @@ var userApp = angular.module('userApp', ['ngRoute', 'angularUtils.directives.dir
 	    				'nom' : $scope.nom,
 	    				'prenom' : $scope.prenom,
 	    				'adresse' : $scope.adresse,
+	    				'ville' : $scope.ville,
 	    				'cp' : $scope.cp,
 	    				'email' : $scope.email,
-	    				'numero' : $scrope.numero,
-	    				'idDecideur' : $scope.idDecideur
+	    				'idDecideur' : $scope.idDecideur,
+	    				'numero' : $scope.numero,
+	    				'Status' : $scope.Status
 	       		 });	
 
 
 	      	$http.post('/pushData', data)
 	        .success(function(data) {
-	        	console.log("here8",data)
+	        	console.log("here9",data)
 	        }).error(function(err) {
 	          $log.error(err);
 	        
 	    	});
        		}
+
+       		$scope.successAlert2 = function () {
+        	var message = '<strong>Vous avez ajouté un bénéfiaire.<strong>';
+        	var id = Flash.create('success', message, 0, {class: 'successMsg2', id: 'successMsg2'}, true);};
        }])
 
-        userApp.controller('carteCtrl',['$scope', '$http', '$log', 
-        	function ($scope, $http, $log) {
+        userApp.controller('carteCtrl',['$rootScope','$scope', '$http', '$log', 'Flash', 
+        	function ($rootScope,$scope, $http, $log, Flash) {
         		
 	    		
 	        $scope.pushCarte = function(){
-	        	var data = ({ 'nombreCarte' : $scope.nombreCarte});
+	        	var data = ({ 'nombreCarte' : $scope.nombreCarte, 'solde' : $scope.solde});
 	    		console.log("here9",$scope.nombreCarte)
 	    		for(var i=0;i<$scope.nombreCarte;i++){
 	    			$http.post('/pushData2', data)
@@ -123,9 +152,16 @@ var userApp = angular.module('userApp', ['ngRoute', 'angularUtils.directives.dir
 	    			}).error(function(err) {
 	    			$log.error(err)
 	       		 });
-	       		 }	
+       		 	}
+			}
 
-       }}]);
+			$scope.successAlert = function () {
+        	var message = '<strong>Vous avez ajouté </strong>' + $scope.nombreCarte + '&nbsp;cartes';
+        	var id = Flash.create('success', message, 0, {class: 'successMsg', id: 'successMsg'}, true);};
+
+
+    	}]);
+   // }]);
 
 	      	// $http.post('/pushData2', data)
 	       //  .success(function(data) {

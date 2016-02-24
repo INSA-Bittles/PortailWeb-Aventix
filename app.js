@@ -140,8 +140,8 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var morgan      = require('morgan');
 var flash    = require('connect-flash');
-// var app_https = express();
-// var express = require('express');
+var sync = require('synchronize');
+
 require('./config/passport')(passport) // pass passport for configuration
 var fs = require('fs');
 var net = require('net');
@@ -155,10 +155,6 @@ var MongoStore = require('connect-mongo')(session);
 var app_https = express();
 
 var nodemailer = require("nodemailer");
-// var smtpTransport = require("nodemailer-smtp-transport");
-// var wellknown = require('nodemailer-wellknown');
-// var transporter = nodemailer.createTransport('smtps://aurelien.landelle@gmail.com:s9TcCrHJTgv3N2@smtp.gmail.com');
-// var smtpTransport = nodemailer.createTransport("SMTP",{
 
 var transporter = nodemailer.createTransport({
     port: 1025,
@@ -172,15 +168,6 @@ var transporter = nodemailer.createTransport({
 //   }
 // });
 
-// var smtpTransport = nodemailer.createTransport(smtpTransport({
-//     host : "localhost",
-    
-//     port: 1025
-//     // auth : {
-//     //     user : "aurelien.landelle@gmail.com",
-//     //     pass : "password"
-//     // }
-// }));
 
 var models = require("./modeles");
 
@@ -320,10 +307,7 @@ db.getConnection(function(err, mysqlconnected){
         console.log ('La base de données est connectée')
         var query2 = mysqlconnected.query('SELECT username FROM users');
 
-// mysqlconnected.query('INSERT INTO users (nom, prenom, solde) VALUES (?,?,?)', ['Dumaine','Rémy','150'], function(err, result) {
-//      if (err) throw err
-//        console.log('Rémy est inséré dans la Table users');
-//  });
+
       }});
 
 

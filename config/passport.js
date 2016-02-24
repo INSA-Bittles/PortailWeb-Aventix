@@ -141,7 +141,8 @@ module.exports = function(passport) {
                 var newUser = User.build( 
                     {
                         'username': username, 
-                        'password': this.generateHash(password)
+                        'password': this.generateHash(password),
+                        'idBeneficiaire' : req.body.idBeneficiaire
                     });
 
                 // set the user's local credentials

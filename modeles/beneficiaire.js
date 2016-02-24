@@ -65,6 +65,7 @@ module.exports = function(sequelize, DataTypes) {
           this.belongsTo( models.carteAPuce, { foreignKey: { name: 'NumeroCarte', allowNull: true} } );
           this.belongsTo( models.User, { foreignKey: { name: 'idBeneficiaire', allowNull: true} } );
           this.belongsTo( models.Decideur, { foreignKey: { name: 'IdDecideur', allowNull: true} } );
+        
         }
       }
   });

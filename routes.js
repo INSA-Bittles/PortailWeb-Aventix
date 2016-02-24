@@ -1,14 +1,18 @@
+'use strict';
+
 module.exports = function(app_https, passport) {
 
     var https = require('https');
     var Sequelize = require('sequelize');
     var models = require("./modeles");
+    var sync = require('synchronize');
     var Beneficiaire = models.Beneficiaire;
     var Decideur = models.Decideur;
     var carteAPuce = models.carteAPuce;
     var GestiondeTransaction = models.GestiondeTransaction;
     var Affilie = models.Affilie;
     var User = models.User;
+    var async = require('async');
 
     // =====================================
     // HOME PAGE (with login links) ========
@@ -92,7 +96,8 @@ module.exports = function(app_https, passport) {
             case 'Beneficiaire':
             {
                 res.render('beneficiaire.ejs', {
-                    user : req.user // get the user out of session and pass to template
+                    user : req.user
+                     // get the user out of session and pass to template
                 });
                 break;
             }
@@ -154,60 +159,152 @@ module.exports = function(app_https, passport) {
         });
     });
     
-    var data3 = {"Solde":""};
+    var data3 = {};
     app_https.get('/Solde', function(req,res){
-    Beneficiaire.findAll({ 
+    Beneficiaire.findById( req.user.dataValues.idBeneficiaire, {
         include: [{  
             model: 
-            carteAPuce, where : { solde : req.user.dataValues.idBeneficiaire} ,
-            
+            carteAPuce, attributes : ['solde', 'etat']
         }]
+        
     })
-    .then(function(solde) {
-        data3["Solde"] = solde;
+    .then(function(Soldes) {
+        data3["Soldes"] = {Soldes};
         res.json(data3),
-        console.log(JSON.stringify(solde))}).catch( function(err) {
+        console.log(JSON.stringify(Soldes))}).catch( function(err) {
             console.log(err);
             return done(err);
         });
     });
 
+// app_https.post('/test', function(req,res){
+    //     User.findOne({where: { 'username' :  username }}).then( function(user) {
+    //     {
+    //         user : req.user,
+    //         IdDecideur : '2001',
+    //         User.findOne({where: { 'username' :  username }}).then( function(user) {
+
+    //     });
+    //     nouveauBeneficiaire.save().then(function(response){
+    //         console.log("ici", response);
+    //     })
+    // })
+
+
+
+ var data4 = {"DernieresTransactions":""};
+    app_https.get('/listLastTransactions', function(req,res){
+    GestiondeTransaction.findAll({ 
+        include: [{  
+            model: 
+            Beneficiaire, 
+            where : { idBeneficiaire : req.user.dataValues.idBeneficiaire}, 
+        }]
+    })
+    .then(function(lastTransactions) {
+        data4["DernieresTransactions"] = lastTransactions;
+        res.json(data4),
+        console.log(JSON.stringify(lastTransactions))}).catch( function(err) {
+            console.log(err);
+            return done(err);
+        });
+    });
 
     
-    // app_https.post('/pushData2', function(req,res){
-    //     var test = {"beneficiaire":""};
-    //     test["beneficiaire"] = req.body;
-
-    //     carteAPuce.max('NumeroCarte')
-           
+    app_https.post('/pushData', function(req,res,next){
+        var test = {"beneficiaire":""};
+        test["beneficiaire"] = req.body;
+        Beneficiaire.max('idBeneficiaire')
         
-    //     .then(function(max)
-    //     {
-    //         console.log(max);
-    //         var newCarteAPuce = carteAPuce.build( 
-    //                 { 
-    //                     'solde' : 0,
-    //                     'etat' : 'valide',
-    //                     'CodeCarte' : 0,
-    //                 });
-    //             newCarteAPuce.save()
-    //             .then( function() 
-    //                 {
-    //                     res.end;
-    //                 })
-    //             .catch( function(err) 
-    //                 {
-    //                     throw err;
-    //                 });
+        .then(function(max)
+        {   
+            console.log(max);
+            
+            var newBeneficiaire = Beneficiaire.build( 
+                    { 
+                        'idBeneficiaire' : max+1,
+                        'nom' : req.body.nom,
+                        'prenom' : req.body.prenom,
+                        'adresse' : req.body.adresse,
+                        'cp' : req.body.cp,
+                        'ville' : req.body.ville,
+                        'email' : req.body.email,
+                        'NumeroCarte' : req.body.numero,
+                        'IdDecideur' : req.body.idDecideur,
+                        'Status' : req.body.Status
+                    });
+                newBeneficiaire.save()
+                .then( function() 
+                    {
+                        res.end;
+                    })
+                .catch( function(err) 
+                    {
+                        throw err;
+                    });
 
-    //     })
-    //     .catch( function(err) 
-    //     {
-    //             console.log(err);
-    //             return done(err);
-    //     });
+        })
+        .catch( function(err) 
+        {
+                console.log(err);
+                return done(err);
+        });
 
-    // });
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    app_https.post('/pushData2', function(req,res,next){
+        var test = {"beneficiaire":""};
+        test["beneficiaire"] = req.body;
+        carteAPuce.max('NumeroCarte')
+        
+        
+        .then(function(max)
+        {   
+            console.log(max);
+            var newCarteAPuce = carteAPuce.build( 
+                    { 
+                        'NumeroCarte' : max=max+1,
+                        'solde' : req.body.solde,
+                        'etat' : 'valide',
+                        'CodeCarte' : '0000'
+                    });
+                newCarteAPuce.save()
+                .then( function() 
+                    {
+                        res.end;
+                    })
+                .catch( function(err) 
+                    {
+                        throw err;
+                    });
+
+        })
+        .catch( function(err) 
+        {
+                console.log(err);
+                return done(err);
+        });
+
+    });
 
 
 

@@ -1,118 +1,82 @@
 <!DOCTYPE html>
 <html ng-app="userApp">
-    <head>
-      <title>Aventix - Mon espace Personnel</title>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-        <link rel="stylesheet" href="https://bootswatch.com/lumen/bootstrap.min.css">
-        
-        <link rel="stylesheet" href="css/main.css">
-        <link rel="icon" type="image/png" sizes="16x16" href="img/favicon.png">
+  <head>
+    <title>Aventix - Mon espace Personnel</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
-        <script src="js/controller.js"></script>
-         <script src="js/dirPagination.js"></script>
-          <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular-route.min.js"></script>
-          <script type="text/javascript">
-          // var userApp = angular.module('userApp', ['ui.bootstrap']);
-          // userApp.controller('userCtrl', function ($scope, $http){
-          // $http.get('http://localhost:3000/userslist').success(function(data) {
-          // $scope.users = data.Utilisateurs;
-          //   });
-          // });
-          
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://bootswatch.com/lumen/bootstrap.min.css">
 
-            //           var userApp = angular.module('userApp', ['ngTouch', 'ui.grid', 'ui.grid.pagination']);
-             
-            // userApp.controller('userCtrl', ['$scope', '$http', function ($scope, $http) {
-            //   $scope.gridOptions1 = {
-            //     paginationPageSizes: [25, 50, 75],
-            //     paginationPageSize: 25,
-            //     columnDefs: [
-            //       { name: 'id' },
-            //       { name: 'username' },
-            //       { name: 'password' }
-            //     ]
-            //   };
-             
-            //   $scope.gridOptions2 = {
-            //     enablePaginationControls: false,
-            //     paginationPageSize: 25,
-            //     columnDefs: [
-            //       { name: 'id' },
-            //       { name: 'username' },
-            //       { name: 'password' }
-            //     ]
-            //   };
-             
-            //   $scope.gridOptions2.onRegisterApi = function (gridApi) {
-            //     $scope.gridApi2 = gridApi;
-            //   }
-             
-            //   $http.get('http://localhost:3000/userslist')
-            //   .success(function (data) {
-            //     $scope.gridOptions1.data = data.Utilisateurs;
-            //     $scope.gridOptions2.users = data.Utilisateurs;
-            //   });
-            // }]);
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="icon" type="image/png" sizes="16x16" href="img/favicon.png">
 
-          </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+    <script src="js/controller.js"></script>
+    <script src="js/dirPagination.js"></script>
+    <script src="js/angular-flash.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular-route.min.js"></script>
 
-</head>
+  </head>
 
-<body ng-controller="beneficiaireCtrl">
+<body>
 
-      
-<nav class="navbar navbar">
-  <div class="container-fluid" style="height:120px;">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="/"><img src="img/logo_aventix.png" alt="Logo - Aventix" /></a>
 
-    </div>
+  <nav class="navbar navbar">
+    <div class="container-fluid" style="height:120px;">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="/"><img src="img/logo_aventix.png" alt="Logo - Aventix" /></a>
+      </div>
       <ul class="nav navbar-nav navbar-right">
-          <li><form style="margin-top:40px;" action="" class="search-form">
-                  <div class="form-group has-feedback">
-                  <label for="search" class="sr-only">Rechercher</label>
-                  <input type="text" class="form-control" name="search" id="search" placeholder="Rechercher">
-                    <span class="glyphicon glyphicon-search form-control-feedback"></span>
-                </div>
-              </form></li><li><a class="btn btn-link" href="/Profile" style="margin-top:35px;"><span class="fa fa-user"></span>&nbsp;&nbsp;<%= user.username %></a></li>
-        </ul>
-    </div>
-</div>
-    </div>
-    <div class="collapse navbar-collapse" id="myNavbar">
-      <ul class="nav navbar-nav">
-        <li id="navbarMenu" class="active"><a href="/"><span class="glyphicon glyphicon-home"></span></a></li>
-        <li><a href="#">Société</a></li>
-        <li><a href="#">Carte Aventix</a></li>
-        <li><a href="#">Utilisateurs</a></li>
-        <li><a href="#">Entreprise</a></li>
-        <li><a href="#">Restaurateurs</a></li>
-        <li><a href="/geolocalisation">Geolocalisation Restaurants</a></li>
+        <li>
+          <form style="margin-top:40px;" action="" class="search-form">
+            <div class="form-group has-feedback">
+              <label for="search" class="sr-only">Rechercher</label>
+              <input type="text" class="form-control" name="search" id="search" placeholder="Rechercher">
+              <span class="glyphicon glyphicon-search form-control-feedback"></span>
+            </div>
+          </form>
+        </li>
+        <li><a class="btn btn-link" href="/Profile" style="margin-top:35px;"><span class="fa fa-user"></span>&nbsp;&nbsp;<%= user.username %></a>
+        </li>
       </ul>
-      <ul class="nav navbar-nav navbar-right social">
-                <li><a href="#"><i class="fa fa-lg fa-facebook"></i></a></li>
-                <li><a href="#"><i class="fa fa-lg fa-twitter"></i></a></li>
-                <li><a href="#"><i class="fa fa-lg fa-google-plus"></i></a></li>
-                <li><a href="#"><i class="fa fa-lg fa-linkedin"></i></a></li>
-      </ul>
-    </div>
-      <ul class="breadcrumb">
-        <li><a href="/">Accueil</a></li>
-        <li><a href="/profile">Profil : <%= user.username %></a></li>
-      </ul>
+  </div>
+
+  <div class="collapse navbar-collapse" id="myNavbar">
+    <ul class="nav navbar-nav">
+      <li id="navbarMenu" class="active"><a href="/"><span class="glyphicon glyphicon-home"></span></a></li>
+      <li><a href="#">Société</a></li>
+      <li><a href="#">Carte Aventix</a></li>
+      <li><a href="#">Utilisateurs</a></li>
+      <li><a href="#">Entreprise</a></li>
+      <li><a href="#">Restaurateurs</a></li>
+      <li><a href="/geolocalisation">Geolocalisation Restaurants</a></li>
+    </ul>
+
+  <ul class="nav navbar-nav navbar-right social">
+    <li><a href="#"><i class="fa fa-lg fa-facebook"></i></a></li>
+    <li><a href="#"><i class="fa fa-lg fa-twitter"></i></a></li>
+    <li><a href="#"><i class="fa fa-lg fa-google-plus"></i></a></li>
+    <li><a href="#"><i class="fa fa-lg fa-linkedin"></i></a></li>
+  </ul>
+  </div>
+
+  <ul class="breadcrumb">
+    <li><a href="/">Accueil</a></li>
+    <li><a href="/profile">Profil : <%= user.username %></a></li>
+  </ul>
 </nav>
+
 <div class="container">
   <div class="page-header text-center">
-        <h1><span class="glyphicons glyphicons-group"></span> Bénéficiaire - Bienvenue <%= user.Beneficiaire.prenom %>&nbsp;<%= user.Beneficiaire.nom %></h1>
-        <a href="/logout" class="btn btn-default btn-sm">Logout</a>
-    </div>
+    <h2><span class="glyphicon glyphicon-credit-card"></span></h2>
+    <h2>Bénéficiaire</h2> 
+    <h3>Bienvenue <%= user.Beneficiaire.prenom %>&nbsp;<%= user.Beneficiaire.nom %></h3>
+      <a href="/logout" class="btn btn-default btn-sm">Logout</a>
+  </div>
+
   <div class="page-header text-center">
     <p>
-
       <strong>Votre nom d'utilisateur</strong> : <%= user.username %><br>
       <strong>Votre identifiant</strong> : <%= user.idBeneficiaire %><br>
       <strong>Votre status :</strong> : <%= user.Beneficiaire.Status %><br>
@@ -120,22 +84,66 @@
       <strong>Votre prénom</strong> : <%= user.Beneficiaire.prenom %><br>
       <strong>Votre adresse</strong> : <%= user.Beneficiaire.adresse %>&nbsp;<%= user.Beneficiaire.cp %>&nbsp;<%= user.Beneficiaire.ville %><br>
       <strong>Votre email</strong> : <%= user.Beneficiaire.email %><br>
-
     </p>
   </div>
-  <div class=".col-xs-12 .col-md-8"><h1>Solde bénéficiaire :</h1>
-  <table style="width:100%">
-    <tr>   
-      <td style="vertical-align: top">
+
+  <div ng-controller="beneficiaireCtrl" class=".col-xs-12 .col-md-8">
+    <h1>Informations Personelles :</h1>
+    <table style="width:100%">
+      <tr>   
+        <td style="vertical-align: top">
+          <table class="table">
+            <tr>
+              <th>Identifiant
+              </th>
+              <th>Nom
+              </th>
+              <th>Prénom
+              </th>
+              <th>Status
+              </th>
+              <th>Numéro de Carte
+              </th>
+              <th>Etat de la carte
+              </th>
+              <th>Solde
+              </th>
+            </tr>
+            <tr ng-repeat="solde in soldes">
+              <td>{{solde.idBeneficiaire}}
+              </td>
+              <td>{{solde.nom}}
+              </td>
+              <td>{{solde.prenom}}
+              </td>
+              <td>{{solde.Status}}
+              </td>
+              <td>{{solde.NumeroCarte}}
+              </td>
+              <td>{{solde.carteAPuce.etat}}
+              </td>
+              <td>{{solde.carteAPuce.solde}}
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div ng-controller="lastTransactionCtrl" class=".col-xs-12 .col-md-8"><h1>Dernières transactions :</h1>
+      <table style="width:100%">
+        <tr>   
+          <td style="vertical-align: top">
             <table class="table">
               <tr>
-                <th>Solde
+                <th>Numéro de transaction
                 </th>
                 <th>Montant
                 </th>
                 <th>Date de l'opération
                 </th>
-                <th>Nuémro de carte
+                <th>Numéro de carte
                 </th>
                 <th>Identifiant affilié
                 </th>
@@ -156,26 +164,32 @@
           </td>
         </tr>
       </table>
-    </div><br>
-    <div class="col-md-6">
-    <strong>Carte volée ou perdue</strong> : <br>
-    <a href="/contact" class="btn btn-default btn-sm"><span class="glyphicon glyphicons-direction"></span>Contactez-nous</a>
+    </div>
+
+  <div  class="col-md-6" style="margin-bottom:80px;">
+    <strong>Carte volée ou perdue</strong> : <br><br>
+      <a href="/contact" class="btn btn-default btn-sm"><span class="glyphicon glyphicons-direction"></span>Contactez-nous</a>
   </div>
+
+  
+
 </div>
 
 <footer class="footer">
-    <div class="container">
-        <ul class="nav navbar-nav">
-             <a class="navbar-brand" href="/"><img src="img/logo_aventix.png" width="100px" height="35px" alt="Logo - Aventix" /></a>
-                <li><a href="/profile"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;Mon Compte</a></li>
-                <li><a href="contact">Contact</a></li>
-                <li><a href="#">Mentions légales</a></li>
-                <li><a href="#">Plan du site</a></li>
-      </ul>
-    </div>
+  <div class="container">
+    <ul class="nav navbar-nav">
+      <a class="navbar-brand" href="/"><img src="img/logo_aventix.png" width="100px" height="35px" alt="Logo - Aventix" /></a>
+      <li><a href="/profile"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;Mon Compte</a></li>
+      <li><a href="contact">Contact</a></li>
+      <li><a href="#">Mentions légales</a></li>
+      <li><a href="#">Plan du site</a></li>
+    </ul>
+  </div>
 </footer>
+
 </body>
 
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/jquery-1.11.3.min.js"></script>
+  <script src="js/jquery-1.11.3.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+
 </html>
