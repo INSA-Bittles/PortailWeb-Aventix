@@ -2,39 +2,26 @@
 var userApp = angular.module('userApp', ['ngRoute','angularUtils.directives.dirPagination','ngFlash']);
       
 
-    userApp.controller('userCtrl', ['$scope', '$http', '$log', function ($scope, $http, $log){
+  //   userApp.controller('userCtrl', ['$scope', '$http', '$log', function ($scope, $http, $log){
         
-        $http.get('https://localhost:3000/userslist')
-	        .success(function(data) {
-	          	$scope.users = data.Utilisateurs;
-	        })
-        	.error(function(err){
-        		$log.error(err);
-        })
+  //       $http.get('https://localhost:3000/userslist')
+	 //        .success(function(data) {
+	 //          	$scope.users = data.Utilisateurs;
+	 //        })
+  //       	.error(function(err){
+  //       		$log.error(err);
+  //       })
 
 
 
-        $scope.addRowAsyncAsJSON = function(){		
-		$scope.users.push({ 'id':$scope.id, 'username': $scope.username, 'password':$scope.password });};
+  //       $scope.addRowAsyncAsJSON = function(){		
+		// $scope.users.push({ 'id':$scope.id, 'username': $scope.username, 'password':$scope.password });};
         
-        }]);
+  //       }]);
 
-        userApp.controller('decideurCtrl', ['$scope', '$http', '$log', function ($scope, $http, $log){
-	        $http.get('https://localhost:3000/listBeneficiaire')
-		        .success(function(data) {
-		          	$scope.beneficiaires = data.Beneficiaires;
-		          	console.log("here",data);
-
-		        })
-	        	.error(function(err){
-	        		$log.error(err);
-	        })
-
-	        $scope.sort = function(keyname){
-        	$scope.sortKey = keyname;   //set the sortKey to the param passed
-        	$scope.reverse = !$scope.reverse; //if true make it false and vice versa
-    		}
-        }]);
+        // userApp.controller('decideurCtrl', ['$scope', '$http', '$log', function ($scope, $http, $log){
+		    
+        // }]);
 
         userApp.controller('transactionCtrl', ['$scope', '$http', '$log', function ($scope, $http, $log){
 	        
@@ -50,14 +37,16 @@ var userApp = angular.module('userApp', ['ngRoute','angularUtils.directives.dirP
 
     	userApp.controller('beneficiaireCtrl', ['$scope', '$http', '$log', function ($scope, $http, $log){
 	        
-	        $http.get('https://localhost:3000/Solde')
-		        .success(function(data) {
-		          	$scope.soldes = data.Soldes;
-		          	console.log("here",data);
+		    
+		        $http.get('https://localhost:3000/Solde')
+			        .success(function(data) {
+			          	$scope.soldes = data.Soldes;
+			          	console.log("here",data);
+			        })
+		        	.error(function(err){
+		        		$log.error(err);
 		        })
-	        	.error(function(err){
-	        		$log.error(err);
-	        })
+	    	
     	}]);
 
     	userApp.controller('lastTransactionCtrl', ['$scope', '$http', '$log', function ($scope, $http, $log){
@@ -87,80 +76,232 @@ var userApp = angular.module('userApp', ['ngRoute','angularUtils.directives.dirP
 
 	        
 
-	      	$http.post('/contact-form', data)
-	        .success(function(data) {
-	        	console.log("here10",data)
-	        }).error(function(err) {
-	          $log.error(err);
-	        
-	    	});
+		      	$http.post('/contact-form', data)
+		        .success(function(data) {
+		        	console.log("here10",data)
+		        }).error(function(err) {
+		          $log.error(err);
+		        
+		    	});
        		}
        }]);
 
         userApp.controller('FlashCtrl',['$rootScope','$scope', 'Flash',
         	function ($rootScope, $scope, Flash) {
 
-         $scope.successAlert = function () {
-    	var message = '<strong>Votre message a bien été envoyé !</strong>';
-    	var id = Flash.create('success', message, 0, {class: 'successMsg', id: 'successMsg'}, true);};
+	         $scope.successAlert = function () {
+	    	var message = '<strong>Votre message a bien été envoyé !</strong>';
+	    	var id = Flash.create('success', message, 0, {class: 'successMsg', id: 'successMsg'}, true);};
+    	
     	}]);
 
 
         userApp.controller('pushCtrl',['$rootScope','$scope', '$http', '$log', 'Flash',
         	function ($rootScope,$scope, $http, $log,Flash) {
         		
-	    		
-	        $scope.pushData = function(){
-	        	var data = ({
-	    				'nom' : $scope.nom,
-	    				'prenom' : $scope.prenom,
-	    				'adresse' : $scope.adresse,
-	    				'ville' : $scope.ville,
-	    				'cp' : $scope.cp,
-	    				'email' : $scope.email,
-	    				'idDecideur' : $scope.idDecideur,
-	    				'numero' : $scope.numero,
-	    				'Status' : $scope.Status
-	       		 });	
+        	var refresh = function(){  
+		        $http.get('/listBeneficiaire')
+			        .success(function(data) {
+			          	$scope.beneficiaires = data.Beneficiaires;
+			          	console.log("here",data);
+			          	$scope.beneficiaire = "";
+			          	
+			        })
+		        	.error(function(err){
+		        		$log.error(err);
+		        });
+	    	};
+		    refresh();
+	    	 
+		        $scope.pushData = function(){
+		        	console.log($scope.beneficiaire)
 
-
-	      	$http.post('/pushData', data)
-	        .success(function(data) {
-	        	console.log("here9",data)
-	        }).error(function(err) {
-	          $log.error(err);
-	        
-	    	});
-       		}
+			      	$http.post('/pushData', $scope.beneficiaire)
+			        .success(function(response) {
+			        	console.log("here9",response);
+			        	refresh();
+			        }).error(function(err) {
+			          $log.error(err);
+			        
+			    	});
+	       		};
+	       		
+	       
 
        		$scope.successAlert2 = function () {
         	var message = '<strong>Vous avez ajouté un bénéfiaire.<strong>';
         	var id = Flash.create('success', message, 0, {class: 'successMsg2', id: 'successMsg2'}, true);};
-       }])
+
+        	  
+
+	        $scope.sort = function(keyname){
+        	$scope.sortKey = keyname;   //set the sortKey to the param passed
+        	$scope.reverse = !$scope.reverse; //if true make it false and vice versa
+    		};
+
+    		$scope.remove = function(idBeneficiaire){
+    			console.log(idBeneficiaire);
+    			$http.delete('/listBeneficiaire/' + idBeneficiaire).success(function(response){
+    				refresh();
+    			});
+    		};
+
+    		$scope.edit = function(idBeneficiaire){
+    			console.log(idBeneficiaire);
+    			$http.get('/listBeneficiaire/' + idBeneficiaire).success(function(response){
+    				$scope.beneficiaire = response;
+
+    			});
+    		};
+
+    		$scope.update = function(){
+    			console.log($scope.beneficiaire.idBeneficiaire);
+    			$http.put('/listBeneficiaire/' + $scope.beneficiaire.idBeneficiaire, $scope.beneficiaire).success(function(response){
+    				refresh();
+    			});
+    		};
+
+    		$scope.deselect = function(){
+    			$scope.beneficiaire = "";
+    		};
+
+    		$scope.successAlert4 = function () {
+        	var message = '<strong>Le bénéficiaire a bien été modifié.<strong>';
+        	var id = Flash.create('success', message, 0, {class: 'successMsg4', id: 'successMsg4'}, true);};
+
+    		$scope.successAlert5 = function () {
+        	var message = '<strong>Le bénéficiaire a bien été supprimé.<strong>';
+        	var id = Flash.create('success', message, 0, {class: 'successMsg5', id: 'successMsg5'}, true);};
+
+        	$http.get('https://localhost:3000/Solde')
+			        .success(function(data) {
+			          	$scope.soldes = data.Soldes;
+			          	console.log("here",data);
+			        })
+		        	.error(function(err){
+		        		$log.error(err);
+		        });
+       }]);
+
+		userApp.controller('soldeCtrl',['$rootScope','$scope', '$http', '$log', 'Flash',
+        	function ($rootScope,$scope, $http, $log,Flash) {
+
+    	$scope.updateSolde = function(){
+			console.log($scope.beneficiaire.NumeroCarte);
+			$http.put('/listBeneficiaireS/' + $scope.beneficiaire.NumeroCarte, $scope.beneficiaire).success(function(response){
+				refresh();
+			});
+		};
+
+		$scope.removeCarte = function(NumeroCarte){
+    			console.log(NumeroCarte);
+    			$http.delete('/listCartesR/' + NumeroCarte).success(function(response){
+    			});
+    	};
+
+
+        $scope.deselect2 = function(){
+    			$scope.beneficiaire = "";
+    		};
+
+    	$scope.successAlert6 = function () {
+        	var message = '<strong>Le solde du bénéficiaire a bien été modifié.<strong>';
+        	var id = Flash.create('success', message, 0, {class: 'successMsg6', id: 'successMsg6'}, true);};
+
+        $scope.successAlert7 = function () {
+        	var message = '<strong>La carte du bénéficiaire a bien été supprimé.<strong>';
+        	var id = Flash.create('success', message, 0, {class: 'successMsg6', id: 'successMsg6'}, true);};	
+        
+        }]);
+		
+		userApp.controller('userCtrl',['$rootScope','$scope', '$http', '$log', 'Flash',
+        	function ($rootScope,$scope, $http, $log,Flash) {
+
+        $scope.removeUser = function(idBeneficiaire){
+    			console.log(idBeneficiaire);
+    			$http.delete('/listUsersR/' + idBeneficiaire).success(function(response){
+    			});
+    	};
+
+    	$scope.successAlert8 = function () {
+        	var message = '<strong>La compte du bénéficiaire a bien été supprimé.<strong>';
+        	var id = Flash.create('success', message, 0, {class: 'successMsg6', id: 'successMsg6'}, true);};
+
+    	}]);
 
         userApp.controller('carteCtrl',['$rootScope','$scope', '$http', '$log', 'Flash', 
         	function ($rootScope,$scope, $http, $log, Flash) {
         		
 	    		
 	        $scope.pushCarte = function(){
-	        	var data = ({ 'nombreCarte' : $scope.nombreCarte, 'solde' : $scope.solde});
-	    		console.log("here9",$scope.nombreCarte)
-	    		for(var i=0;i<$scope.nombreCarte;i++){
+	        	var data = ({'solde' : $scope.solde});
+	    		console.log("here9",$scope.solde)
+	    		// for(var i=0;i<$scope.nombreCarte;i++){
 	    			$http.post('/pushData2', data)
 	    			.success(function(data) {
 	    			console.log("here8",data)
 	    			}).error(function(err) {
 	    			$log.error(err)
 	       		 });
-       		 	}
-			}
+       		 	// }
+			};
 
 			$scope.successAlert = function () {
-        	var message = '<strong>Vous avez ajouté </strong>' + $scope.nombreCarte + '&nbsp;cartes';
+        	var message = '<strong>Vous avez ajouté une carte</strong>';
         	var id = Flash.create('success', message, 0, {class: 'successMsg', id: 'successMsg'}, true);};
+
+        	$http.get('https://localhost:3000/listeCartes')
+		        .success(function(data) {
+		          	$scope.cartes = data;
+		          	console.log("here",data);
+		        })
+	        	.error(function(err){
+	        		$log.error(err);
+	        })
+    	}]);
+
+        userApp.controller('passwordCtrl',['$rootScope','$scope', '$http', '$log', 'Flash', 
+        	function ($rootScope,$scope, $http, $log, Flash) {
+        		
+	    		
+	        $scope.updatePassword = function(){
+	        	console.log($scope.user.idBeneficiaire);
+	        	$http.put('/listUsersB/' + $scope.user.idBeneficiaire, $scope.user).success(function(response){
+    				console.log("ok");
+    			});
+	        };
+
+    		$scope.updatePassword2 = function(){
+	        	console.log($scope.user.idDecideur);
+	        	$http.put('/listUsersD/' + $scope.user.idDecideur, $scope.user).success(function(response){
+    				console.log("ok");
+    			});
+	        };
+
+    		$scope.updatePassword3 = function(){
+	        	console.log($scope.user.idAffilie);
+	        	$http.put('/listUsersA/' + $scope.user.idAffilie, $scope.user).success(function(response){
+    				console.log("ok");
+    			});
+    		};
+	    		
+	    			// $http.put('/password', data)
+	    			// .success(function(data) {
+	    			// console.log("here1",data);
+	    			// }).error(function(err) {
+	    			// $log.error(err)
+	       // 		 });
+			
+
+			$scope.successAlert3 = function () {
+        	var message = '<strong>Votre mot de passe a été modifié.</strong>';
+        	var id = Flash.create('success', message, 0, {class: 'successMsg3', id: 'successMsg3'}, true);};
 
 
     	}]);
+
+
+
    // }]);
 
 	      	// $http.post('/pushData2', data)

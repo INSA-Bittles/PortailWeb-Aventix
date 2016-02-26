@@ -165,7 +165,21 @@
         </tr>
       </table>
     </div>
-
+  <div class=".col-xs-6 .col-md-4" ng-controller="passwordCtrl">
+      <h1 id="update-password"><i class="fa fa-unlock"></i>&nbsp;Modifier votre mot de passe :</h1>
+      <form style="margin-bottom:80px;" name="passwordForm" ng-submit="updatePassword()" novalidate>
+        <div class="form-group">
+          <label><h4>Entrer votre ID :</h4></label>
+            <input type="text" class="form-control" ng-model="user.idBeneficiaire" name="idBeneficiaire" required="name"><span ng-show="passwordForm.idBeneficiaire.$error.required">Ce champ doit être renseigné.</span><br>
+            <label><h4>Nouveau mot de passe :</h4></label>
+            <input type="text" class="form-control" ng-model="user.mdp" name="pass" required="name"><span ng-show="passwordForm.mdp.$error.required">Ce champ doit être renseigné.</span><br>
+            <label><h4>Confirmer mot de passe</h4></label> 
+            <input type="password" class="form-control" ng-model="user.password" name="password" required="name"><span ng-show="passwordForm.password.$error.required">Ce champ doit être renseigné.</span><br>
+            <button type="submit" class="btn btn-info btn-lg" ng-disabled="passwordForm.$invalid" ng-click="successAlert3()">Valider</button><br><br>
+            <flash-message duration="10000" show-close="true" on-dismiss="myCallback(flash)" ></flash-message>
+        </div>
+      </form>
+  </div>
   <div  class="col-md-6" style="margin-bottom:80px;">
     <strong>Carte volée ou perdue</strong> : <br><br>
       <a href="/contact" class="btn btn-default btn-sm"><span class="glyphicon glyphicons-direction"></span>Contactez-nous</a>

@@ -13,6 +13,7 @@ module.exports = function(app_https, passport) {
     var Affilie = models.Affilie;
     var User = models.User;
     var async = require('async');
+    var bcrypt   = require('bcrypt-nodejs');
 
     // =====================================
     // HOME PAGE (with login links) ========
@@ -54,18 +55,18 @@ module.exports = function(app_https, passport) {
     // SIGNUP ==============================
     // =====================================
     // show the signup form
-    app_https.get('/signup', function(req, res) 
-    {
+    // app_https.get('/signup', function(req, res) 
+    // {
 
-        // render the page and pass in any flash data if it exists
-        res.render('signup.ejs',{pageTitle: 'Aventix - Signup', message: req.flash('signupMessage')});
-    });
+    //     // render the page and pass in any flash data if it exists
+    //     res.render('signup.ejs',{pageTitle: 'Aventix - Signup', message: req.flash('signupMessage')});
+    // });
 
     
      // process the signup form
     app_https.post('/signup', passport.authenticate('local-signup', {
-        successRedirect : '/', // redirect to the secure profile section
-        failureRedirect : '/signup', // redirect back to the signup page if there is an error
+        successRedirect : '/profile', // redirect to the secure profile section
+        failureRedirect : '/', // redirect back to the signup page if there is an error
         failureFlash : true // allow flash messages
     }));
 
@@ -129,13 +130,13 @@ module.exports = function(app_https, passport) {
         include: [{  
             model: 
             Decideur, 
-            where : { idDecideur : req.user.dataValues.idDecideur} 
+            where : { idDecideur : req.user.dataValues.idDecideur}
         }]
     })
     .then(function(Beneficiaire) {
         data["Beneficiaires"] = Beneficiaire;
         res.json(data),
-    console.log(JSON.stringify(Beneficiaire))}).catch( function(err) {
+    console.log(JSON.stringify(data))}).catch( function(err) {
             console.log(err);
             return done(err);
         });
@@ -211,9 +212,10 @@ module.exports = function(app_https, passport) {
     });
 
     
-    app_https.post('/pushData', function(req,res,next){
-        var test = {"beneficiaire":""};
-        test["beneficiaire"] = req.body;
+    app_https.post('/pushData', function(req,res){
+        // var test = {"beneficiaire":""};
+        // test["beneficiaire"] = req.body;
+        console.log(req.body),
         Beneficiaire.max('idBeneficiaire')
         
         .then(function(max)
@@ -229,8 +231,8 @@ module.exports = function(app_https, passport) {
                         'cp' : req.body.cp,
                         'ville' : req.body.ville,
                         'email' : req.body.email,
-                        'NumeroCarte' : req.body.numero,
-                        'IdDecideur' : req.body.idDecideur,
+                        'NumeroCarte' : req.body.NumeroCarte,
+                        'IdDecideur' : req.body.IdDecideur,
                         'Status' : req.body.Status
                     });
                 newBeneficiaire.save()
@@ -251,14 +253,68 @@ module.exports = function(app_https, passport) {
         });
 
     });
+    
 
 
+    var data5 = {"Cartes":""};
+    app_https.get('/listeCartes', function(req, res) {
+    carteAPuce.max('NumeroCarte')
+    
+        .then(function(max) {
+        data5["Cartes"] = {max};
+        res.json(data5),
+        console.log(JSON.stringify(max))}).catch( function(err) {
+            console.log(err);
+            return done(err);
+        });
+    });
 
 
+    app_https.delete('/listBeneficiaire/:idBeneficiaire', function(req,res){
+        
+        var idBeneficiaire = req.params.idBeneficiaire;
+        console.log(idBeneficiaire);
+        Beneficiaire.destroy({where : { 'idBeneficiaire' : idBeneficiaire}})
+        .then(function(destroy) {console.log('Bénéficiaire supprimé');})
+            .catch( function(err) {
+            console.log(err);
+            return done(err);
+        });
+    });
 
+    app_https.get('/listBeneficiaire/:idBeneficiaire', function(req,res){
+        var idBeneficiaire = req.params.idBeneficiaire;
+        console.log(idBeneficiaire);
+        Beneficiaire.find({where : { 'idBeneficiaire' : idBeneficiaire}})
+        .then(function(id) {console.log(JSON.stringify(id));res.json(id);})
+            .catch( function(err) {
+            console.log(err);
+            return done(err);
+        });
+    });
 
-
-
+    app_https.put('/listBeneficiaire/:idBeneficiaire', function(req,res){
+        var idBeneficiaire = req.params.idBeneficiaire;
+        console.log(req.body);
+        Beneficiaire.update({
+                'nom' : req.body.nom,
+                'prenom' : req.body.prenom,
+                'adresse' : req.body.adresse,
+                'cp' : req.body.cp,
+                'ville' : req.body.ville,
+                'email' : req.body.email,
+                'NumeroCarte' : req.body.numero,
+                'IdDecideur' : req.body.idDecideur,
+                'Status' : req.body.Status
+            },{where : { 'idBeneficiaire' : idBeneficiaire}})
+        .then(function(Beneficiaire){
+            console.log(Beneficiaire);
+            res.end;
+        }).catch( function(err) {
+            console.log(err);
+            return done(err);
+        });
+    });
 
 
 
@@ -306,12 +362,102 @@ module.exports = function(app_https, passport) {
 
     });
 
+    // var data = {"Users":""};
+    // app_https.get('/listUsers', function(req,res){
+    // User.findById( req.user.dataValues.id)  
+    // .then(function(Users) {
+    //     data["Users"] = Users;
+    //     res.json(data),
+    // console.log(JSON.stringify(Users))}).catch( function(err) {
+    //         console.log(err);
+    //         return done(err);
+    //     });
+    // });
+
+    app_https.put('/listUsersB/:idBeneficiaire', function(req, res) {
+    var idBeneficiaire = req.params.idBeneficiaire;
+    console.log(req.body);
+    User.update({
+                'password': bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(8), null)
+            },{where : { 'idBeneficiaire' : idBeneficiaire}})
+        .then(function(User){
+            console.log(User);
+            res.end;
+        }).catch( function(err) {
+            console.log(err);
+            return done(err);
+        });
+    });
+
+    app_https.put('/listUsersD/:idDecideur', function(req, res) {
+    var idDecideur = req.params.idDecideur;
+    console.log(req.body);
+    User.update({
+                'password': bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(8), null)
+            },{where : { 'idDecideur' : idDecideur}})
+        .then(function(User){
+            console.log(User);
+            res.end;
+        }).catch( function(err) {
+            console.log(err);
+            return done(err);
+        });
+    });
+
+    app_https.put('/listUsersA/:idAffilie', function(req, res) {
+    var idAffilie = req.params.idAffilie;
+    console.log(req.body);
+    User.update({
+                'password': bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(8), null)
+            },{where : { 'idAffilie' : idAffilie}})
+        .then(function(User){
+            console.log(User);
+            res.end;
+        }).catch( function(err) {
+            console.log(err);
+            return done(err);
+        });
+    });
 
 
+    app_https.put('/listBeneficiaireS/:NumeroCarte', function(req, res) {
+    var NumeroCarte = req.params.NumeroCarte;
+    console.log(req.body);
+    carteAPuce.update({
+                'solde': req.body.solde
+            },{where : { 'NumeroCarte' : NumeroCarte}})
+        .then(function(NumeroCarte){
+            console.log(NumeroCarte);
+            res.end;
+        }).catch( function(err) {
+            console.log(err);
+            return done(err);
+        });
+    });
 
+    app_https.delete('/lisCartesR/:NumeroCarte', function(req,res){
+        
+        var NumeroCarte = req.params.NumeroCarte;
+        console.log(NumeroCarte);
+        carteAPuce.destroy({where : { 'NumeroCarte' : NumeroCarte}})
+        .then(function(destroy) {console.log('La carte a été supprimée');})
+            .catch( function(err) {
+            console.log(err);
+            return done(err);
+        });
+    });
 
-
-
+    app_https.delete('/listUsersR/:idBeneficiaire', function(req,res){
+        
+        var idBeneficiaire = req.params.idBeneficiaire;
+        console.log(idBeneficiaire);
+        User.destroy({where : { 'idBeneficiaire' : idBeneficiaire}})
+        .then(function(destroy) {console.log("Le compte utilsiateur été supprimée");})
+            .catch( function(err) {
+            console.log(err);
+            return done(err);
+        });
+    });
 
 
 

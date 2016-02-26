@@ -60,7 +60,9 @@
             //     $scope.gridOptions2.users = data.Utilisateurs;
             //   });
             // }]);
-
+            function showDiv() {
+            document.getElementById('numeroCarteDiv').style.display = "block";
+            }
           </script>
             <style>
               
@@ -153,9 +155,23 @@
     </p>
   </div>
     
+<h1><span class="fa fa-sign-in"></span> Créer des cartes :</h1>
 
-
-<div class=".col-xs-12 .col-md-8" ng-controller="decideurCtrl"><h1>Liste des Bénéficiaires :</h1>
+  <div class=".col-xs-6 .col-md-4" ng-controller="carteCtrl">
+      <h3 id="souscription_benef">Souscrire de nouveaux béneficiaires</h3>
+      <form style="margin-bottom:10px;" name="carteForm" ng-submit="pushCarte()" novalidate>
+        <div class="form-group">
+            <!-- <label><h4>Sélectionner le nombre de cartes</h4></label>
+            <input type="text" class="form-control" ng-model="nombreCarte" name="nombreCarte" required="name"><span ng-show="carteForm.nombreCarte.$error.required">Ce champ doit être renseigné.</span><br> -->
+            <label><h4>Taper le solde pour le nouveau bénéficiaire :</h4></label> 
+            <input type="text" class="form-control" ng-model="solde" name="solde" required="name"><span ng-show="carteForm.solde.$error.required">Ce champ doit être renseigné.</span><br><br> 
+            <button type="submit" class="btn btn-info btn-lg" ng-disabled="carteForm.$invalid" ng-click="successAlert()" >Créer une carte</button><br><br>
+            <flash-message duration="10000" show-close="true" on-dismiss="myCallback(flash)" ></flash-message>
+        </div>
+      </form><button class="btn btn-info btn-lg" name="answer" value="Show Div" onclick="showDiv()">Obtenir numéro de la carte ajoutée :<div  id="numeroCarteDiv" style="display:none;" ng-repeat="carte in cartes">{{carte.max}}</div></button>
+  </div> 
+<div ng-controller="pushCtrl">
+<div class=".col-xs-12 .col-md-8" ><h1>Liste des Bénéficiaires :</h1>
   <form class="form-inline">
         <div class="form-group">
             <label >Rechercher</label>
@@ -165,7 +181,7 @@
   <table style="width:100%">
     <tr>   
       <td style="vertical-align: top">
-            <table class="table">
+            <table class="table" >
               <tr>
                 <th ng-click="sort('idBeneficiaire')">Id&nbsp;<span class="glyphicon sort-icon" ng-show="sortKey=='idBeneficiaire'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
                 </th>
@@ -185,8 +201,31 @@
                 </th>
                 <th ng-click="sort('NumeroCarte')">Numéro de carte du béneficiaire<span class="glyphicon sort-icon" ng-show="sortKey=='NumeroCarte'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
                 </th>
+                <th ng-click="sort('IdDecideur')">ID Decideur<span class="glyphicon sort-icon" ng-show="sortKey=='IdDecideur'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                </th>
+                <th>Action</th>
+                <th>&nbsp;</th>
+                <th>&nbsp;</th>
               </tr>
-              <tr dir-paginate="beneficiaire in beneficiaires | orderBy:sortKey:reverse|filter:search|itemsPerPage:10">
+              <tbody>
+                <tr>
+                  <td></td>
+                  <td><input type="text" class="form-control" ng-model="beneficiaire.nom" name="nom" required="name"></td>
+                  <td><input type="text" class="form-control" ng-model="beneficiaire.prenom" name="prenom" required="name"></td>
+                  <td><input type="text" class="form-control" ng-model="beneficiaire.adresse" name="adresse" required="name"></td>
+                  <td><input type="text" class="form-control" ng-model="beneficiaire.cp" name="cp" required="name"></td>
+                  <td><input type="text" class="form-control" ng-model="beneficiaire.ville" name="ville" required="name"></td>
+                  <td><input type="text" class="form-control" ng-model="beneficiaire.email" name="email" required="email"></td>
+                  <td><input type="text" class="form-control" ng-model="beneficiaire.Status" name="Status" required="name"></td>
+                  <td><input type="text" class="form-control" ng-model="beneficiaire.NumeroCarte" name="NumeroCarte" required="name"></td>
+                  <td><input type="text" class="form-control" ng-model="beneficiaire.IdDecideur" name="idDecideur" required="name"></td>
+                  <td><button type="submit" class="btn btn-primary btn-lg" ng-disabled="benefForm.$invalid" ng-click="pushData(); successAlert2()">Ajouter un bénéficiaire</button><br>
+                </td>
+                <td><button type="submit" class="btn btn-info btn-lg"  ng-click="update(); successAlert4()">Update</button></td>
+                <td><button type="submit" class="btn btn-info btn-lg"  ng-click="deselect()">Effacer</button></td>
+                
+                </tr>
+              <tr dir-paginate="beneficiaire in beneficiaires | orderBy:sortKey:reverse|filter:search|itemsPerPage:5">
                 <td>{{beneficiaire.idBeneficiaire}}
                 </td>
                 <td>{{beneficiaire.nom}}
@@ -204,36 +243,30 @@
                 <td>{{beneficiaire.Status}}
                 </td>
                 <td>{{beneficiaire.NumeroCarte}}
-                </td>         
+                </td>
+                <td>{{beneficiaire.IdDecideur}}
+                </td>
+                <td><button type="submit" class="btn btn-danger btn-lg"  ng-click="remove(beneficiaire.idBeneficiaire); successAlert5()">Supprimer</button>
+                </td>
+                <td><button type="submit" class="btn btn-warning btn-lg"  ng-click="edit(beneficiaire.idBeneficiaire)">Editer</button>
+                </td>        
               </tr>
+              </tbody>
             </table>
           </td>
         </tr>
       </table>
       <dir-pagination-controls max-size="5" direction-links="true" boundary-links="true" ></dir-pagination-controls>
+    </div><flash-message duration="10000" show-close="true" on-dismiss="myCallback(flash)" ></flash-message>
     </div>
 
 <div ng-controller="FlashCtrl">    
 
     <div class=".col-xs-6 .col-md-4">
 
-    <h1><span class="fa fa-sign-in"></span> Créer un compte beneficiaire</h1>
-
-  <div class=".col-xs-6 .col-md-4" ng-controller="carteCtrl">
-      <h3 id="souscription_benef">Souscrire de nouveaux beneficiaires</h3>
-      <form style="margin-bottom:80px;" name="carteForm" ng-submit="pushCarte()" novalidate>
-        <div class="form-group">
-            <label><h4>Sélectionner le nombre de cartes</h4></label>
-            <input type="text" class="form-control" ng-model="nombreCarte" name="nombreCarte" required="name"><span ng-show="carteForm.nombreCarte.$error.required">Ce champ doit être renseigné.</span><br>
-            <label><h4>Sélectionner le solde</h4></label> 
-            <input type="text" class="form-control" ng-model="solde" name="solde" required="name"><span ng-show="carteForm.solde.$error.required">Ce champ doit être renseigné.</span><br><br> 
-            <button type="submit" class="btn btn-info btn-lg" ng-disabled="carteForm.$invalid" ng-click="successAlert()">Créer cartes</button><br><br>
-            <flash-message duration="10000" show-close="true" on-dismiss="myCallback(flash)" ></flash-message>
-        </div>
-      </form>
-  </div>   
-<div ng-controller="pushCtrl">
-    <!-- LOGIN FORM -->
+      
+<!-- <div ng-controller="pushCtrl">
+    
     <h1><span class="fa fa-user-plus"></span> Créer un compte beneficiaire</h1>
     <form style="margin-bottom:80px;" name="beneficiaireForm" ng-submit="pushData()" novalidate>
         <div class="form-group">
@@ -277,30 +310,63 @@
 
     </form>
   </div>
-</div>
+</div> -->
 
 
 
-    <div class=".col-xs-6 .col-md-4">
-    <h1><span class="fa fa-user-plus"></span> Créer le compte Utilisateur du beneficiaire</h1>
+    <div class=".col-xs-6 .col-md-4"  ng-controller="userCtrl">
+    <h1><span class="fa fa-user-plus"></span> Créer le compte Utilisateur du bénéficiaire :</h1>
     <!-- LOGIN FORM -->
     <form style="margin-bottom:80px;" name="userForm" action="/signup" method="post" novalidate>
         <div class="form-group">
             <label>idBeneficiaire</label>
-            <input type="text" class="form-control" name="idBeneficiaire" required="name"><span ng-show="userForm.idBeneficiaire.$error.required">Ce champ doit être renseigné.</span>
+            <input type="text" class="form-control" ng-model="user.idBeneficiaire" name="idBeneficiaire" required="name"><span ng-show="userForm.idBeneficiaire.$error.required">Ce champ doit être renseigné.</span>
         </div>
         <div class="form-group">
             <label>Login</label>
-            <input type="text" class="form-control" name="username" required="name"><span ng-show="userForm.username.$error.required">Ce champ doit être renseigné.</span>
+            <input type="text" class="form-control" ng-model="user.username"  name="username" required="name"><span ng-show="userForm.username.$error.required">Ce champ doit être renseigné.</span>
         </div>
         <div class="form-group">
             <label>Mot de passe</label>
-            <input type="password" class="form-control" name="password" required="password"><span ng-show="userForm.password.$error.required">Ce champ doit être renseigné.</span>
+            <input type="password" class="form-control" ng-model="user.password" name="password" required="password"><span ng-show="userForm.password.$error.required">Ce champ doit être renseigné.</span>
         </div>
-        <button type="submit" ng-disabled="userForm.$invalid" class="btn btn-info btn-lg">Créer</button>
+        <button type="submit" ng-disabled="userForm.$invalid" class="btn btn-info btn-lg">Créer</button>&nbsp;&nbsp;&nbsp;<button type="submit" class="btn btn-danger btn-lg"  ng-click="removeUser(user.idBeneficiaire); successAlert8()">Supprimer le compte</button>
     </form>
     </div>
 </div>
+
+  <div class=".col-xs-6 .col-md-4" ng-controller="soldeCtrl">
+      <h1 id="update-password"><span class="glyphicon glyphicon-credit-card"></span>&nbsp;Modifier le solde d'un bénéficiaire :</h1>
+      <form style="margin-bottom:80px;" name="passwordForm" ng-submit="updateSolde()" novalidate>
+        <div class="form-group">
+          <label><h4>Entrer le numéro de carte du bénéficiaire :</h4></label>
+            <input type="text" class="form-control" ng-model="beneficiaire.NumeroCarte" name="NumeroCarte" required="name"><span ng-show="passwordForm.NumeroCarte.$error.required">Ce champ doit être renseigné.</span><br>
+            <label><h4>Nouveau solde :</h4></label>
+            <input type="text" class="form-control" ng-model="beneficiaire.solde" name="solde" required="name"><span ng-show="passwordForm.solde.$error.required">Ce champ doit être renseigné.</span><br><br>
+            <button type="submit" class="btn btn-info btn-lg" ng-disabled="passwordForm.$invalid" ng-click="successAlert6()">Valider</button>&nbsp;&nbsp;&nbsp;<button type="submit" class="btn btn-info btn-lg"  ng-click="deselect2()">Effacer</button>&nbsp;&nbsp;&nbsp;<button type="submit" class="btn btn-danger btn-lg"  ng-click="removeCarte(beneficiaire.NumeroCarte); successAlert7()">Supprimer Carte</button><br><br>
+            <flash-message duration="10" show-close="true" on-dismiss="myCallback(flash)" ></flash-message>
+        </div>
+      </form>
+  </div>
+
+
+
+
+<div class=".col-xs-6 .col-md-4" ng-controller="passwordCtrl">
+      <h1 id="update-password"><i class="fa fa-unlock"></i>&nbsp;Modifier votre mot de passe :</h1>
+      <form style="margin-bottom:80px;" name="passwordForm" ng-submit="updatePassword2()" novalidate>
+        <div class="form-group">
+          <label><h4>Entrer votre ID :</h4></label>
+            <input type="text" class="form-control" ng-model="user.idDecideur" name="idDecideur" required="name"><span ng-show="passwordForm.idDecideur.$error.required">Ce champ doit être renseigné.</span><br>
+            <label><h4>Nouveau mot de passe :</h4></label>
+            <input type="text" class="form-control" ng-model="user.mdp" name="pass" required="name"><span ng-show="passwordForm.mdp.$error.required">Ce champ doit être renseigné.</span><br>
+            <label><h4>Confirmer mot de passe</h4></label> 
+            <input type="password" class="form-control" ng-model="user.password" name="password" required="name"><span ng-show="passwordForm.password.$error.required">Ce champ doit être renseigné.</span><br>
+            <button type="submit" class="btn btn-info btn-lg" ng-disabled="passwordForm.$invalid" ng-click="successAlert3()">Valider</button><br><br>
+            <flash-message duration="10000" show-close="true" on-dismiss="myCallback(flash)" ></flash-message>
+        </div>
+      </form>
+  </div>
 
       <h1><span class="fa fa-sign-in"></span> Import en masse de bénéficiaires</h1>
           </select><br />

@@ -156,7 +156,24 @@
         </tr>
       </table>
     </div>
+ 
+
+  <div class=".col-xs-6 .col-md-4" ng-controller="passwordCtrl">
+      <h1 id="update-password"><i class="fa fa-unlock"></i>&nbsp;Modifier votre mot de passe :</h1>
+      <form style="margin-bottom:80px;" name="passwordForm" ng-submit="updatePassword3()" novalidate>
+        <div class="form-group">
+          <label><h4>Entrer votre ID :</h4></label>
+            <input type="text" class="form-control" ng-model="user.idAffilie" name="idAffilie" required="name"><span ng-show="passwordForm.idAffilie.$error.required">Ce champ doit être renseigné.</span><br>
+            <label><h4>Nouveau mot de passe :</h4></label>
+            <input type="text" class="form-control" ng-model="user.mdp" name="mdp" required="name"><span ng-show="passwordForm.mdp.$error.required">Ce champ doit être renseigné.</span><br>
+            <label><h4>Confirmer mot de passe</h4></label> 
+            <input type="password" class="form-control" ng-model="user.password" name="password" required="name"><span ng-show="passwordForm.password.$error.required">Ce champ doit être renseigné.</span><br>
+            <button type="submit" class="btn btn-info btn-lg" ng-disabled="passwordForm.$invalid" ng-click="successAlert3()">Valider</button><br><br>
+            <flash-message duration="10" show-close="true" on-dismiss="myCallback(flash)" ></flash-message>
+        </div>
+      </form>
   </div>
+   </div>
 <br><br><br>
 <footer class="footer">
     <div class="container">
