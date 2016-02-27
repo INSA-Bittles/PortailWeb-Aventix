@@ -39,6 +39,12 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER,
       defaultValue: null,
       field: 'IdAvtxAffilie'
+    },
+    idAdmin: 
+    {
+      type: DataTypes.INTEGER,
+      defaultValue: null,
+      field: 'IdAdmin'
     }
   },
   {

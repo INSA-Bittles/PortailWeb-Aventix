@@ -46,11 +46,11 @@
     <ul class="nav navbar-nav">
       <li id="navbarMenu" class="active"><a href="/"><span class="glyphicon glyphicon-home"></span></a></li>
       <li><a href="#">Société</a></li>
-      <li><a href="#">Carte Aventix</a></li>
-      <li><a href="#">Utilisateurs</a></li>
-      <li><a href="#">Entreprise</a></li>
-      <li><a href="#">Restaurateurs</a></li>
-      <li><a href="/geolocalisation">Geolocalisation Restaurants</a></li>
+        <li><a href="#">Carte Aventix</a></li>
+        <li><a href="#">Bénéficiaire</a></li>
+        <li><a href="#">Décideur</a></li>
+        <li><a href="#">Affiliés</a></li>
+        <li><a href="/geolocalisation">Geolocalisation Restaurants</a></li>
     </ul>
 
   <ul class="nav navbar-nav navbar-right social">
@@ -72,7 +72,7 @@
     <h2><span class="glyphicon glyphicon-credit-card"></span></h2>
     <h2>Bénéficiaire</h2> 
     <h3>Bienvenue <%= user.Beneficiaire.prenom %>&nbsp;<%= user.Beneficiaire.nom %></h3>
-      <a href="/logout" class="btn btn-default btn-sm">Logout</a>
+      <a href="/logout" class="btn btn-default btn-sm">Se déconnecter</a>
   </div>
 
   <div class="page-header text-center">
@@ -165,12 +165,31 @@
         </tr>
       </table>
     </div>
+
+    <div class=".col-xs-6 .col-md-4" ng-controller="codeCtrl">
+      <h1 id="updateNumeroCarte"><i class="fa fa-unlock"></i>&nbsp;Modifier votre code de Carte :</h1>
+      <form style="margin-bottom:80px;" name="codeForm" ng-submit="updateCode()" novalidate>
+        <div class="form-group">
+          <label><h4>Entrer votre Numéro de carte :</h4></label>
+            <input type="text" class="form-control" ng-model="beneficiaire.NumeroCarte" name="NumeroCarte" required="name"><span ng-show="passwordForm.NumeroCarte.$error.required">Ce champ doit être renseigné.</span><br>
+            <label><h4>Nouveau code de carte :</h4></label>
+            <input type="text" class="form-control" ng-model="beneficiaire.CodCarte" name="CodeCarte" required="name"><span ng-show="passwordForm.CodCarte.$error.required">Ce champ doit être renseigné.</span><br>
+            <label><h4>Confirmer code de carte</h4></label> 
+            <input type="password" class="form-control" ng-model="beneficiaire.CodeCarte" name="CodeCarte" required="name"><span ng-show="passwordForm.CodeCarte.$error.required">Ce champ doit être renseigné.</span><br>
+            <button type="submit" class="btn btn-info btn-lg" ng-disabled="codeForm.$invalid" ng-click="successAlertCode()">Valider</button><br><br>
+            <flash-message duration="10000" show-close="true" on-dismiss="myCallback(flash)" ></flash-message>
+        </div>
+      </form>
+  </div>
+    
+
+    
   <div class=".col-xs-6 .col-md-4" ng-controller="passwordCtrl">
       <h1 id="update-password"><i class="fa fa-unlock"></i>&nbsp;Modifier votre mot de passe :</h1>
       <form style="margin-bottom:80px;" name="passwordForm" ng-submit="updatePassword()" novalidate>
         <div class="form-group">
           <label><h4>Entrer votre ID :</h4></label>
-            <input type="text" class="form-control" ng-model="user.idBeneficiaire" name="idBeneficiaire" required="name"><span ng-show="passwordForm.idBeneficiaire.$error.required">Ce champ doit être renseigné.</span><br>
+            <input type="text" class="form-control" ng-model="user.idBeneficiaire" name="idBeneficiaire" required="name"><span ng-show="passwordForm.password.$error.required">Ce champ doit être renseigné.</span><br>
             <label><h4>Nouveau mot de passe :</h4></label>
             <input type="text" class="form-control" ng-model="user.mdp" name="pass" required="name"><span ng-show="passwordForm.mdp.$error.required">Ce champ doit être renseigné.</span><br>
             <label><h4>Confirmer mot de passe</h4></label> 

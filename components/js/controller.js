@@ -67,23 +67,22 @@ var userApp = angular.module('userApp', ['ngRoute','angularUtils.directives.dirP
         		
 	    		
 	        $scope.sendMail = function(){
-	        	var data = ({
-	    				'contactName' : $scope.contactName,
-	    				'contactEmail' : $scope.contactEmail,
-	    				'contactSubject' : $scope.contactSubject,
-	    				'contactMessage' : $scope.contactMessage,
-	       		 });	
-
-	        
-
-		      	$http.post('/contact-form', data)
-		        .success(function(data) {
-		        	console.log("here10",data)
+	        	console.log($scope.contact)
+		      	$http.post('/contact-form', $scope.contact)
+		        .success(function(response) {
+		        	console.log("here10",response);
 		        }).error(function(err) {
 		          $log.error(err);
 		        
 		    	});
-       		}
+		    	$http.post('/contact-form2', $scope.contact)
+		        .success(function(response) {
+		        	console.log("here10",response);
+		        }).error(function(err) {
+		          $log.error(err);
+		        
+		    	});
+       		};
        }]);
 
         userApp.controller('FlashCtrl',['$rootScope','$scope', 'Flash',
@@ -284,6 +283,13 @@ var userApp = angular.module('userApp', ['ngRoute','angularUtils.directives.dirP
     				console.log("ok");
     			});
     		};
+
+    		$scope.updatePassword4 = function(){
+	        	console.log($scope.user.idAdmin);
+	        	$http.put('/listUsersAdmin/' + $scope.user.idAdmin, $scope.user).success(function(response){
+    				console.log("ok");
+    			});
+    		};
 	    		
 	    			// $http.put('/password', data)
 	    			// .success(function(data) {
@@ -299,7 +305,124 @@ var userApp = angular.module('userApp', ['ngRoute','angularUtils.directives.dirP
 
 
     	}]);
+		
+		userApp.controller('codeCtrl',['$rootScope','$scope', '$http', '$log', 'Flash', 
+        	function ($rootScope,$scope, $http, $log, Flash) {
 
+
+        $scope.updateCode = function(){
+        	console.log($scope.beneficiaire.NumeroCarte);
+        	$http.put('/listCodeCarte/' + $scope.beneficiaire.NumeroCarte, $scope.beneficiaire).success(function(response){
+				console.log("ok");
+			});
+		};
+
+		$scope.successAlertCode = function () {
+        	var message = '<strong>Votre code a été modifié.</strong>';
+        	var id = Flash.create('success', message, 0, {class: 'successMsgCode', id: 'successMsgCode'}, true);};
+
+		}]);
+
+		userApp.controller('mailCtrl',['$rootScope','$scope', '$http', '$log', 'Flash', 
+        	function ($rootScope,$scope, $http, $log, Flash) {
+
+        var refresh = function(){  
+		        $http.get('/listBeneficiaireAll')
+			        .success(function(data) {
+			          	$scope.beneficiaires = data.Beneficiaires;
+			          	console.log("here",data);
+			          	$scope.beneficiaire = "";
+			          	
+			        })
+		        	.error(function(err){
+		        		$log.error(err);
+		        });
+	    	};
+		    refresh();
+	    	 
+		        $scope.pushData2 = function(){
+		        	console.log($scope.beneficiaire)
+
+			      	$http.post('/pushData3', $scope.beneficiaire)
+			        .success(function(response) {
+			        	console.log("here9",response);
+			        	refresh();
+			        }).error(function(err) {
+			          $log.error(err);
+			        
+			    	});
+	       		};
+	       		
+	       
+
+       		$scope.successAlert2 = function () {
+        	var message = '<strong>Vous avez ajouté un bénéfiaire.<strong>';
+        	var id = Flash.create('success', message, 0, {class: 'successMsg2', id: 'successMsg2'}, true);};
+
+        	  
+
+	        $scope.sort = function(keyname){
+        	$scope.sortKey = keyname;   //set the sortKey to the param passed
+        	$scope.reverse = !$scope.reverse; //if true make it false and vice versa
+    		};
+
+    		$scope.remove3 = function(idBeneficiaire){
+    			console.log(idBeneficiaire);
+    			$http.delete('/listBeneficiaireAll/' + idBeneficiaire).success(function(response){
+    				refresh();
+    			});
+    		};
+
+    		$scope.edit3 = function(idBeneficiaire){
+    			console.log(idBeneficiaire);
+    			$http.get('/listBeneficiaireAll/' + idBeneficiaire).success(function(response){
+    				$scope.beneficiaire = response;
+
+    			});
+    		};
+
+    		$scope.update3 = function(){
+    			console.log($scope.beneficiaire.idBeneficiaire);
+    			$http.put('/listBeneficiaireAll/' + $scope.beneficiaire.idBeneficiaire, $scope.beneficiaire).success(function(response){
+    				refresh();
+    			});
+    		};
+
+    		$scope.deselect3 = function(){
+    			$scope.beneficiaire = "";
+    		};
+
+    		$scope.successAlert4 = function () {
+        	var message = '<strong>Le bénéficiaire a bien été modifié.<strong>';
+        	var id = Flash.create('success', message, 0, {class: 'successMsg4', id: 'successMsg4'}, true);};
+
+    		$scope.successAlert5 = function () {
+        	var message = '<strong>Le bénéficiaire a bien été supprimé.<strong>';
+        	var id = Flash.create('success', message, 0, {class: 'successMsg5', id: 'successMsg5'}, true);};
+
+        	$http.get('https://localhost:3000/listEmail')
+			        .success(function(response) {
+			          	$scope.emails = response;
+			          	console.log("here",$scope.emails);
+			        })
+		        	.error(function(err){
+		        		$log.error(err);
+		        });
+
+		    $scope.removeMail = function(ID){
+    			console.log(ID);
+    			$http.delete('/listEmail/' + ID).success(function(response){
+   					console.log("Mail supprimé");
+    			});
+    		};
+			$scope.successAlertMail = function () {
+        		var message = '<strong>Le mail a bien été supprimé.<strong>';
+        		var id = Flash.create('success', message, 0, {class: 'successMsgMail', id: 'successMsgMail'}, true);};
+
+
+
+
+        }]);
 
 
    // }]);

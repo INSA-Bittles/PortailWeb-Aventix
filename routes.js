@@ -12,6 +12,7 @@ module.exports = function(app_https, passport) {
     var GestiondeTransaction = models.GestiondeTransaction;
     var Affilie = models.Affilie;
     var User = models.User;
+    var Email = models.Email;
     var async = require('async');
     var bcrypt   = require('bcrypt-nodejs');
 
@@ -102,9 +103,9 @@ module.exports = function(app_https, passport) {
                 });
                 break;
             }
-            case 'admin':
+            case 'Admin':
             {
-                res.render('profile.ejs', {
+                res.render('admin.ejs', {
                     user : req.user // get the user out of session and pass to template
                 });
                 break;
@@ -122,6 +123,25 @@ module.exports = function(app_https, passport) {
         //     user : req.user // get the user out of session and pass to template
         // });
     });
+    
+    // =====================================
+    // CONTACT SECTION =====================
+    // =====================================
+    // Mailer
+    var nodemailer = require("nodemailer");
+
+
+    var transporter = nodemailer.createTransport({
+        port: 1025,
+        ignoreTLS: true,
+        // other settings...
+      });
+    //     service: 'gmail',
+    //   auth: {
+    //     user: "aurelien.landelle@gmail.com",    // your email here
+    //     pass: "password"        // your password here
+    //   }
+    // });
 
 
     var data = {"Beneficiaires":""};
@@ -419,6 +439,21 @@ module.exports = function(app_https, passport) {
         });
     });
 
+    app_https.put('/listUsersAdmin/:idAdmin', function(req, res) {
+    var idAdmin = req.params.idAdmin;
+    console.log(req.body);
+    User.update({
+                'password': bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(8), null)
+            },{where : { 'idAdmin' : idAdmin}})
+        .then(function(User){
+            console.log(User);
+            res.end;
+        }).catch( function(err) {
+            console.log(err);
+            return done(err);
+        });
+    });
+
 
     app_https.put('/listBeneficiaireS/:NumeroCarte', function(req, res) {
     var NumeroCarte = req.params.NumeroCarte;
@@ -435,7 +470,7 @@ module.exports = function(app_https, passport) {
         });
     });
 
-    app_https.delete('/lisCartesR/:NumeroCarte', function(req,res){
+    app_https.delete('/listCartesR/:NumeroCarte', function(req,res){
         
         var NumeroCarte = req.params.NumeroCarte;
         console.log(NumeroCarte);
@@ -459,15 +494,194 @@ module.exports = function(app_https, passport) {
         });
     });
 
+// Modification du Code de carte  :
+    
+    app_https.put('/listCodeCarte/:NumeroCarte', function(req, res) {
+    var NumeroCarte = req.params.NumeroCarte;
+    console.log(req.body);
+    carteAPuce.update({
+                'CodeCarte': req.body.CodeCarte
+            },{where : { 'NumeroCarte' : NumeroCarte}})
+        .then(function(NumeroCarte){
+            console.log(NumeroCarte);
+            res.end;
+        }).catch( function(err) {
+            console.log(err);
+            return done(err);
+        });
+    });
 
 
 
 
+// Email :
+
+app_https.post('/contact-form',function(req,res){
+  var data = req.body;
+
+  transporter.sendMail({
+    'from' : req.body.Email,
+    'to' : 'aurelien.landelle@gmail.com',
+    'subject' : req.body.Subject + 'from' + req.body.Name,
+    'text' : req.body.Message
+  });
+  res.json(data);
+  console.log("here7",data);
+});
+
+  app_https.post('/contact-form2',function(req,res){
+    console.log(req.body)
+    var newEmail = Email.build( 
+                    { 
+                        'emailFrom' : req.body.Email,
+                        'emailTo' : 'aurelien.landelle@gmail.com',
+                        'subject' : req.body.Subject + "from" + req.body.Name,
+                        'message' : req.body.Message
+                    });
+                newEmail.save()
+                .then( function() 
+                    {
+                        res.end;
+                    })
+                .catch( function(err) 
+                    {
+                        throw err;
+                    })
+        .catch( function(err) 
+        {
+                console.log(err);
+                return done(err);
+        });
+
+    });
+
+// Admin Section -request //
+
+    app_https.get('/listBeneficiaireAll', function(req,res){
+    Beneficiaire.findAll({ 
+        include: [{  
+            model: 
+            Decideur}]})
+    .then(function(Beneficiaire) {
+        data["Beneficiaires"] = Beneficiaire;
+        res.json(data),
+    console.log(JSON.stringify(data))}).catch( function(err) {
+            console.log(err);
+            return done(err);
+        });
+    });
 
 
+    app_https.post('/pushData3', function(req,res){
+        // var test = {"beneficiaire":""};
+        // test["beneficiaire"] = req.body;
+        console.log(req.body),
+        Beneficiaire.max('idBeneficiaire')
+        
+        .then(function(max)
+        {   
+            console.log(max);
+            
+            var newBeneficiaire = Beneficiaire.build( 
+                    { 
+                        'idBeneficiaire' : max+1,
+                        'nom' : req.body.nom,
+                        'prenom' : req.body.prenom,
+                        'adresse' : req.body.adresse,
+                        'cp' : req.body.cp,
+                        'ville' : req.body.ville,
+                        'email' : req.body.email,
+                        'NumeroCarte' : req.body.NumeroCarte,
+                        'IdDecideur' : req.body.IdDecideur,
+                        'Status' : req.body.Status
+                    });
+                newBeneficiaire.save()
+                .then( function() 
+                    {
+                        res.end;
+                    })
+                .catch( function(err) 
+                    {
+                        throw err;
+                    });
+
+        })
+        .catch( function(err) 
+        {
+                console.log(err);
+                return done(err);
+        });
+
+    });
+
+    app_https.delete('/listBeneficiaireAll/:idBeneficiaire', function(req,res){
+        
+        var idBeneficiaire = req.params.idBeneficiaire;
+        console.log(idBeneficiaire);
+        Beneficiaire.destroy({where : { 'idBeneficiaire' : idBeneficiaire}})
+        .then(function(destroy) {console.log('Bénéficiaire supprimé');})
+            .catch( function(err) {
+            console.log(err);
+            return done(err);
+        });
+    });
+
+    app_https.get('/listBeneficiaireAll/:idBeneficiaire', function(req,res){
+        var idBeneficiaire = req.params.idBeneficiaire;
+        console.log(idBeneficiaire);
+        Beneficiaire.find({where : { 'idBeneficiaire' : idBeneficiaire}})
+        .then(function(id) {console.log(JSON.stringify(id));res.json(id);})
+            .catch( function(err) {
+            console.log(err);
+            return done(err);
+        });
+    });
+
+    app_https.put('/listBeneficiaireAll/:idBeneficiaire', function(req,res){
+        var idBeneficiaire = req.params.idBeneficiaire;
+        console.log(req.body);
+        Beneficiaire.update({
+                'nom' : req.body.nom,
+                'prenom' : req.body.prenom,
+                'adresse' : req.body.adresse,
+                'cp' : req.body.cp,
+                'ville' : req.body.ville,
+                'email' : req.body.email,
+                'NumeroCarte' : req.body.numero,
+                'IdDecideur' : req.body.idDecideur,
+                'Status' : req.body.Status
+            },{where : { 'idBeneficiaire' : idBeneficiaire}})
+        .then(function(Beneficiaire){
+            console.log(Beneficiaire);
+            res.end;
+        }).catch( function(err) {
+            console.log(err);
+            return done(err);
+        });
+    });
 
 
+    app_https.get('/listEmail', function(req,res){
+        
+        console.log(req.body);
+        Email.findAll({})
+        .then(function(email) {console.log(JSON.stringify(email));res.json(email);})
+            .catch( function(err) {
+            console.log(err);
+            return done(err);
+        });
+    });
 
+    app_https.delete('/listEmail/:ID', function(req,res){
+        var ID = req.params.ID;
+        console.log(ID);
+        Email.destroy({where : { 'ID' : ID}})
+        .then(function(destroy) {console.log('Le mail a été supprimé');})
+            .catch( function(err) {
+            console.log(err);
+            return done(err);
+        });
+    });
 
 
 
@@ -575,46 +789,6 @@ module.exports = function(app_https, passport) {
 // });
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     app_https.get('/contact', function(req, res) {
         res.render('contact.ejs'); // load the index.ejs file
     });
@@ -631,18 +805,7 @@ module.exports = function(app_https, passport) {
 
 };
 
-    // app_https.post('/test', function(req,res){
-    //     var nouveauBeneficiaire = modeles.Beneficiaire.build(
-    //     {
-    //         idBeneficiaire : '1500',
-    //         IdDecideur : '2001',
-    //         NumeroCarte : '254101'
 
-    //     });
-    //     nouveauBeneficiaire.save().then(function(response){
-    //         console.log("ici", response);
-    //     })
-    // })
 
 // route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {

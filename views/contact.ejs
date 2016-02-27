@@ -110,9 +110,9 @@
         <li id="navbarMenu" class="active"><a href="/"><span class="glyphicon glyphicon-home"></span></a></li>
         <li><a href="#">Société</a></li>
         <li><a href="#">Carte Aventix</a></li>
-        <li><a href="#">Utilisateurs</a></li>
-        <li><a href="#">Entreprise</a></li>
-        <li><a href="#">Restaurateurs</a></li>
+        <li><a href="#">Bénéficiaire</a></li>
+        <li><a href="#">Décideur</a></li>
+        <li><a href="#">Affiliés</a></li>
         <li><a href="/geolocalisation">Geolocalisation Restaurants</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right social">
@@ -135,7 +135,7 @@
     <div class="form-group">
         <label for="name" class="col-sm-2 control-label">Nom</label>
         <div class="col-sm-10">
-            <input type="text" ng-model="contactName" class="form-control" id="name" name="nom"  placeholder="Nom" value="" required="name"><span ng-show="contactForm.nom.$error.required">Ce champ doit être renseigné.</span>
+            <input type="text" ng-model="contact.Name" class="form-control" id="name" name="nom"  placeholder="Nom" value="" required="name"><span ng-show="contactForm.nom.$error.required">Ce champ doit être renseigné.</span>
       
         </div>
 
@@ -143,20 +143,20 @@
     <div class="form-group">
         <label for="email" class="col-sm-2 control-label">Email</label>
         <div class="col-sm-10">
-            <input type="email" ng-model="contactEmail" class="form-control" id="email" name="email" placeholder="aventix@aventix.fr" value="" required="email"><span ng-show="contactForm.email.$error.required">Ce champ doit être renseigné.&nbsp;</span><span ng-show="contactForm.email.$error.email">Ce n'est pas un mail valide.</span>
+            <input type="email" ng-model="contact.Email" class="form-control" id="email" name="email" placeholder="aventix@aventix.fr" value="" required="email"><span ng-show="contactForm.email.$error.required">Ce champ doit être renseigné.&nbsp;</span><span ng-show="contactForm.email.$error.email">Ce n'est pas un mail valide.</span>
         </div>
     </div>
     <div class="form-group">
         <label for="subject" class="col-sm-2 control-label">Sujet</label>
         <div class="col-sm-10">
-            <input type="text" ng-model="contactSubject" class="form-control" id="subject" name="subject" placeholder="Sujet" value="" required="subject"><span ng-show="contactForm.subject.$error.required">Ce champ doit être renseigné.</span>
+            <input type="text" ng-model="contact.Subject" class="form-control" id="subject" name="subject" placeholder="Sujet" value="" required="subject"><span ng-show="contactForm.subject.$error.required">Ce champ doit être renseigné.</span>
       
         </div>
     </div>
     <div class="form-group">
         <label for="content" class="col-sm-2 control-label">Message</label>
         <div class="col-sm-10">
-            <textarea class="form-control"  ng-model="contactMessage" rows="4" name="content" placeholder="Votre message..." required="message"></textarea><span ng-show="contactForm.content.$error.required">Ce champ doit être renseigné.</span>
+            <textarea class="form-control"  ng-model="contact.Message" rows="4" name="content" placeholder="Votre message..." required="message"></textarea><span ng-show="contactForm.content.$error.required">Ce champ doit être renseigné.</span>
       
         </div>
     </div>

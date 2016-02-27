@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html ng-app="userApp">
+    <head>
+      <title>Aventix - Espace Admin</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://bootswatch.com/lumen/bootstrap.min.css">
+        
+        <link rel="stylesheet" href="css/main.css">
+        <link rel="icon" type="image/png" sizes="16x16" href="img/favicon.png">
+
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+        <script src="js/controller.js"></script>
+         <script src="js/dirPagination.js"></script>
+         <script src="js/angular-flash.min.js"></script>
+          <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular-route.min.js"></script>
+
+</head>
+
+<body ng-controller="mailCtrl">
+<nav class="navbar navbar">
+  <div class="container-fluid" style="height:120px;">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/"><img src="img/logo_aventix.png" alt="Logo - Aventix" /></a>
+
+    </div>
+      <ul class="nav navbar-nav navbar-right">
+          <li><form style="margin-top:40px;" action="" class="search-form">
+                  <div class="form-group has-feedback">
+                  <label for="search" class="sr-only">Rechercher</label>
+                  <input type="text" class="form-control" name="search" id="search" placeholder="Rechercher">
+                    <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                </div>
+              </form></li><li><a class="btn btn-link" href="/Profile" style="margin-top:35px;"><span class="fa fa-user"></span>&nbsp;&nbsp;<%= user.username %></a></li>
+        </ul>
+    </div>
+
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li id="navbarMenu" class="active"><a href="/"><span class="glyphicon glyphicon-home"></span></a></li>
+        <li><a href="#">Société</a></li>
+        <li><a href="#">Carte Aventix</a></li>
+        <li><a href="#">Bénéficiaire</a></li>
+        <li><a href="#">Décideur</a></li>
+        <li><a href="#">Affiliés</a></li>
+        <li><a href="/geolocalisation">Geolocalisation Restaurants</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right social">
+                <li><a href="#"><i class="fa fa-lg fa-facebook"></i></a></li>
+                <li><a href="#"><i class="fa fa-lg fa-twitter"></i></a></li>
+                <li><a href="#"><i class="fa fa-lg fa-google-plus"></i></a></li>
+                <li><a href="#"><i class="fa fa-lg fa-linkedin"></i></a></li>
+      </ul>
+    </div>
+      <ul class="breadcrumb">
+        <li><a href="/">Accueil</a></li>
+        <li><a href="/profile">Profil : <%= user.username %></a></li>
+      </ul>
+</nav>
+<div class="container">
+  <div class="page-header text-center">
+        <h2><span class="glyphicon glyphicon-cutlery"></span>&nbsp;Administration</h2> 
+        <h3>Bienvenue Administrateur</h3>
+        <a href="/logout" class="btn btn-default btn-sm">Se déconnecter</a>
+  </div>
+  <div class=".col-xs-12 .col-md-8" ><h1>Liste des Bénéficiaires :</h1>
+  <table style="width:100%">
+    <tr>   
+      <td style="vertical-align: top">
+            <table class="table" >
+              <tr>
+                <th ng-click="sort('idBeneficiaire')">Id&nbsp;<span class="glyphicon sort-icon" ng-show="sortKey=='idBeneficiaire'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                </th>
+                <th ng-click="sort('nom')">Nom du béneficiaire<span class="glyphicon sort-icon" ng-show="sortKey=='nom'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                </th>
+                <th ng-click="sort('prenom')">Prenom du béneficiaire<span class="glyphicon sort-icon" ng-show="sortKey=='prenom'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                </th>
+                <th ng-click="sort('adresse')">Adresse du béneficiaire<span class="glyphicon sort-icon" ng-show="sortKey=='adresse'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                </th>
+                <th ng-click="sort('cp')">Code Postal du béneficiaire<span class="glyphicon sort-icon" ng-show="sortKey=='cp'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                </th>
+                <th ng-click="sort('ville')">Ville du béneficiaire<span class="glyphicon sort-icon" ng-show="sortKey=='ville'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                </th>
+                <th ng-click="sort('email')">Adresse Mail du béneficiaire<span class="glyphicon sort-icon" ng-show="sortKey=='email'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                </th>
+                <th ng-click="sort('Status')">Status du béneficiaire<span class="glyphicon sort-icon" ng-show="sortKey=='Status'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                </th>
+                <th ng-click="sort('NumeroCarte')">Numéro de carte du béneficiaire<span class="glyphicon sort-icon" ng-show="sortKey=='NumeroCarte'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                </th>
+                <th ng-click="sort('IdDecideur')">ID Decideur<span class="glyphicon sort-icon" ng-show="sortKey=='IdDecideur'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                </th>
+                <th>Action</th>
+                <th>&nbsp;</th>
+                <th>&nbsp;</th>
+              </tr>
+              <tbody>
+                <tr>
+                  <td></td>
+                  <td><input type="text" class="form-control" ng-model="beneficiaire.nom" name="nom" required="name"></td>
+                  <td><input type="text" class="form-control" ng-model="beneficiaire.prenom" name="prenom" required="name"></td>
+                  <td><input type="text" class="form-control" ng-model="beneficiaire.adresse" name="adresse" required="name"></td>
+                  <td><input type="text" class="form-control" ng-model="beneficiaire.cp" name="cp" required="name"></td>
+                  <td><input type="text" class="form-control" ng-model="beneficiaire.ville" name="ville" required="name"></td>
+                  <td><input type="text" class="form-control" ng-model="beneficiaire.email" name="email" required="email"></td>
+                  <td><input type="text" class="form-control" ng-model="beneficiaire.Status" name="Status" required="name"></td>
+                  <td><input type="text" class="form-control" ng-model="beneficiaire.NumeroCarte" name="NumeroCarte" required="name"></td>
+                  <td><input type="text" class="form-control" ng-model="beneficiaire.IdDecideur" name="idDecideur" required="name"></td>
+                  <td><button type="submit" class="btn btn-primary btn-lg" ng-disabled="benefForm.$invalid" ng-click="pushData2(); successAlert2()">Ajouter un bénéficiaire</button><br>
+                </td>
+                <td><button type="submit" class="btn btn-info btn-lg"  ng-click="update3(); successAlert4()">Update</button></td>
+                <td><button type="submit" class="btn btn-info btn-lg"  ng-click="deselect3()">Effacer</button></td>
+                
+                </tr>
+              <tr dir-paginate="beneficiaire in beneficiaires | orderBy:sortKey:reverse|filter:search|itemsPerPage:10">
+                <td>{{beneficiaire.idBeneficiaire}}
+                </td>
+                <td>{{beneficiaire.nom}}
+                </td>
+                <td>{{beneficiaire.prenom}}
+                </td>
+                <td>{{beneficiaire.adresse}}
+                </td>
+                <td>{{beneficiaire.cp}}
+                </td>
+                <td>{{beneficiaire.ville}}
+                </td>
+                <td>{{beneficiaire.email}}
+                </td>
+                <td>{{beneficiaire.Status}}
+                </td>
+                <td>{{beneficiaire.NumeroCarte}}
+                </td>
+                <td>{{beneficiaire.IdDecideur}}
+                </td>
+                <td><button type="submit" class="btn btn-danger btn-lg"  ng-click="remove3(beneficiaire.idBeneficiaire); successAlert5()">Supprimer</button>
+                </td>
+                <td><button type="submit" class="btn btn-warning btn-lg"  ng-click="edit3(beneficiaire.idBeneficiaire)">Editer</button>
+                </td>        
+              </tr>
+
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </table>
+      <dir-pagination-controls max-size="5" direction-links="true" boundary-links="true" ></dir-pagination-controls>
+    </div><flash-message duration="10000" show-close="true" on-dismiss="myCallback(flash)" ></flash-message>
+  
+  <div class=".col-xs-12 .col-md-8" ><h1>Liste des Emails :</h1>
+  <table style="width:100%">
+    <tr>   
+      <td style="vertical-align: top">
+            <table class="table" >
+              <thead>
+              <tr>
+                <th ng-click="sort('ID')">Numéro de mail : &nbsp;<span class="glyphicon sort-icon" ng-show="sortKey=='ID'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                </th>
+                <th ng-click="sort('emailFrom')">De :<span class="glyphicon sort-icon" ng-show="sortKey=='emailFrom'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                </th>
+                <th ng-click="sort('emailTo')">Pour :<span class="glyphicon sort-icon" ng-show="sortKey=='emailTo'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                </th>
+                <th ng-click="sort('date')">Reçu le :<span class="glyphicon sort-icon" ng-show="sortKey=='date'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                </th>
+                <th ng-click="sort('subject')">Sujet :<span class="glyphicon sort-icon" ng-show="sortKey=='subject'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                </th>
+                <th ng-click="sort('message')">Message : <span class="glyphicon sort-icon" ng-show="sortKey=='message'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                </th>
+                <th>&nbsp;</th>
+              </tr></thead>
+              <tbody>
+              <tr ng-repeat="email in emails | orderBy:sortKey:reverse|filter:search|itemsPerPage:10">
+                <td>{{email.ID}}
+                </td>
+                <td>{{email.emailFrom}}
+                </td>
+                <td>{{email.emailTo}}
+                </td>
+                <td>{{email.date}}
+                </td>
+                <td>{{email.subject}}
+                </td>
+                <td><textarea>{{email.message}}</textarea>
+                </td>
+                <td><button type="submit" class="btn btn-danger btn-lg"  ng-click="removeMail(email.ID); successAlertMail()">Supprimer</button>
+                </td>     
+              </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </table>
+      <dir-pagination-controls max-size="5" direction-links="true" boundary-links="true" ></dir-pagination-controls>
+    </div><flash-message duration="10000" show-close="true" on-dismiss="myCallback(flash)" ></flash-message>
+    
+ 
+
+  <div class=".col-xs-6 .col-md-4" ng-controller="passwordCtrl">
+      <h1 id="update-password"><i class="fa fa-unlock"></i>&nbsp;Modifier votre mot de passe :</h1>
+      <form style="margin-bottom:80px;" name="passwordForm" ng-submit="updatePassword4()" novalidate>
+        <div class="form-group">
+          <label><h4>Entrer votre ID :</h4></label>
+            <input type="text" class="form-control" ng-model="user.idAdmin" name="idAdmin" required="name"><span ng-show="passwordForm.idAdmin.$error.required">Ce champ doit être renseigné.</span><br>
+            <label><h4>Nouveau mot de passe :</h4></label>
+            <input type="text" class="form-control" ng-model="user.mdp" name="mdp" required="name"><span ng-show="passwordForm.mdp.$error.required">Ce champ doit être renseigné.</span><br>
+            <label><h4>Confirmer mot de passe</h4></label> 
+            <input type="password" class="form-control" ng-model="user.password" name="password" required="name"><span ng-show="passwordForm.password.$error.required">Ce champ doit être renseigné.</span><br>
+            <button type="submit" class="btn btn-info btn-lg" ng-disabled="passwordForm.$invalid" ng-click="successAlert3()">Valider</button><br><br>
+            <flash-message duration="10" show-close="true" on-dismiss="myCallback(flash)" ></flash-message>
+        </div>
+      </form>
+  </div>
+   </div>
+<br><br><br>
+<footer class="footer">
+    <div class="container">
+        <ul class="nav navbar-nav">
+             <a class="navbar-brand" href="/"><img src="img/logo_aventix.png" width="100px" height="35px" alt="Logo - Aventix" /></a>
+                <li><a href="/profile"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;Mon Compte</a></li>
+                <li><a href="contact">Contact</a></li>
+                <li><a href="#">Mentions légales</a></li>
+                <li><a href="#">Plan du site</a></li>
+      </ul>
+    </div>
+</footer>
+</body>
+    <script src="js/jquery-1.11.3.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    
+</html>
