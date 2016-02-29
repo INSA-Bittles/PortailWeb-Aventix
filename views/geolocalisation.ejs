@@ -6,60 +6,17 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-        <link rel="stylesheet" href="https://bootswatch.com/lumen/bootstrap.min.css">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
         
         <link rel="stylesheet" href="css/main.css">
         <link rel="icon" type="image/png" sizes="16x16" href="img/favicon.png">
 
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+        <script src="js/angular.min.js"></script>
         <script src="js/controller.js"></script>
-         <script src="js/dirPagination.js"></script>
-         <script src="js/angular-flash.min.js"></script>
-          <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular-route.min.js"></script>
-          <script type="text/javascript">
-          // var userApp = angular.module('userApp', ['ui.bootstrap']);
-          // userApp.controller('userCtrl', function ($scope, $http){
-          // $http.get('http://localhost:3000/userslist').success(function(data) {
-          // $scope.users = data.Utilisateurs;
-          //   });
-          // });
-          
-
-            //           var userApp = angular.module('userApp', ['ngTouch', 'ui.grid', 'ui.grid.pagination']);
-             
-            // userApp.controller('userCtrl', ['$scope', '$http', function ($scope, $http) {
-            //   $scope.gridOptions1 = {
-            //     paginationPageSizes: [25, 50, 75],
-            //     paginationPageSize: 25,
-            //     columnDefs: [
-            //       { name: 'id' },
-            //       { name: 'username' },
-            //       { name: 'password' }
-            //     ]
-            //   };
-             
-            //   $scope.gridOptions2 = {
-            //     enablePaginationControls: false,
-            //     paginationPageSize: 25,
-            //     columnDefs: [
-            //       { name: 'id' },
-            //       { name: 'username' },
-            //       { name: 'password' }
-            //     ]
-            //   };
-             
-            //   $scope.gridOptions2.onRegisterApi = function (gridApi) {
-            //     $scope.gridApi2 = gridApi;
-            //   }
-             
-            //   $http.get('http://localhost:3000/userslist')
-            //   .success(function (data) {
-            //     $scope.gridOptions1.data = data.Utilisateurs;
-            //     $scope.gridOptions2.users = data.Utilisateurs;
-            //   });
-            // }]);
-
-          </script>
+        <script src="js/dirPagination.js"></script>
+        <script src="js/angular-flash.min.js"></script>
+        <script src="js/angular-route.min.js"></script>
+        
 
 </head>
 
@@ -140,21 +97,8 @@
 <br>
 <br>
 
-<footer class="footer">
-    <div class="container">
-        <ul class="nav navbar-nav">
-             <a class="navbar-brand" href="/"><img src="img/logo_aventix.png" width="100px" height="35px" alt="Logo - Aventix" /></a>
-                <li><a href="/profile"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;Mon Compte</a></li>
-                <li><a href="contact">Contact</a></li>
-                <li><a href="#">Mentions légales</a></li>
-                <li><a href="#">Plan du site</a></li>
-      </ul>
-    </div>
-</footer>
-</body>
+    <% include includes/footer.ejs %>
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false&language=fr"></script>
     <script src="js/Geolocalisation.js"></script>
-    <script src="js/jquery-1.11.3.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
     
 </html>

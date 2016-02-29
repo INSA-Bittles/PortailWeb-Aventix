@@ -22,6 +22,7 @@ var userApp = angular.module('userApp', ['ngRoute','angularUtils.directives.dirP
         // userApp.controller('decideurCtrl', ['$scope', '$http', '$log', function ($scope, $http, $log){
 		    
         // }]);
+		
 
         userApp.controller('transactionCtrl', ['$scope', '$http', '$log', function ($scope, $http, $log){
 	        
@@ -112,12 +113,23 @@ var userApp = angular.module('userApp', ['ngRoute','angularUtils.directives.dirP
 	    	};
 		    refresh();
 	    	 
-		        $scope.pushData = function(){
-		        	console.log($scope.beneficiaire)
+		        $scope.pushData = function(response){
+		        	console.log(response)
 
 			      	$http.post('/pushData', $scope.beneficiaire)
 			        .success(function(response) {
 			        	console.log("here9",response);
+			        	
+			        	// for ( var i in $scope.beneficiaires ){
+			        	// 	if ( $scope.beneficiaires[i].idBeneficiaire == $scope.beneficiaire.idBeneficiaire) 
+			        	// 	{
+			        	// 		$scope.beneficiaires[i] = $scope.beneficiaire;
+			        	// 	}
+			        	// }
+			        	console.log("la",$scope.beneficiaire );
+			        	// $scope.beneficiaires.push( $scope.beneficiaire );
+			        	console.log("la1",$scope.beneficiaire );
+			        	
 			        	refresh();
 			        }).error(function(err) {
 			          $log.error(err);

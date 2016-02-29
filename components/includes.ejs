@@ -1,0 +1,59 @@
+<head>
+      <title>Aventix - Espace Admin</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://bootswatch.com/lumen/bootstrap.min.css">
+        
+        <link rel="stylesheet" href="css/main.css">
+        <link rel="icon" type="image/png" sizes="16x16" href="img/favicon.png">
+
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+        <script src="js/controller.js"></script>
+         <script src="js/dirPagination.js"></script>
+         <script src="js/angular-flash.min.js"></script>
+          <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular-route.min.js"></script>
+
+</head>
+
+<body ng-controller="mailCtrl">
+<nav class="navbar navbar">
+  <div class="container-fluid" style="height:120px;">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/"><img src="img/logo_aventix.png" alt="Logo - Aventix" /></a>
+
+    </div>
+      <ul class="nav navbar-nav navbar-right">
+          <li><form style="margin-top:40px;" action="" class="search-form">
+                  <div class="form-group has-feedback">
+                  <label for="search" class="sr-only">Rechercher</label>
+                  <input type="text" class="form-control" name="search" id="search" placeholder="Rechercher">
+                    <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                </div>
+              </form></li><li><a class="btn btn-link" href="/Profile" style="margin-top:35px;"><span class="fa fa-user"></span>&nbsp;&nbsp;<%= user.username %></a></li>
+        </ul>
+    </div>
+
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li id="navbarMenu" class="active"><a href="/"><span class="glyphicon glyphicon-home"></span></a></li>
+        <li><a href="#">Société</a></li>
+        <li><a href="#">Carte Aventix</a></li>
+        <li><a href="#">Bénéficiaire</a></li>
+        <li><a href="#">Décideur</a></li>
+        <li><a href="#">Affiliés</a></li>
+        <li><a href="/geolocalisation">Geolocalisation Restaurants</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right social">
+                <li><a href="#"><i class="fa fa-lg fa-facebook"></i></a></li>
+                <li><a href="#"><i class="fa fa-lg fa-twitter"></i></a></li>
+                <li><a href="#"><i class="fa fa-lg fa-google-plus"></i></a></li>
+                <li><a href="#"><i class="fa fa-lg fa-linkedin"></i></a></li>
+      </ul>
+    </div>
+      <ul class="breadcrumb">
+        <li><a href="/">Accueil</a></li>
+        <li><a href="/profile">Profil : <%= user.username %></a></li>
+      </ul>
+</nav>

@@ -42,12 +42,11 @@ var Email = models.Email;
 
 var port = normalizePort(process.env.PORT || '3000');
 app_https.set('port', port);
-// http.createServer(app_https).listen(3000, function (res,req) {
-//    console.log('Started on port 3000!');
 
 
 // Création du server HTTPS avec les options certificat et clé cryptée. 
-var server = https.createServer(options, app_https);
+var server = https.createServer(options, app_https).listen(3000, function (res,req) {
+   console.log('Le serveur HTTPS est lancé sur le port 3000!')});
 
 
 

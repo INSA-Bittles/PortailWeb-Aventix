@@ -1,67 +1,10 @@
 <!DOCTYPE html>
 <html ng-app="userApp">
-    <head>
-      <title>Aventix - Espace Admin</title>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-        <link rel="stylesheet" href="https://bootswatch.com/lumen/bootstrap.min.css">
-        
-        <link rel="stylesheet" href="css/main.css">
-        <link rel="icon" type="image/png" sizes="16x16" href="img/favicon.png">
-
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
-        <script src="js/controller.js"></script>
-         <script src="js/dirPagination.js"></script>
-         <script src="js/angular-flash.min.js"></script>
-          <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular-route.min.js"></script>
-
-</head>
-
-<body ng-controller="mailCtrl">
-<nav class="navbar navbar">
-  <div class="container-fluid" style="height:120px;">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="/"><img src="img/logo_aventix.png" alt="Logo - Aventix" /></a>
-
-    </div>
-      <ul class="nav navbar-nav navbar-right">
-          <li><form style="margin-top:40px;" action="" class="search-form">
-                  <div class="form-group has-feedback">
-                  <label for="search" class="sr-only">Rechercher</label>
-                  <input type="text" class="form-control" name="search" id="search" placeholder="Rechercher">
-                    <span class="glyphicon glyphicon-search form-control-feedback"></span>
-                </div>
-              </form></li><li><a class="btn btn-link" href="/Profile" style="margin-top:35px;"><span class="fa fa-user"></span>&nbsp;&nbsp;<%= user.username %></a></li>
-        </ul>
-    </div>
-
-    <div class="collapse navbar-collapse" id="myNavbar">
-      <ul class="nav navbar-nav">
-        <li id="navbarMenu" class="active"><a href="/"><span class="glyphicon glyphicon-home"></span></a></li>
-        <li><a href="#">Société</a></li>
-        <li><a href="#">Carte Aventix</a></li>
-        <li><a href="#">Bénéficiaire</a></li>
-        <li><a href="#">Décideur</a></li>
-        <li><a href="#">Affiliés</a></li>
-        <li><a href="/geolocalisation">Geolocalisation Restaurants</a></li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right social">
-                <li><a href="#"><i class="fa fa-lg fa-facebook"></i></a></li>
-                <li><a href="#"><i class="fa fa-lg fa-twitter"></i></a></li>
-                <li><a href="#"><i class="fa fa-lg fa-google-plus"></i></a></li>
-                <li><a href="#"><i class="fa fa-lg fa-linkedin"></i></a></li>
-      </ul>
-    </div>
-      <ul class="breadcrumb">
-        <li><a href="/">Accueil</a></li>
-        <li><a href="/profile">Profil : <%= user.username %></a></li>
-      </ul>
-</nav>
-<div class="container">
+<title><%= pageTitle %></title> 
+<% include includes/header.ejs %>
+<div class="container" ng-controller="mailCtrl">
   <div class="page-header text-center">
-        <h2><span class="glyphicon glyphicon-cutlery"></span>&nbsp;Administration</h2> 
+        <h2><span class="glyphicon glyphicon-eye-open"></span>&nbsp;Administration</h2> 
         <h3>Bienvenue Administrateur</h3>
         <a href="/logout" class="btn btn-default btn-sm">Se déconnecter</a>
   </div>
@@ -113,7 +56,7 @@
                 <td><button type="submit" class="btn btn-info btn-lg"  ng-click="deselect3()">Effacer</button></td>
                 
                 </tr>
-              <tr dir-paginate="beneficiaire in beneficiaires | orderBy:sortKey:reverse|filter:search|itemsPerPage:10">
+              <tr pagination-id="benef"  dir-paginate="beneficiaire in beneficiaires | orderBy:sortKey:reverse|filter:search|itemsPerPage:10">
                 <td>{{beneficiaire.idBeneficiaire}}
                 </td>
                 <td>{{beneficiaire.nom}}
@@ -145,7 +88,7 @@
           </td>
         </tr>
       </table>
-      <dir-pagination-controls max-size="5" direction-links="true" boundary-links="true" ></dir-pagination-controls>
+      <dir-pagination-controls max-size="5" pagination-id="benef" direction-links="true" boundary-links="true" ></dir-pagination-controls>
     </div><flash-message duration="10000" show-close="true" on-dismiss="myCallback(flash)" ></flash-message>
   
   <div class=".col-xs-12 .col-md-8" ><h1>Liste des Emails :</h1>
@@ -170,7 +113,7 @@
                 <th>&nbsp;</th>
               </tr></thead>
               <tbody>
-              <tr ng-repeat="email in emails | orderBy:sortKey:reverse|filter:search|itemsPerPage:10">
+              <tr  pagination-id="email"  dir-paginate="email in emails | orderBy:sortKey:reverse|filter:search|itemsPerPage:5">
                 <td>{{email.ID}}
                 </td>
                 <td>{{email.emailFrom}}
@@ -191,7 +134,7 @@
           </td>
         </tr>
       </table>
-      <dir-pagination-controls max-size="5" direction-links="true" boundary-links="true" ></dir-pagination-controls>
+      <dir-pagination-controls max-size="5" pagination-id="email" direction-links="true" boundary-links="true" ></dir-pagination-controls>
     </div><flash-message duration="10000" show-close="true" on-dismiss="myCallback(flash)" ></flash-message>
     
  
@@ -213,19 +156,7 @@
   </div>
    </div>
 <br><br><br>
-<footer class="footer">
-    <div class="container">
-        <ul class="nav navbar-nav">
-             <a class="navbar-brand" href="/"><img src="img/logo_aventix.png" width="100px" height="35px" alt="Logo - Aventix" /></a>
-                <li><a href="/profile"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;Mon Compte</a></li>
-                <li><a href="contact">Contact</a></li>
-                <li><a href="#">Mentions légales</a></li>
-                <li><a href="#">Plan du site</a></li>
-      </ul>
-    </div>
-</footer>
 </body>
-    <script src="js/jquery-1.11.3.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+<% include includes/footer.ejs %>
     
 </html>

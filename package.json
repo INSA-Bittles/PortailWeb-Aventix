@@ -2,7 +2,7 @@
   "name": "Aventix",
   "version": "1.0.0",
   "description": "Aventix",
-  "main": "./app.js",
+  "main": "./server.js",
   "dependencies": {
     "angular": "~1.4.8",
     "angular-ui-bootstrap": "^1.1.2",

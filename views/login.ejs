@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+      <title><%= pageTitle %></title>
       <title>Aventix - Mon espace Personnel</title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -120,20 +121,8 @@
             </div> 
   </div>
 </div>
-<footer style="margin-top:20px;" class="footer">
-    <div class="container">
-        <ul class="nav navbar-nav" id="footer-nav">
-             <a class="navbar-brand" href="/"><img src="img/logo_aventix.png" width="100px" height="35px" alt="Logo - Aventix" /></a>
-                <li><a href="/profile"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;Mon Compte</a></li>
-                <li><a href="contact">Contact</a></li>
-                <li><a href="#">Mentions légales</a></li>
-                <li><a href="#">Plan du site</a></li>
-      </ul>
-    <div>
-</footer>
 </body>
-    <script src="js/jquery-1.11.3.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    
+
+<% include includes/footer.ejs %>
 
 </html>

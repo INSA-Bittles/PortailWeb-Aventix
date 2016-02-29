@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html ng-app="userApp">
     <head>
-      <title>Aventix - Mon espace Personnel</title>
+      <title><%= pageTitle %></title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
@@ -136,7 +136,6 @@
         <label for="name" class="col-sm-2 control-label">Nom</label>
         <div class="col-sm-10">
             <input type="text" ng-model="contact.Name" class="form-control" id="name" name="nom"  placeholder="Nom" value="" required="name"><span ng-show="contactForm.nom.$error.required">Ce champ doit être renseigné.</span>
-      
         </div>
 
     </div>
@@ -174,20 +173,10 @@
     </div>
 </form>
 </div>
-
-<footer class="footer">
-    <div class="container">
-        <ul class="nav navbar-nav">
-             <a class="navbar-brand" href="/"><img src="img/logo_aventix.png" width="100px" height="35px" alt="Logo - Aventix" /></a>
-                <li><a href="/profile"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;Mon Compte</a></li>
-                <li><a href="contact">Contact</a></li>
-                <li><a href="#">Mentions légales</a></li>
-                <li><a href="#">Plan du site</a></li>
-      </ul>
-    </div>
-</footer>
+<br><br>
 </body>
-    <script src="js/jquery-1.11.3.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+
+  <% include includes/footer.ejs %>
+    
     
 </html>

@@ -10,6 +10,7 @@ module.exports = function(sequelize, DataTypes) {
       primaryKey: true,
       field: 'ID'
     },
+    
     emailFrom: 
     {
       type: DataTypes.STRING,

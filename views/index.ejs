@@ -9,6 +9,11 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="css/main.css">
         <link rel="icon" type="image/png" sizes="16x16" href="img/favicon.png">
+        <script src="js/angular.min.js"></script>
+        <script src="js/controller.js"></script>
+        <script src="js/dirPagination.js"></script>
+        <script src="js/angular-flash.min.js"></script>
+        <script src="js/angular-route.min.js"></script>
         
           <style>
               /* Remove the navbar's default margin-bottom and rounded borders */ 
@@ -52,7 +57,7 @@
           <li><form style="margin-top:40px;" action="" class="search-form">
                   <div class="form-group has-feedback">
                   <label for="search" class="sr-only">Rechercher</label>
-                  <input type="text" class="form-control" name="search" id="search" placeholder="Rechercher">
+                  <input type="text"  class="form-control" name="search" id="search" placeholder="Rechercher">
                     <span class="glyphicon glyphicon-search form-control-feedback"></span>
                 </div>
               </form></li><li><a class="btn btn-link" href="/login" style="margin-top:35px;">Votre espace personnel : &nbsp;<span class="glyphicon glyphicon-log-in"></span>&nbsp;&nbsp;Login</a></li>
@@ -137,19 +142,8 @@
     </div>
   </div><br><br><br><br>
 
-<footer class="footer">
-    <div class="container">
-        <ul class="nav navbar-nav">
-             <a class="navbar-brand" href="/"><img src="img/logo_aventix.png" width="100px" height="35px" alt="Logo - Aventix" /></a>
-                <li><a href="/profile"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;Mon Compte</a></li>
-                <li><a href="contact">Contact</a></li>
-                <li><a href="#">Mentions légales</a></li>
-                <li><a href="#">Plan du site</a></li>
-      </ul>
-    </div>
-</footer>
 </body>
-    <script src="js/jquery-1.11.3.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+
+  <% include includes/footer.ejs %>
     
 </html>

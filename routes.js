@@ -15,7 +15,7 @@ module.exports = function(app_https, passport) {
     var Email = models.Email;
     var async = require('async');
     var bcrypt   = require('bcrypt-nodejs');
-
+    var random = require("random-js")(); 
     // =====================================
     // HOME PAGE (with login links) ========
     // =====================================
@@ -42,7 +42,7 @@ module.exports = function(app_https, passport) {
     // show the login form
     app_https.get('/login', function(req, res) {
         // render the page and pass in any flash data if it exists
-        res.render('login.ejs', { message: req.flash('loginMessage') }); 
+        res.render('login.ejs', {pageTitle: 'Mon espace Personnel', message: req.flash('loginMessage') }); 
     });
 
     // process the login form
@@ -84,37 +84,37 @@ module.exports = function(app_https, passport) {
                 //console.log( 'here', req);
                 res.render('affilie.ejs', {
                     user : req.user, // get the user out of session and pass to template
-                });
+                pageTitle: 'Aventix - Mon espace Personnel'});
                 break;
             }
             case 'Decideur':
             {
                 res.render('decideur.ejs', {
                     user : req.user, // get the user out of session and pass to template
-                });
+                pageTitle: 'Aventix - Mon espace Personnel'});
 
                 break;
             }
             case 'Beneficiaire':
             {
                 res.render('beneficiaire.ejs', {
-                    user : req.user
+                    user : req.user,
                      // get the user out of session and pass to template
-                });
+                pageTitle: 'Aventix - Mon espace Personnel'});
                 break;
             }
             case 'Admin':
             {
                 res.render('admin.ejs', {
-                    user : req.user // get the user out of session and pass to template
-                });
+                    user : req.user, // get the user out of session and pass to template
+                    pageTitle: 'Aventix - Espace Admin'});
                 break;
             }
             default:
             {
                 res.render('profile.ejs', {
                     user : req.user // get the user out of session and pass to template
-                });
+                },{pageTitle: 'Bienvenue sur Aventix'});
                 break;
             }
 
@@ -123,6 +123,11 @@ module.exports = function(app_https, passport) {
         //     user : req.user // get the user out of session and pass to template
         // });
     });
+
+    app_https.get('/contact', function(req, res) {
+        res.render('contact.ejs',{pageTitle: 'Aventix - Contact'}); // load the index.ejs file
+    });
+
     
     // =====================================
     // CONTACT SECTION =====================
@@ -361,7 +366,7 @@ module.exports = function(app_https, passport) {
                         'NumeroCarte' : max=max+1,
                         'solde' : req.body.solde,
                         'etat' : 'valide',
-                        'CodeCarte' : '0000'
+                        'CodeCarte' : random.integer(1, 9999)
                     });
                 newCarteAPuce.save()
                 .then( function() 
@@ -398,7 +403,7 @@ module.exports = function(app_https, passport) {
     var idBeneficiaire = req.params.idBeneficiaire;
     console.log(req.body);
     User.update({
-                'password': bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(8), null)
+                'password': bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10), null)
             },{where : { 'idBeneficiaire' : idBeneficiaire}})
         .then(function(User){
             console.log(User);
@@ -413,7 +418,7 @@ module.exports = function(app_https, passport) {
     var idDecideur = req.params.idDecideur;
     console.log(req.body);
     User.update({
-                'password': bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(8), null)
+                'password': bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10), null)
             },{where : { 'idDecideur' : idDecideur}})
         .then(function(User){
             console.log(User);
@@ -428,7 +433,7 @@ module.exports = function(app_https, passport) {
     var idAffilie = req.params.idAffilie;
     console.log(req.body);
     User.update({
-                'password': bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(8), null)
+                'password': bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10), null)
             },{where : { 'idAffilie' : idAffilie}})
         .then(function(User){
             console.log(User);
@@ -443,7 +448,7 @@ module.exports = function(app_https, passport) {
     var idAdmin = req.params.idAdmin;
     console.log(req.body);
     User.update({
-                'password': bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(8), null)
+                'password': bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10), null)
             },{where : { 'idAdmin' : idAdmin}})
         .then(function(User){
             console.log(User);
@@ -789,10 +794,7 @@ app_https.post('/contact-form',function(req,res){
 // });
 
 
-    app_https.get('/contact', function(req, res) {
-        res.render('contact.ejs'); // load the index.ejs file
-    });
-
+   
     // =====================================
     // LOGOUT ==============================
     // =====================================
